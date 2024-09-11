@@ -1,0 +1,167 @@
+@extends('MasterApp.Borders')
+@push('titleNav')
+<span class="text-muted fw-light">Input Data /</span> Memorandum of Aggreement (MoA)
+@endpush
+@push('custom-style')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
+@push('livewire-style')
+@livewireStyles
+@endpush
+@push('livewire-scripts')
+@livewireScripts
+@endpush
+@push('first-scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@endpush
+@push('custom-scripts')
+<script>
+  function checkFileUploadExt(fieldObj) {
+                var control = document.getElementById("uploadFiles");
+                var filelength = control.files.length;
+
+                for (var i = 0; i < control.files.length; i++) {
+                    var file = control.files[i];
+                    var FileName = file.name;
+                    var FileExt = FileName.substr(FileName.lastIndexOf('.') + 1); // pdf
+                    
+                    if ((FileExt.toUpperCase() != "PDF")) {
+                        // $(uploadFiles).val(''); //for clearing with Jquery
+                        control.value="";
+                        swal.fire('File Harus dalam Format PDF');
+                    }else{
+                        const fileSize = file.size / 1024 / 1024; // in MiB
+                        // console.log(fileSize);
+                        if (fileSize > 1) {
+                            // alert('File size Maksimal Berukuran 1 MiB');
+                            // alert('pesan' => 'Data Duplikat', 'icon'=>'error'); 
+                        control.value="";
+                            // $(uploadFiles).val(''); //for clearing with Jquery
+                            swal.fire('File size Maksimal Berukuran 1 MiB');
+                        } else {
+                            Livewire.emit('successMe')
+                            // console.log(control.value);
+                        }
+                    }
+                }
+            }
+            function checkFileUploadExt2(fieldObj) {
+                var control = document.getElementById("uploadFiles2");
+                var filelength = control.files.length;
+
+                for (var i = 0; i < control.files.length; i++) {
+                    var file = control.files[i];
+                    var FileName = file.name;
+                    var FileExt = FileName.substr(FileName.lastIndexOf('.') + 1); // pdf
+                    
+                    if ((FileExt.toUpperCase() != "PDF")) {
+                        // $(uploadFiles).val(''); //for clearing with Jquery
+                        control.value="";
+                        swal.fire('File Harus dalam Format PDF');
+                    }else{
+                        const fileSize = file.size / 1024 / 1024; // in MiB
+                        // console.log(fileSize);
+                        if (fileSize > 1) {
+                            // alert('File size Maksimal Berukuran 1 MiB');
+                            // alert('pesan' => 'Data Duplikat', 'icon'=>'error'); 
+                        control.value="";
+                            // $(uploadFiles).val(''); //for clearing with Jquery
+                            swal.fire('File size Maksimal Berukuran 1 MiB');
+                        } else {
+                            Livewire.emit('successMe')
+                            // console.log(control.value);
+                        }
+                    }
+                }
+            }
+            window.livewire.on('alerts', param => {
+                // alert(param['pesan'])
+                let timerInterval
+                Swal.fire({
+                icon: param['icon'],
+                title: param['pesan'],
+                // html: 'I will close in <b></b> milliseconds.',
+                timer: 2500,
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                    timerInterval = setInterval(() => {
+                    const content = Swal.getContent()
+                    if (content) {
+                        const b = content.querySelector('b')
+                        if (b) {
+                        b.textContent = Swal.getTimerLeft()
+                        }
+                    }
+                    }, 100)
+                },
+                onClose: () => {
+                    // window.location.reload();
+                    // clearInterval(timerInterval)
+                }
+                }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log('I was closed by the timer')
+                }
+                })
+            })
+</script>
+@endpush
+@section('content')
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Page Heading -->
+    
+    <div class="col-xl-12">
+        <div class="nav-align-top mb-4">
+          <ul class="nav nav-tabs nav-fill" role="tablist">
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link active"
+                role="tab"
+                data-bs-toggle="tab"
+                data-bs-target="#navs-justified-home"
+                aria-controls="navs-justified-home"
+                aria-selected="true"
+              >
+                Prodi
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link"
+                role="tab"
+                data-bs-toggle="tab"
+                data-bs-target="#navs-justified-profile"
+                aria-controls="navs-justified-profile"
+                aria-selected="false"
+              >
+                Non Prodi
+              </button>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
+                @livewire('input.moa')
+            </div>
+            <div class="tab-pane fade" id="navs-justified-profile" role="tabpanel">
+              <p>
+                Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice
+                cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream
+                cheesecake fruitcake.
+              </p>
+              <p class="mb-0">
+                Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah
+                cotton candy liquorice caramels.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+@endsection
