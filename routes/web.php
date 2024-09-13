@@ -43,7 +43,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Menu/Non/Prodi/Input/{id?}/{val?}', [App\Http\Controllers\Controller::class, 'nonprodi_moa_in'])->name('nonprodi-moa-in');
     Route::get('/Menu/InputIa', [App\Http\Controllers\Controller::class, 'ia_in'])->name('ia-in');
     // Route::get('/Menu/{value}', [App\Http\Controllers\Controller::class, 'menu'])->name('menu');
-
     Route::get('/Menu/User', [App\Http\Controllers\Controller::class, 'managemen_user'])->name('managemen-user');
     Route::get('/Menu/UserNonApps', [App\Http\Controllers\Controller::class, 'user_non_apps'])->name('user-non-apps');
 
@@ -55,6 +54,12 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'can:only-admin'])->group(function () {
     // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
     Route::get('/sdgs', [App\Http\Controllers\Controller::class, 'sdgs'])->name('sdgs');
+});
+
+//Menampilkan data IKU
+Route::middleware(['auth', 'can:only-admin'])->group(function () {
+    // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
+    Route::get('/iku6', [App\Http\Controllers\Controller::class, 'iku6'])->name('iku6');
 });
 
 Route::middleware(['auth', 'can:super-power'])->group(function () {

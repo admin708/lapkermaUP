@@ -144,6 +144,12 @@ class Controller extends BaseController
         return view('Pages.Sdgs.index');
     }
 
+    // Siderbar menu
+    public function iku6()
+    {
+        return view('Pages.Table.iku6');
+    }
+
     // edit data
     public function edit($id)
     {

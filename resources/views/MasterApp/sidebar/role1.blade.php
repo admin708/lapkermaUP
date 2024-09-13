@@ -110,6 +110,15 @@
         </a>
       </li>
       
+      {{-- Penambahan menu IKU-6 untuk --}}
+
+      <li class="menu-item {{ request()->route()->getName() == 'iku6' ? 'active':''}} ">
+        <a class="menu-link" href="{{ route('iku6') }}">
+            <i class="menu-icon tf-icons bx bx-bar-chart-alt"></i>
+            <span>IKU-6</span>
+        </a>
+      </li>
+      
       <li class="menu-item {{ request()->route()->getName() == 'informasi' ? 'active':''}} ">
         <a class="menu-link" href="{{ route('informasi') }}">
             <i class="menu-icon tf-icons bx bx-support"></i>
