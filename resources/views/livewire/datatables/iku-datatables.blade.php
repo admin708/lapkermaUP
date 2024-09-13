@@ -11,42 +11,22 @@
                       <th>ID</th>
                       <th>PRODI</th>
                       <th>MoA</th>
-                      <th>MoU</th>
                       <th>IA</th>
+                      <th>MoU</th>
                       <th>TOTAL KERJA SAMA</th>
-
-                      <!--  
-                      {{-- @if (auth()->user()->role_id != 5) --}}
-                      <th>Prodi/Sub Unit Kerja</th>
-                      {{-- @endif --}}
-                      <th>Negara</th>
-                      <th>Jenis Kerjasama</th>
-                      <th>Judul</th>
-                      <th>Status</th>-->
-                      
                     </tr>
-                    {{-- <tr>
-                      <th>
-                        <input type="text" class="form-control form-control-sm" wire:model.lazy="cariMitra">
-                      </th>
-                      <th>
-                        <input type="text" class="form-control form-control-sm" wire:model.lazy="cariMitra">
-                      </th>
-                      <th>
-
-                      </th>
-                      <th>
-                        
-                      </th>
-                      <th>
-
-                      </th>
-                    </tr> --}}
-                  </thead> 
-                  <tbody>
-                    <!-- Data rows go here -->
+                </thead>
+                <tbody>
+                    @foreach ($referenceCounts as $referenceCount)
+                        <tr>
+                            <th>{{$referenceCount->prodi_id }}</th>
+                            <th>{{$referenceCount->prodi_name}}</th>
+                            <th>{{ $referenceCount->moa_reference_count }}</th>
+                            <th>{{ $referenceCount->ia_reference_count }}</th>
+                            <th>{{ $referenceCount->mou_reference_count }}</th>
+                            <th>{{ $referenceCount->total_reference_count }}</th>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
-        </div>
-    </div>
 </div>
