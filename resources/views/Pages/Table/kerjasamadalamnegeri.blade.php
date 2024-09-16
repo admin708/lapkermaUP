@@ -120,9 +120,9 @@
     <!-- Page Heading -->
     <div class="card p-3">
         <div id="newpost">
-            <h1 class="h4">Indikator Kerjasama Utama (IKU-6) Luar Negeri</h1>
+            <h1 class="h4">Indikator Kerjasama Utama (IKU-6) Dalam Negeri</h1>
             <hr class="m-3">
-            @livewire('datatables.kerjasama-luar-negeri-datatables')
+            @livewire('datatables.kerjasama-dalam-negeri-datatables')
         </div>
     </div>
 </div>

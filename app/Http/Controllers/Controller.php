@@ -150,8 +150,11 @@ class Controller extends BaseController
         return view('Pages.Table.iku6');
     }
 
-    // Siderbar menu
-    public function kerjasamaluarnegeri()
+    public function kerjaSamaDalamNegeri(){
+        return view('Pages.Table.kerjasamadalamnegeri');
+    }
+
+    public function kerjaSamaLuarNegeri()
     {
         return view('Pages.Table.kerjasamaluarnegeri');
     }

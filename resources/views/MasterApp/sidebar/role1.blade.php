@@ -112,21 +112,20 @@
       
       {{-- Penambahan menu IKU-6 untuk --}}
 
-      <li class="menu-item {{ request()->route()->getName() == 'iku6' ? 'active':''}} ">
-
-        <a class="menu-link menu-toggle" href="{{ route('iku6') }}">
+      <li class="menu-item {{ request()->route()->getName() == 'kerjaSamaDalamNegeri' ? 'active open': (request()->route()->getName() == 'kerjaSamaLuarNegeri' ? 'active open':'')}} ">
+        {{-- <a class="menu-link" href="{{ route('iku6') }}"> --}}
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-bar-chart-alt"></i>
             <span>IKU-6</span>
         </a>
-
         <ul class="menu-sub">
-          <li class="menu-item {{ request()->route()->getName() == 'moa' ? 'active':'' }}">
-            <a href="{{ route('moa') }}" class="menu-link">
+          <li class="menu-item {{ request()->route()->getName() == 'kerjaSamaDalamNegeri' ? 'active':'' }}">
+            <a class="menu-link" href="{{ route('kerjaSamaDalamNegeri') }}">
               <div data-i18n="Without navbar">Dalam Negeri</div>
             </a>
           </li>
-          <li class="menu-item {{ request()->route()->getName() == 'kerjasamaluarnegeri' ? 'active':'' }}">
-            <a href="{{ route('kerjasamaluarnegeri') }}" class="menu-link">
+          <li class="menu-item {{ request()->route()->getName() == 'kerjaSamaLuarNegeri' ? 'active':'' }}">
+            <a class="menu-link" href="{{ route('kerjaSamaLuarNegeri') }}">
               <div data-i18n="Without navbar">Luar Negeri</div>
             </a>
           </li>
