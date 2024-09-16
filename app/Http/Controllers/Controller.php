@@ -150,6 +150,15 @@ class Controller extends BaseController
         return view('Pages.Table.iku6');
     }
 
+    public function kerjaSamaDalamNegeri(){
+        return view('Pages.Table.kerjasamadalamnegeri');
+    }
+
+    public function kerjaSamaLuarNegeri()
+    {
+        return view('Pages.Table.kerjasamaluarnegeri');
+    }
+
     // edit data
     public function edit($id)
     {
