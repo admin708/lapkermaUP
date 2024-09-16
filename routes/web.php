@@ -62,6 +62,12 @@ Route::middleware(['auth', 'can:only-admin'])->group(function () {
     Route::get('/iku6', [App\Http\Controllers\Controller::class, 'iku6'])->name('iku6');
 });
 
+//Menampilkan data kerja sama luar negeri
+Route::middleware(['auth', 'can:only-admin'])->group(function () {
+    // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
+    Route::get('/kerjasamaluarnegeri', [App\Http\Controllers\Controller::class, 'kerjasamaluarnegeri'])->name('kerjasamaluarnegeri');
+});
+
 Route::middleware(['auth', 'can:super-power'])->group(function () {
     // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
     Route::get('/add_prodi', [App\Http\Controllers\Controller::class, 'addProdi'])->name('add-prodi');

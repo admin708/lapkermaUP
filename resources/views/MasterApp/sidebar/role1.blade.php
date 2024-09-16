@@ -113,10 +113,24 @@
       {{-- Penambahan menu IKU-6 untuk --}}
 
       <li class="menu-item {{ request()->route()->getName() == 'iku6' ? 'active':''}} ">
-        <a class="menu-link" href="{{ route('iku6') }}">
+
+        <a class="menu-link menu-toggle" href="{{ route('iku6') }}">
             <i class="menu-icon tf-icons bx bx-bar-chart-alt"></i>
             <span>IKU-6</span>
         </a>
+
+        <ul class="menu-sub">
+          <li class="menu-item {{ request()->route()->getName() == 'moa' ? 'active':'' }}">
+            <a href="{{ route('moa') }}" class="menu-link">
+              <div data-i18n="Without navbar">Dalam Negeri</div>
+            </a>
+          </li>
+          <li class="menu-item {{ request()->route()->getName() == 'kerjasamaluarnegeri' ? 'active':'' }}">
+            <a href="{{ route('kerjasamaluarnegeri') }}" class="menu-link">
+              <div data-i18n="Without navbar">Luar Negeri</div>
+            </a>
+          </li>
+        </ul>
       </li>
       
       <li class="menu-item {{ request()->route()->getName() == 'informasi' ? 'active':''}} ">
