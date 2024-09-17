@@ -12,7 +12,7 @@ class KerjasamaDalamNegeriDatatables extends Component
 
     protected $paginationTheme = 'bootstrap'; // Opsional: Gunakan tema Bootstrap untuk pagination (sesuaikan dengan CSS yang digunakan)
 
-    public $kerjasamaId, $orderBy, $orderDirection;
+    public $kerjasamaId, $orderBy, $orderDirection, $perPage;
     public $orderByText, $orderDirectionText, $kerjaSamaText;
 
     public function mount()
@@ -21,9 +21,10 @@ class KerjasamaDalamNegeriDatatables extends Component
         $this->orderDirection = "asc";
         $this->orderByText = 'Urut Berdasarkan';
         $this->kerjaSamaText = 'All';
+        $this->perPage = 10;
     }
 
-    public function updated($propertyName)
+    public function updated()
     {
         $this->resetPage(); // Reset pagination setiap kali filter diubah
     }
@@ -32,7 +33,7 @@ class KerjasamaDalamNegeriDatatables extends Component
     {
         // Dapatkan data dengan pagination
         $referenceCounts = Prodi::getReferenceCounts($this->kerjasamaId, $this->orderBy, $this->orderDirection)
-            ->paginate(10); // 10 item per halaman
+            ->paginate($this->perPage); // 10 item per halaman
 
         return view('livewire.datatables.kerjasama-dalam-negeri-datatables', [
             'referenceCounts' => $referenceCounts,
@@ -63,5 +64,11 @@ class KerjasamaDalamNegeriDatatables extends Component
     {
         $this->orderDirection = $this->orderDirection === "asc" ? "desc" : "asc";
         $this->updated();
+    }
+
+    public function setPerPage($number)
+    {
+        $this->perPage = $number;
+        $this->resetPage();
     }
 }

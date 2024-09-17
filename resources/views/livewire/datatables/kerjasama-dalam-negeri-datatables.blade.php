@@ -2,7 +2,18 @@
   <h5 class="card-header bg-primary p-3 text-white">Data Table</h5>
   <div class="card-body">
       <div class="d-flex flex-row-reverse bd-highlight mt-3">
-          <div class="dropdown order_direction px-3">
+        <div class="dropdown pagination_count px-3">
+          <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Show {{ $perPage }} per page
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" wire:click="setPerPage(10)">10</a></li>
+              <li><a class="dropdown-item" wire:click="setPerPage(25)">25</a></li>
+              <li><a class="dropdown-item" wire:click="setPerPage(50)">50</a></li>
+              <li><a class="dropdown-item" wire:click="setPerPage(100)">100</a></li>
+          </ul>
+      </div>
+          <div class="dropdown order_direction">
               <button class="btn btn-outline-primary" wire:click.debounce.300ms="setOrderDirection">
                   <i class="menu-icon tf-icons bx {{ $orderDirection === 'asc' ? 'bx-sort-up' : 'bx-sort-down' }}"></i>
               </button>          
