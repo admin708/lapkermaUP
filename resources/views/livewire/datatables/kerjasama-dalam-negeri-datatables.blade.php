@@ -2,7 +2,7 @@
   <h5 class="card-header bg-primary p-3 text-white">Data Table</h5>
   <div class="card-body">
       <div class="d-flex flex-row-reverse bd-highlight mt-3">
-          <div class="dropdown order_direction px-3">
+          <div class="dropdown order_direction ">
               <button class="btn btn-outline-primary" wire:click.debounce.300ms="setOrderDirection">
                   <i class="menu-icon tf-icons bx {{ $orderDirection === 'asc' ? 'bx-sort-up' : 'bx-sort-down' }}"></i>
               </button>          
