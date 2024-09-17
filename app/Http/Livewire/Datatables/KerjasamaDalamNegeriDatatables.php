@@ -3,39 +3,46 @@
 namespace App\Http\Livewire\Datatables;
 
 use Livewire\Component;
+use Livewire\WithPagination; // Tambahkan trait WithPagination
 use App\Models\Prodi;
 
 class KerjasamaDalamNegeriDatatables extends Component
 {
+    use WithPagination; // Gunakan WithPagination untuk mengaktifkan pagination
 
-    public $referenceCounts, $kerjasamaId, $orderBy, $orderDirection;
-    public $orderByText, $orderDirectionText, $kerjaSamaText ;
+    protected $paginationTheme = 'bootstrap'; // Opsional: Gunakan tema Bootstrap untuk pagination (sesuaikan dengan CSS yang digunakan)
+
+    public $kerjasamaId, $orderBy, $orderDirection;
+    public $orderByText, $orderDirectionText, $kerjaSamaText;
 
     public function mount()
     {
-        $orderBy = "prodi_id";
-        $orderDirection = "asc";
+        $this->orderBy = "prodi_id";
+        $this->orderDirection = "asc";
         $this->orderByText = 'Urut Berdasarkan';
         $this->kerjaSamaText = 'All';
-        $this->referenceCounts = Prodi::getReferenceCounts($this->kerjasamaId, $orderBy, $orderDirection);
     }
 
     public function updated()
     {
-        $this->referenceCounts = Prodi::getReferenceCounts($this->kerjasamaId, $this->orderBy, $this->orderDirection);
+        $this->resetPage(); // Reset pagination setiap kali filter diubah
     }
+
     public function render()
     {
+        // Dapatkan data dengan pagination
+        $referenceCounts = Prodi::getReferenceCounts($this->kerjasamaId, $this->orderBy, $this->orderDirection)
+            ->paginate(10); // 10 item per halaman
+
         return view('livewire.datatables.kerjasama-dalam-negeri-datatables', [
-            'referenceCounts' => $this->referenceCounts,
+            'referenceCounts' => $referenceCounts,
             'orderBy' => $this->orderBy,
             'orderByText' => $this->orderByText,
             'kerjasamaId' => $this->kerjasamaId,
             'kerjaSamaText' => $this->kerjaSamaText,
             'orderDirection' => $this->orderDirection,
             'orderDirectionText' => $this->orderDirectionText
-            
-         ]);
+        ]);
     }
 
     public function setKerjasamaId($id, $text)
@@ -52,8 +59,9 @@ class KerjasamaDalamNegeriDatatables extends Component
         $this->updated();
     }
 
-    public function setOrderDirection(){
-        $this->orderDirection = $this->orderDirection === "asc" ? "desc" : "asc"  ;
+    public function setOrderDirection()
+    {
+        $this->orderDirection = $this->orderDirection === "asc" ? "desc" : "asc";
         $this->updated();
     }
 }
