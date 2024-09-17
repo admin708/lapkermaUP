@@ -34,28 +34,34 @@
               </div>  
         </div>
         <div class="table-responsive text-nowrap mt-3">
-            <table class="table table-bordered table-hover table-sm" style="font-size: 13px">
-                <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>PRODI</th>
-                      <th>MoA</th>
-                      <th>IA</th>
-                      <th>MoU</th>
-                      <th>TOTAL KERJA SAMA</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($referenceCounts as $referenceCount)
-                    <tr style="font-size: 11px">
-                        <td>{{$referenceCount->prodi_id }}</td>
-                        <td>{{$referenceCount->prodi_name}}</td>
-                        <td>{{ $referenceCount->moa_reference_count ?? 0 }}</td>
-                        <td>{{ $referenceCount->ia_reference_count ?? 0}}</td>
-                        <td>{{ $referenceCount->mou_reference_count ?? 0}}</td>
-                        <td>{{ $referenceCount->total_reference_count ?? 0 }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+          <table class="table table-bordered table-hover table-sm" style="font-size: 13px">
+              <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>PRODI</th>
+                    <th>MoA</th>
+                    <th>IA</th>
+                    <th>MoU</th>
+                    <th>TOTAL KERJA SAMA</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach ($referenceCounts as $referenceCount)
+                  <tr style="font-size: 11px">
+                      <td>{{ $referenceCount->prodi_id }}</td>
+                      <td>{{ $referenceCount->prodi_name }}</td>
+                      <td>{{ $referenceCount->moa_reference_count ?? 0 }}</td>
+                      <td>{{ $referenceCount->ia_reference_count ?? 0 }}</td>
+                      <td>{{ $referenceCount->mou_reference_count ?? 0 }}</td>
+                      <td>{{ $referenceCount->total_reference_count ?? 0 }}</td>
+                  </tr>
+                  @endforeach
+              </tbody>
+          </table>
+
+          <!-- Pagination Links -->
+          <div class="d-flex justify-content-center mt-3">
+              {{ $referenceCounts->links() }}
+          </div>
+      </div>
 </div>
