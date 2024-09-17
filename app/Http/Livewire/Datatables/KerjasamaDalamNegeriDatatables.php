@@ -8,28 +8,52 @@ use App\Models\Prodi;
 class KerjasamaDalamNegeriDatatables extends Component
 {
 
-    public $referenceCounts;
-    public $filterType = 1; // Default to Dalam Negeri
+    public $referenceCounts, $kerjasamaId, $orderBy, $orderDirection;
+    public $orderByText, $orderDirectionText, $kerjaSamaText ;
 
     public function mount()
     {
-        $this->updateReferenceCounts();
+        $orderBy = "prodi_id";
+        $orderDirection = "asc";
+        $this->orderByText = 'Urut Berdasarkan';
+        $this->kerjaSamaText = 'All';
+        $this->referenceCounts = Prodi::getReferenceCounts($this->kerjasamaId, $orderBy, $orderDirection);
     }
 
-    public function updateFilter($filterType)
+    public function updated()
     {
-        $this->filterType = $filterType;
-        $this->updateReferenceCounts();
+        $this->referenceCounts = Prodi::getReferenceCounts($this->kerjasamaId, $this->orderBy, $this->orderDirection);
     }
-
-    private function updateReferenceCounts()
-    {
-        $this->referenceCounts = Prodi::getReferenceCounts($this->filterType);
-    }
-
-
     public function render()
     {
-        return view('livewire.datatables.kerjasama-dalam-negeri-datatables');
+        return view('livewire.datatables.kerjasama-dalam-negeri-datatables', [
+            'referenceCounts' => $this->referenceCounts,
+            'orderBy' => $this->orderBy,
+            'orderByText' => $this->orderByText,
+            'kerjasamaId' => $this->kerjasamaId,
+            'kerjaSamaText' => $this->kerjaSamaText,
+            'orderDirection' => $this->orderDirection,
+            'orderDirectionText' => $this->orderDirectionText
+            
+         ]);
+    }
+
+    public function setKerjasamaId($id, $text)
+    {
+        $this->kerjasamaId = $id;
+        $this->kerjaSamaText = $text;
+        $this->updated();
+    }
+
+    public function setOrderBy($column, $text)
+    {
+        $this->orderBy = $column;
+        $this->orderByText = $text;
+        $this->updated();
+    }
+
+    public function setOrderDirection(){
+        $this->orderDirection = $this->orderDirection === "asc" ? "desc" : "asc"  ;
+        $this->updated();
     }
 }

@@ -35,7 +35,7 @@ class Prodi extends Model
         return $this->hasMany('App\Models\DataMou', 'prodi_id', 'id');
     }
 
-    public static function getReferenceCounts($kerjasama_id = null)
+    public static function getReferenceCounts($kerjasama_id = null, $orderBy , $orderDirection)
 {
     $moaCounts = DataMoa::select('prodi_id')
         ->when($kerjasama_id, function ($query) use ($kerjasama_id) {
@@ -77,8 +77,10 @@ class Prodi extends Model
                   COALESCE(mou_counts.mou_reference_count, 0) + 
                   COALESCE(ia_counts.ia_reference_count, 0)) AS total_reference_count')
     )
-    ->orderBy('total_reference_count', 'desc')
+    ->orderBy($orderBy ?? 'total_reference_count', $orderDirection ?? 'asc')
     ->get();
 }
+
+
 
 }
