@@ -9,11 +9,24 @@ class KerjasamaDalamNegeriDatatables extends Component
 {
 
     public $referenceCounts;
+    public $filterType = 1; // Default to Dalam Negeri
 
     public function mount()
     {
-        $this->referenceCounts = Prodi::getReferenceCounts();
+        $this->updateReferenceCounts();
     }
+
+    public function updateFilter($filterType)
+    {
+        $this->filterType = $filterType;
+        $this->updateReferenceCounts();
+    }
+
+    private function updateReferenceCounts()
+    {
+        $this->referenceCounts = Prodi::getReferenceCounts($this->filterType);
+    }
+
 
     public function render()
     {

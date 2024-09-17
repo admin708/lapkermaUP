@@ -156,6 +156,7 @@ class Controller extends BaseController
 
     public function kerjaSamaLuarNegeri()
     {
+        
         return view('Pages.Table.kerjasamaluarnegeri');
     }
 

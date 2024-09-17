@@ -9,9 +9,9 @@
                 </button>
               
                 <ul class="dropdown-menu ">
-                  <li><a class="dropdown-item" >All</a></li>
-                  <li><a class="dropdown-item" >Dalam Negeri</a></li>
-                  <li><a class="dropdown-item" >Luar Negeri</a></li>
+                  <li><a class="dropdown-item" wire:click="updateFilter(null)">All</a></li>
+                    <li><a class="dropdown-item" wire:click="updateFilter(1)">Dalam Negeri</a></li>
+                    <li><a class="dropdown-item" wire:click="updateFilter(2)">Luar Negeri</a></li>
                 </ul>
             </div> 
             <div class="dropdown order_by ">
@@ -43,14 +43,16 @@
                 <tbody>
                     @foreach ($referenceCounts as $referenceCount)
                     <tr style="font-size: 11px">
-                        <td>{{$referenceCount->prodi_id }}</td>
-                        <td>{{$referenceCount->prodi_name}}</td>
-                        <td>{{ $referenceCount->moa_reference_count }}</td>
-                        <td>{{ $referenceCount->ia_reference_count }}</td>
-                        <td>{{ $referenceCount->mou_reference_count }}</td>
-                        <td>{{ $referenceCount->total_reference_count }}</td>
+                        <td>{{$referenceCount->prodi_id ?? 0}}</td>
+                        <td>{{$referenceCount->prodi_name ?? 0}}</td>
+                        <td>{{ $referenceCount->moa_reference_count ?? 0}}</td>
+                        <td>{{ $referenceCount->ia_reference_count ?? 0}}</td>
+                        <td>{{ $referenceCount->mou_reference_count ?? 0}}</td>
+                        <td>{{ $referenceCount->total_reference_count ?? 0}}</td>
                     </tr>
                     @endforeach
+                    
                 </tbody>
             </table>
+            
 </div>
