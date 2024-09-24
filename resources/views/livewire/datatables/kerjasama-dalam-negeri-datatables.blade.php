@@ -2,17 +2,28 @@
   <h5 class="card-header bg-primary p-3 text-white">Data Table</h5>
   <div class="card-body">
       <div class="d-flex flex-row-reverse bd-highlight mt-3">
-          <div class="dropdown order_direction ">
-              <button class="btn btn-outline-primary" wire:click.debounce.300ms="setOrderDirection">
-                  <i class="menu-icon tf-icons bx {{ $orderDirection === 'asc' ? 'bx-sort-up' : 'bx-sort-down' }}"></i>
-              </button>          
-          </div> 
+        <div class="dropdown order_direction ps-3">
+            <button class="btn btn-outline-primary" wire:click.debounce.300ms="setOrderDirection">
+                <i class="menu-icon tf-icons bx {{ $orderDirection === 'asc' ? 'bx-sort-up' : 'bx-sort-down' }}"></i>
+            </button>          
+        </div> 
+        <div class="dropdown pagination_count">
+          <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Tampilkan {{ $perPage }} per halaman
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" wire:click="setPerPage(10)">10</a></li>
+              <li><a class="dropdown-item" wire:click="setPerPage(25)">25</a></li>
+              <li><a class="dropdown-item" wire:click="setPerPage(50)">50</a></li>
+              <li><a class="dropdown-item" wire:click="setPerPage(100)">100</a></li>
+          </ul>
+        </div>
           <div class="dropdown jenis_kerja_sama px-3">
               <button class="btn btn-outline-primary dropdown-toggle width" style="width: 200px;" role="button" data-bs-toggle="dropdown">
                   {{ $kerjaSamaText }}
               </button>
               <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" wire:click="setKerjasamaId(null, 'All')">All</a></li>
+                  <li><a class="dropdown-item" wire:click="setKerjasamaId(null, 'Semua Kerjasama')">Semua Kerjasama</a></li>
                   <li><a class="dropdown-item" wire:click="setKerjasamaId(1, 'Dalam Negeri')">Dalam Negeri</a></li>
                   <li><a class="dropdown-item" wire:click="setKerjasamaId(2, 'Luar Negeri')">Luar Negeri</a></li>
               </ul>
