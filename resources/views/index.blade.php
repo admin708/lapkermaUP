@@ -208,8 +208,9 @@
     ============================================= -->
     <div id="top-categories" class="top-cat-area bottom-less" style="padding-top: 30px; background-color: #f5f5f5">
         <div class="container">
-            <div class="row">
-                <div class="col-md-8 top-cat-items">
+            <div class="row" style="display: flex; align-items: center; justify-content: center;">
+                <div class="col-md-8
+                top-cat-items">
                     @livewire('dashboard-chart.kerjasama-map')
                 </div>
             </div>

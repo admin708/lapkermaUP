@@ -10,7 +10,7 @@ class Negara extends Model
 {
     use HasFactory;
     protected $table = 'negaras';
-    public $negaraName, $dataKerjaSamaNegara;
+    public $dataKerjaSamaNegara;
 
     public function Instansi(): HasMany
     {
