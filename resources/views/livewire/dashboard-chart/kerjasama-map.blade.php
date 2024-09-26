@@ -21,30 +21,6 @@
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
-            // function createMarkers() {
-            //     var markers = []
-            //     if ({{ json_encode($dataKerjaSamaNegara) }} !== null) {
-            //         @foreach ($dataKerjaSamaNegara->instansi as $instansi)
-            //             if ($instansi !== null) {
-            //                 markers.push([{{ $instansi->latitude }}, {{ $instansi->longitude }}]);
-            //             }
-            //         @endforeach
-
-            //         markers.forEach(function(coords) {
-            //             var lat = coords[0];
-            //             var lng = coords[1];
-            //             L.marker([lat, lng]).addTo(map);
-            //         });
-
-            //         if (markers.length > 0) { // Ensure there are markers before fitting bounds
-            //             var bounds = L.latLngBounds(markers);
-            //             map.fitBounds(bounds);
-            //         }
-            //     } else {
-            //         alert("No data available for markers."); // Alert if data is null
-            //     }
-            // }
-
             Livewire.on('negaraName', function(countryName) {
                 // createMarkers()
             });
