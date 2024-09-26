@@ -10,27 +10,27 @@ class KerjasamaMap extends Component
     public $negaraName;
     public $dataKerjaSamaNegara;
 
-    // Listen to the negaraName event
-    protected $listeners = ['negaraName' => 'setNegaraName'];
+    protected $listeners = ['setNegaraName'];
 
     public function mount()
     {
-        // Set default country to Indonesia
-        $this->negaraName = 'Indonesia';
-        $this->fetchNegaraData(); // Fetch data for the default country
+        $this->negaraName = 'Japan';
+        $this->fetchNegaraData();
     }
 
     public function setNegaraName($name)
     {
         $this->negaraName = $name;
-        $this->fetchNegaraData(); // Fetch data when the country name is changed
+        $this->fetchNegaraData();
     }
 
     public function fetchNegaraData()
     {
-        // Fetch the data related to the selected country
         $negaraModel = new Negara();
-        $this->dataKerjaSamaNegara = $negaraModel->getNegaraWithInstansiByName($this->negaraName); // Fetch data and store it
+        $this->dataKerjaSamaNegara = $negaraModel->getNegaraWithInstansiByName($this->negaraName);
+        $this->render();
+
+        $this->emit('dataKerjaSamaNegaraUpdate', $this->dataKerjaSamaNegara);
     }
 
     public function render()

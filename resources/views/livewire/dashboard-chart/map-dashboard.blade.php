@@ -73,7 +73,7 @@
                                 behavior: 'smooth'
                             });
 
-                            // Livewire.emit('negaraName', countryName);
+                            Livewire.emit('setNegaraName', countryName);
                         });
                     });
                 });
