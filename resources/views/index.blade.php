@@ -13,26 +13,26 @@
     <title>Laporan Kerjasama | UNHAS</title>
 
     <!-- ========== Favicon Icon ========== -->
-    <link rel="shortcut icon" href="{{asset('new_template/assets/img/unhas.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('new_template/assets/img/unhas.png') }}" type="image/x-icon">
 
     <!-- ========== Start Stylesheet ========== -->
-    <link href="{{asset('new_template/assets/css/bootstrap.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/font-awesome.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/flaticon-set.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/elegant-icons.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/magnific-popup.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/owl.carousel.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/owl.theme.default.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/animate.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/bootsnav.css')}}" rel="stylesheet" />
-    <link href="{{asset('new_template/assets/css/style.css')}}" rel="stylesheet">
-    <link href="{{asset('new_template/assets/css/responsive.css')}}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/font-awesome.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/flaticon-set.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/elegant-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/magnific-popup.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/owl.carousel.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/owl.theme.default.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/animate.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/bootsnav.css') }}" rel="stylesheet" />
+    <link href="{{ asset('new_template/assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('new_template/assets/css/responsive.css') }}" rel="stylesheet" />
     <!-- ========== End Stylesheet ========== -->
 
     <!-- ========== Google Fonts ========== -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800" rel="stylesheet">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/StephanWagner/svgMap@v2.10.1/dist/svgMap.min.js"></script>
     <link href="https://cdn.jsdelivr.net/gh/StephanWagner/svgMap@v2.10.1/dist/svgMap.min.css" rel="stylesheet">
@@ -40,7 +40,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
-        .top3{
+        .top3 {
             margin-top: 3.5rem;
             margin-right: 1rem;
             padding-top: 0.25rem;
@@ -54,7 +54,7 @@
 </head>
 
 <body>
-    <!-- Start Header Top 
+    <!-- Start Header Top
     ============================================= -->
     <div class="top-bar-area address-two-lines bg-dark text-light">
         <div class="container">
@@ -62,37 +62,38 @@
                 <div class="col-md-8 address-info">
                     <div class="info box">
                         <ul>
-                            @foreach (\App\Models\ContactInfo::where('status',1)->get() as $item)
-                            <li>
-                                <span><img src="{{asset('new_template/assets/img/whatsappwhite.png')}}" style="margin-right: 3px" height="15">{{$item->nama}}</span>
-                                <a class="" href="https://wa.me/{{$item->no_hp}}?text=" target="blank">
-                                    +{{$item->no_hp}}
-                                </a>
-                            </li>
+                            @foreach (\App\Models\ContactInfo::where('status', 1)->get() as $item)
+                                <li>
+                                    <span><img src="{{ asset('new_template/assets/img/whatsappwhite.png') }}"
+                                            style="margin-right: 3px" height="15">{{ $item->nama }}</span>
+                                    <a class="" href="https://wa.me/{{ $item->no_hp }}?text=" target="blank">
+                                        +{{ $item->no_hp }}
+                                    </a>
+                                </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
                 @if (auth()->check())
                     <div class="user-login text-right col-md-4">
-                        <a  href="{{route('index')}}">
+                        <a href="{{ route('index') }}">
                             <i class="fas fa-table"></i> Admin Panel
                         </a>
                     </div>
                 @else
                     <div class="user-login text-right col-md-4">
-                        <a  class="popup-with-form" href="#login-form">
+                        <a class="popup-with-form" href="#login-form">
                             <i class="fas fa-user"></i> Login
                         </a>
                     </div>
                 @endif
-                
+
             </div>
         </div>
     </div>
     <!-- End Header Top -->
 
-    <!-- Header 
+    <!-- Header
     ============================================= -->
     <header id="home">
 
@@ -108,7 +109,7 @@
                                 <input type="text" name="text" class="form-control" placeholder="Search">
                                 <button type="submit">
                                     <i class="fas fa-search"></i>
-                                </button>  
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -131,8 +132,9 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="{{route('index')}}">
-                        <img src="{{asset('new_template/assets/img/logo_new.png')}}" class="logo" alt="Logo" style="max-width: 230px">
+                    <a class="navbar-brand" href="{{ route('index') }}">
+                        <img src="{{ asset('new_template/assets/img/logo_new.png') }}" class="logo" alt="Logo"
+                            style="max-width: 230px">
                     </a>
                 </div>
                 <!-- End Header Navigation -->
@@ -147,7 +149,7 @@
     </header>
     <!-- End Header -->
 
-    <!-- Start Login Form 
+    <!-- Start Login Form
     ============================================= -->
     <form action="{{ route('login') }}" method="post" id="login-form" class="mfp-hide white-popup-block">
         <div class="col-md-4 login-social">
@@ -162,33 +164,34 @@
         </div>
         <div class="col-md-8 login-custom">
             <h4>Gunakan User & Password Apps Anda !</h4>
-                @csrf
-                    <div>
-                        <input type="text" name="email" class="form-control" value="{{old('email')}}" placeholder="NIP / USER APPS">
-                    </div>
-                    <br>
-                    <div>
-                        <input type="password" name="password" class="form-control" placeholder="PASSWORD" required>
-                    </div>
-                    @if(session('errors'))
-                        <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
-                            <i class="bx bx-info-circle align-middle"></i>
-                            <span class="align-middle">
-                                @foreach ($errors->all() as $error)
-                                {{ $error }}
-                                @endforeach
-                            </span>
-                        </div>
-                    @endif
-                        <hr>
-                    <button type="submit" class="btn btn-primary btn-block">Log In</button>
+            @csrf
+            <div>
+                <input type="text" name="email" class="form-control" value="{{ old('email') }}"
+                    placeholder="NIP / USER APPS">
+            </div>
+            <br>
+            <div>
+                <input type="password" name="password" class="form-control" placeholder="PASSWORD" required>
+            </div>
+            @if (session('errors'))
+                <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
+                    <i class="bx bx-info-circle align-middle"></i>
+                    <span class="align-middle">
+                        @foreach ($errors->all() as $error)
+                            {{ $error }}
+                        @endforeach
+                    </span>
+                </div>
+            @endif
+            <hr>
+            <button type="submit" class="btn btn-primary btn-block">Log In</button>
         </div>
     </form>
     <!-- End Login Form -->
 
     @livewire('dashboard-chart.search')
 
-    <!-- Start Top Categories 
+    <!-- Start Top Categories
     ============================================= -->
     <div id="top-categories" class="top-cat-area bottom-less" style="padding-top: 30px">
         <div class="container">
@@ -201,13 +204,24 @@
     </div>
     <!-- End Top Categories -->
 
-    <!-- Marker -->
+    <!-- Start Top Categories
+    ============================================= -->
+    <div id="top-categories" class="top-cat-area bottom-less" style="padding-top: 30px; background-color: #f5f5f5">
+        <div class="container">
+            <div class="row" style="display: flex; align-items: center; justify-content: center;">
+                <div class="col-md-8
+                top-cat-items">
+                    @livewire('dashboard-chart.kerjasama-map')
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Top Categories -->
 
-    
-    <!-- Start Top Categories 
+    <!-- Start Top Categories
     ============================================= -->
     <div id="top-categories" class="top-cat-area default-padding bottom-less"
-     style="padding-top: 50px; background-color: #f5f5f5">
+        style="padding-top: 50px; background-color: #f5f5f5">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 top-cat-items">
@@ -220,13 +234,13 @@
                 </div>
                 <div class="col-md-4 top-cat-items">
                     @livewire('dashboard-chart.status-kerjasama-dashboard')
-                </div>                
+                </div>
             </div>
         </div>
     </div>
     <!-- End Top Categories -->
 
-    <!-- Start Top Categories 
+    <!-- Start Top Categories
     ============================================= -->
     <div id="top-categories" class="top-cat-area default-padding bottom-less" style="padding-top: 30px">
         <div class="container">
@@ -240,7 +254,7 @@
     </div>
     <!-- End Top Categories -->
 
-    <!-- Start Footer 
+    <!-- Start Footer
     ============================================= -->
     <!-- Start Footer Bottom -->
     <div class="footer-bottom bg-dark">
@@ -252,7 +266,8 @@
                     <div class="col-md-6 text-right link">
                         <ul>
                             <li>
-                                <a target="blank" href="http://dsitd.unhas.ac.id" style="font-size: 9px">@ DSITD-Unhas</a>
+                                <a target="blank" href="http://dsitd.unhas.ac.id" style="font-size: 9px">@
+                                    DSITD-Unhas</a>
                             </li>
                         </ul>
                     </div>
@@ -263,56 +278,53 @@
     <!-- End Footer Bottom -->
 
     <div id="myDiv" class="side
-    @if(session('errors'))
-    on
-    @endif
+    @if (session('errors')) on @endif
     
     ">
-        <a href="/" onclick="removeClass()"  class="close-side"><i class="fa fa-times"></i></a>
+        <a href="/" onclick="removeClass()" class="close-side"><i class="fa fa-times"></i></a>
         <div class="widget">
             <h4 class="title">Error Login</h4>
-            
+
             <ul>
                 @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                
+                    <li>{{ $error }}</li>
                 @endforeach
             </ul>
         </div>
-       
-        
+
+
     </div>
     <!-- End Footer -->
     @livewireScripts
     <!-- jQuery Frameworks
     ============================================= -->
-    <script src="{{asset('new_template/assets/js/jquery-1.12.4.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/equal-height.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/jquery.appear.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/jquery.easing.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/modernizr.custom.13711.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/wow.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/isotope.pkgd.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/imagesloaded.pkgd.min.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/count-to.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/loopcounter.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/bootsnav.js')}}"></script>
-    <script src="{{asset('new_template/assets/js/main.js')}}"></script>
+    <script src="{{ asset('new_template/assets/js/jquery-1.12.4.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/equal-height.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/jquery.appear.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/modernizr.custom.13711.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/wow.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/imagesloaded.pkgd.min.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/count-to.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/loopcounter.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/bootsnav.js') }}"></script>
+    <script src="{{ asset('new_template/assets/js/main.js') }}"></script>
     @stack('custom-scripts')
     @stack('chart-riwayatKerjasama')
     @stack('chart-statusKerjasama')
     <script>
         function removeClass() {
-    // Mendapatkan elemen div berdasarkan ID
-    var divElement = document.getElementById('myDiv');
+            // Mendapatkan elemen div berdasarkan ID
+            var divElement = document.getElementById('myDiv');
 
-    // Menghapus class tertentu dari elemen div
-    divElement.classList.remove('on');
-}
-
+            // Menghapus class tertentu dari elemen div
+            divElement.classList.remove('on');
+        }
     </script>
 </body>
+
 </html>
