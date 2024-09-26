@@ -207,7 +207,7 @@
     <!-- Start Top Categories
     ============================================= -->
     <div id="map-kerjasama-section" class="top-cat-area bottom-less map-kerjasama-section"
-        style="padding-top: 30px; background-color: #f5f5f5">
+        style="padding-top: 100px; background-color: #f5f5f5">
         <div class="container">
             <div class="row" style="display: flex; align-items: center; justify-content: center;">
                 <div class="col-md-8

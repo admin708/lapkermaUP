@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div id="map-kerjasama" style="width: 100%; height: 500px;"></div>
+    <div id="map-kerjasama" style="width: 100%; height: 500px; z-index: 0;"></div>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
