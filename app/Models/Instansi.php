@@ -13,6 +13,6 @@ class Instansi extends Model
 
 
     public function getNegara(){
-        return $this->HasOne(Negara::class, "negara_id");
+        return $this->belongsTo(Negara::class, "negara_id");
     }
 }

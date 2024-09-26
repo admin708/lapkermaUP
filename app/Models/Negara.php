@@ -10,25 +10,16 @@ class Negara extends Model
 {
     use HasFactory;
     protected $table = 'negaras';
-    public $dataKerjaSamaNegara;
 
     public function Instansi(): HasMany
     {
         return $this->hasMany(Instansi::class, 'negara_id', 'id');
     }
 
-    function getNegaraWithInstansiByName($countryName)
-{
-    $negara = Negara::where('name', $countryName)->with('instansis')->first();
-
-    if ($negara) {
-        $instansiList = $negara->instansis;
-        $this->dataKerjaSamaNegara = [
-            'negara' => $negara,
-            'instansi' => $instansiList
-        ];
-    } else {
-        $this-> dataKerjaSamaNegara = null;
+    public function getNegaraWithInstansiByName($countryName)
+    {
+        return Instansi::whereHas('getNegara', function ($query) use ($countryName) {
+            $query->where('name', $countryName);
+        })->get();
     }
-}
 }
