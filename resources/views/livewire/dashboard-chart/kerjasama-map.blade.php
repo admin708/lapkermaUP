@@ -40,6 +40,11 @@
             Livewire.on('negaraName', function(countryName) {
                 // createMarkers()
             });
+
+            // Menambahkan kontrol pencarian menggunakan Leaflet Control Geocoder
+            L.Control.geocoder({
+                defaultMarkGeocode: true
+            }).addTo(map);
         });
     </script>
 </body>
