@@ -67,6 +67,12 @@
                     document.querySelectorAll('.svgMap-country').forEach(function(countryElement) {
                         countryElement.addEventListener('click', function() {
                             const countryName = document.querySelector('.svgMap-tooltip-title').innerText;
+
+                            const element = document.getElementById("map-kerjasama-section");
+                            element.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+
                             // Livewire.emit('negaraName', countryName);
                         });
                     });

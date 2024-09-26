@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <div id="map-kerjasama"></div>
+    <div id="map-kerjasama" style="width: 100%; height: 500px; z-index: 0;"></div>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
@@ -37,15 +37,9 @@
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
-            // Tambahkan marker default untuk Universitas Hasanuddin
-            var unhasMarker = L.marker([-5.135399, 119.482541]).addTo(map);
-            unhasMarker.bindPopup("<b>Universitas Hasanuddin</b><br>Sulawesi Selatan, Indonesia").openPopup();
-
-            // Menambahkan kontrol pencarian menggunakan Leaflet Control Geocoder
-            L.Control.geocoder({
-                defaultMarkGeocode: true
-            }).addTo(map);
-
+            Livewire.on('negaraName', function(countryName) {
+                // createMarkers()
+            });
         });
     </script>
 </body>
