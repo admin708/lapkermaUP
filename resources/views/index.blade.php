@@ -27,6 +27,8 @@
     <link href="{{ asset('new_template/assets/css/bootsnav.css') }}" rel="stylesheet" />
     <link href="{{ asset('new_template/assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('new_template/assets/css/responsive.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <!-- ========== End Stylesheet ========== -->
 
     <!-- ========== Google Fonts ========== -->
@@ -39,6 +41,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    {{-- Leaftlet --}}
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
     <style>
         .top3 {
             margin-top: 3.5rem;
@@ -48,6 +54,14 @@
             padding-left: 0.625rem;
             font-size: 1.1rem;
             border-radius: 0.25rem;
+        }
+
+        #map-kerjasama {
+            width: 100%;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
     @livewireStyles

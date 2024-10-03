@@ -11,7 +11,6 @@ class Instansi extends Model
     use HasFactory;
     protected $table = "instansis";
 
-
     public function getNegara(){
         return $this->belongsTo(Negara::class, "negara_id");
     }
