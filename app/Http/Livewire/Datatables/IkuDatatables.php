@@ -3,37 +3,39 @@
 namespace App\Http\Livewire\Datatables;
 
 use Livewire\Component;
-use Livewire\WithPagination; // Tambahkan trait WithPagination
+use Livewire\WithPagination; 
 use App\Models\Prodi;
 
 class IkuDatatables extends Component
 {
-    use WithPagination; // Gunakan WithPagination untuk mengaktifkan pagination
+    use WithPagination; 
+    protected $paginationTheme = 'bootstrap'; 
 
-    protected $paginationTheme = 'bootstrap'; // Opsional: Gunakan tema Bootstrap untuk pagination (sesuaikan dengan CSS yang digunakan)
-
-    public $kerjasamaId, $orderBy, $orderDirection, $perPage;
-    public $orderByText, $orderDirectionText, $kerjaSamaText;
+    public $kerjasamaId, $orderBy, $orderDirection, $perPage, $tahun;
+    public $orderByText, $orderDirectionText, $kerjaSamaText, $tahunText;
+    public $availableYears = [];
 
     public function mount()
     {
         $this->orderBy = "prodi_id";
         $this->orderDirection = "asc";
         $this->orderByText = 'Urut Berdasarkan';
-        $this->kerjaSamaText = 'All';
+        $this->kerjaSamaText = 'Semua Kerja Sama';
+        $this->tahunText = 'Semua Tahun';
         $this->perPage = 10;
+        $this->availableYears = $this->getAvailableYears(); // Dapatkan daftar tahun yang tersedia
     }
 
     public function updated()
     {
-        $this->resetPage(); // Reset pagination setiap kali filter diubah
+        $this->resetPage(); 
     }
 
     public function render()
     {
-        // Dapatkan data dengan pagination
-        $referenceCounts = Prodi::getReferenceCounts($this->kerjasamaId, $this->orderBy, $this->orderDirection)
-            ->paginate($this->perPage); // 10 item per halaman
+        // Dapatkan data dengan pagination, tambahkan filter tahun jika ada
+        $referenceCounts = Prodi::getReferenceCounts($this->kerjasamaId, $this->orderBy, $this->orderDirection, $this->tahun)
+            ->paginate($this->perPage); // Sesuaikan jumlah item per halaman
 
         return view('livewire.datatables.iku-datatables', [
             'referenceCounts' => $referenceCounts,
@@ -42,7 +44,9 @@ class IkuDatatables extends Component
             'kerjasamaId' => $this->kerjasamaId,
             'kerjaSamaText' => $this->kerjaSamaText,
             'orderDirection' => $this->orderDirection,
-            'orderDirectionText' => $this->orderDirectionText
+            'orderDirectionText' => $this->orderDirectionText,
+            'tahunText' => $this->tahunText,
+            'availableYears' => $this->availableYears
         ]);
     }
 
@@ -70,5 +74,29 @@ class IkuDatatables extends Component
     {
         $this->perPage = $number;
         $this->resetPage();
+    }
+
+    public function setTahun($tahun, $text)
+    {
+        $this->tahun = $tahun;
+        $this->tahunText = $text;
+        $this->resetPage();
+    }
+
+    protected function getAvailableYears()
+    {
+        $years = Prodi::selectRaw('YEAR(created_at) as year')
+            ->groupBy('year')
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray(); 
+
+        if (!in_array(2024, $years)) {
+            $years[] = 2024; 
+        }
+
+
+        rsort($years); // Urutkan kembali dari besar ke kecil
+        return $years;
     }
 }

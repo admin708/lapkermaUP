@@ -28,19 +28,21 @@ class Prodi extends Model
         return $this->hasMany('App\Models\DataIa', 'prodi_id', 'id');
     }
 
-    //Mendapatkan data MoU
-
+    // Mendapatkan data MoU
     public function getMou()
     {
         return $this->hasMany('App\Models\DataMou', 'prodi_id', 'id');
     }
 
-    public static function getReferenceCounts($kerjasama_id = null, $orderBy = 'total_reference_count', $orderDirection = 'asc')
+    public static function getReferenceCounts($kerjasama_id = null, $orderBy = 'total_reference_count', $orderDirection = 'asc', $tahun = null)
     {
         // Dapatkan jumlah MoA
         $moaCounts = DataMoa::select('prodi_id')
             ->when($kerjasama_id, function ($query) use ($kerjasama_id) {
                 return $query->where('jenis_kerjasama', $kerjasama_id);
+            })
+            ->when($tahun, function ($query) use ($tahun) {
+                return $query->whereYear('tanggal_ttd', $tahun);
             })
             ->selectRaw('COUNT(*) AS moa_reference_count')
             ->groupBy('prodi_id');
@@ -50,6 +52,9 @@ class Prodi extends Model
             ->when($kerjasama_id, function ($query) use ($kerjasama_id) {
                 return $query->where('jenis_kerjasama', $kerjasama_id);
             })
+            ->when($tahun, function ($query) use ($tahun) {
+                return $query->whereYear('tanggal_ttd', $tahun);
+            })
             ->selectRaw('COUNT(*) AS mou_reference_count')
             ->groupBy('prodi_id');
     
@@ -57,6 +62,9 @@ class Prodi extends Model
         $iaCounts = DataIa::select('prodi_id')
             ->when($kerjasama_id, function ($query) use ($kerjasama_id) {
                 return $query->where('jenis_kerjasama', $kerjasama_id);
+            })
+            ->when($tahun, function ($query) use ($tahun) {
+                return $query->whereYear('tanggal_ttd', $tahun);
             })
             ->selectRaw('COUNT(*) AS ia_reference_count')
             ->groupBy('prodi_id');
@@ -83,11 +91,7 @@ class Prodi extends Model
             )
             ->orderBy($orderBy, $orderDirection);
     
-        // Kembalikan query untuk mendukung pagination
+        
         return $query;
     }
-    
-
-
-
 }
