@@ -48,7 +48,7 @@
 
         // Function to update the map with new data
         function updateMap(dataKerjaSamaNegara) {
-            clearMarkers(); 
+            clearMarkers();
 
             dataKerjaSamaNegara.forEach(function (instansi) {
                 let latitude = parseFloat(instansi.latitude);
@@ -68,6 +68,8 @@
             if (markers.length > 0) {
                 let group = new L.featureGroup(markers);
                 map.fitBounds(group.getBounds());
+            } else {
+                alert("Masih belum ada kerjasama dengan negara ini")
             }
         }
 
