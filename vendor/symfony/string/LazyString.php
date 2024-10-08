@@ -30,16 +30,14 @@ class LazyString implements \Stringable, \JsonSerializable
         }
 
         $lazyString = new static();
-        $lazyString->value = static function () use (&$callback, &$arguments): string {
-            static $value;
-
+        $lazyString->value = static function () use (&$callback, &$arguments, &$value): string {
             if (null !== $arguments) {
                 if (!\is_callable($callback)) {
                     $callback[0] = $callback[0]();
-                    $callback[1] ??= '__invoke';
+                    $callback[1] = $callback[1] ?? '__invoke';
                 }
                 $value = $callback(...$arguments);
-                $callback = !\is_scalar($value) && !$value instanceof \Stringable ? self::getPrettyName($callback) : 'callable';
+                $callback = self::getPrettyName($callback);
                 $arguments = null;
             }
 
@@ -52,7 +50,7 @@ class LazyString implements \Stringable, \JsonSerializable
     public static function fromStringable(string|int|float|bool|\Stringable $value): static
     {
         if (\is_object($value)) {
-            return static::fromCallable($value->__toString(...));
+            return static::fromCallable([$value, '__toString']);
         }
 
         $lazyString = new static();
@@ -66,7 +64,7 @@ class LazyString implements \Stringable, \JsonSerializable
      */
     final public static function isStringable(mixed $value): bool
     {
-        return \is_string($value) || $value instanceof \Stringable || \is_scalar($value);
+        return \is_string($value) || $value instanceof \Stringable || is_scalar($value);
     }
 
     /**
@@ -88,7 +86,7 @@ class LazyString implements \Stringable, \JsonSerializable
         try {
             return $this->value = ($this->value)();
         } catch (\Throwable $e) {
-            if (\TypeError::class === $e::class && __FILE__ === $e->getFile()) {
+            if (\TypeError::class === \get_class($e) && __FILE__ === $e->getFile()) {
                 $type = explode(', ', $e->getMessage());
                 $type = substr(array_pop($type), 0, -\strlen(' returned'));
                 $r = new \ReflectionFunction($this->value);
@@ -129,7 +127,7 @@ class LazyString implements \Stringable, \JsonSerializable
         } elseif ($callback instanceof \Closure) {
             $r = new \ReflectionFunction($callback);
 
-            if ($r->isAnonymous() || !$class = $r->getClosureCalledClass()) {
+            if (false !== strpos($r->name, '{closure}') || !$class = $r->getClosureScopeClass()) {
                 return $r->name;
             }
 
