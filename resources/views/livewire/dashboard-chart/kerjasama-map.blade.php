@@ -1,5 +1,5 @@
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         let map = null;
         let markers = [];
 
@@ -11,7 +11,7 @@
             // Inisialisasi peta
             map = L.map('map-kerjasama', {
                 scrollWheelZoom: false,
-                fullscreenControl: true, 
+                fullscreenControl: true,
             }).setView([0.78, 113.92], 5);
 
             // Atur tile layer untuk peta
@@ -22,27 +22,27 @@
 
             // Event untuk zoom saat mouse diarahkan ke peta
             const mapElement = document.getElementById('map-kerjasama');
-            mapElement.addEventListener('mouseenter', function () {
+            mapElement.addEventListener('mouseenter', function() {
                 map.scrollWheelZoom.enable(); // Aktifkan zoom saat mouse over
-                map.dragging.enable();        // Aktifkan dragging (geser peta)
+                map.dragging.enable(); // Aktifkan dragging (geser peta)
             });
 
             // Event untuk menonaktifkan zoom ketika mouse keluar dari peta
-            mapElement.addEventListener('mouseleave', function () {
+            mapElement.addEventListener('mouseleave', function() {
                 map.scrollWheelZoom.disable(); // Nonaktifkan zoom saat mouse keluar
-                map.dragging.disable();        // Nonaktifkan dragging
+                map.dragging.disable(); // Nonaktifkan dragging
             });
         }
 
         // Function to clear all markers from the map
         function clearMarkers() {
-            markers.forEach(function (marker) {
+            markers.forEach(function(marker) {
                 map.removeLayer(marker);
             });
             markers = [];
         }
 
-        Livewire.on('dataKerjaSamaNegaraUpdate', function (dataKerjaSamaNegara) {
+        Livewire.on('dataKerjaSamaNegaraUpdate', function(dataKerjaSamaNegara) {
             updateMap(dataKerjaSamaNegara);
         });
 
@@ -50,7 +50,7 @@
         function updateMap(dataKerjaSamaNegara) {
             clearMarkers();
 
-            dataKerjaSamaNegara.forEach(function (instansi) {
+            dataKerjaSamaNegara.forEach(function(instansi) {
                 let latitude = parseFloat(instansi.latitude);
                 let longitude = parseFloat(instansi.longitude);
 
