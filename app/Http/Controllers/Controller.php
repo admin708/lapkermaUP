@@ -150,6 +150,10 @@ class Controller extends BaseController
         return view('Pages.Table.iku6');
     }
 
+    public function ikuScores(){
+        return view('Pages.Table.iku-score');
+    }
+
     public function kerjaSamaDalamNegeri(){
         return view('Pages.Table.kerjasamadalamnegeri');
     }

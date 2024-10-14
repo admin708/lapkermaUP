@@ -113,12 +113,33 @@
 
         {{-- Penambahan menu IKU-6 untuk --}}
 
-        <li class="menu-item {{ request()->route()->getName() == 'iku6' ? 'active' : '' }} ">
+        {{-- <li class="menu-item {{ request()->route()->getName() == 'iku6' ? 'active' : '' }} "> --}}
+        {{-- <a class="menu-link" href="{{ route('iku6') }}"> --}}
+        {{-- <a href="{{ route('iku6') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-bar-chart-alt"></i>
+                <span>IKU-6</span>
+            </a> --}}
+        {{-- </li> --}}
+
+        <li
+            class="menu-item {{ request()->route()->getName() == 'mou-in' ? 'active open' : (request()->route()->getName() == 'iku6' ? 'active open' : (request()->route()->getName() == 'ikuScores' ? 'active open' : '')) }} ">
             {{-- <a class="menu-link" href="{{ route('iku6') }}"> --}}
-            <a href="{{ route('iku6') }}" class="menu-link">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-bar-chart-alt"></i>
                 <span>IKU-6</span>
             </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->route()->getName() == 'iku6' ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('iku6') }}">
+                        <div data-i18n="Without navbar">Total</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->route()->getName() == 'ikuScores' ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('ikuScores') }}">
+                        <div data-i18n="Without navbar">Scores</div>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="menu-item {{ request()->route()->getName() == 'informasi' ? 'active' : '' }} ">
