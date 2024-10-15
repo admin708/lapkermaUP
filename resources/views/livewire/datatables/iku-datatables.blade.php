@@ -68,7 +68,6 @@
                         <th>PRODI</th>
                         <th>MoA</th>
                         <th>IA</th>
-                        <th>MoU</th>
                         <th>TOTAL KERJA SAMA</th>
                     </tr>
                 </thead>
@@ -79,7 +78,6 @@
                             <td>{{ $referenceCount->prodi_name }}</td>
                             <td>{{ $referenceCount->moa_reference_count ?? 0 }}</td>
                             <td>{{ $referenceCount->ia_reference_count ?? 0 }}</td>
-                            <td>{{ $referenceCount->mou_reference_count ?? 0 }}</td>
                             <td>{{ $referenceCount->total_reference_count ?? 0 }}</td>
                         </tr>
                     @endforeach

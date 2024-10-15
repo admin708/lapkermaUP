@@ -1,3 +1,42 @@
+<style>
+    #map-container {
+        width: 100%;
+        height: 500px;
+        position: relative;
+    }
+
+    #map-kerjasama {
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+
+    #toggle-map-btn {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    #toggle-map-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div>
+   @if($mapVisible)
+   <div id="map-container">
+       <div id="map-kerjasama" style="display: block;"></div>
+   </div> 
+   @endif
+   <button wire:click="toggleMapVisibility" id="toggle-map-btn">
+       {{ $mapVisible ? 'Close Map' : 'Open Map' }}
+   </button>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let map = null;
@@ -5,32 +44,33 @@
 
         function initializeMap() {
             if (map !== null) {
+                map.invalidateSize(); // Ensure map size is updated
                 return; // Map already initialized
             }
 
-            // Inisialisasi peta
+            // Initialize the map
             map = L.map('map-kerjasama', {
                 scrollWheelZoom: false,
                 fullscreenControl: true, 
             }).setView([0.78, 113.92], 5);
 
-            // Atur tile layer untuk peta
+            // Set tile layer for the map
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
-            // Event untuk zoom saat mouse diarahkan ke peta
+            // Enable zoom when mouse is over the map
             const mapElement = document.getElementById('map-kerjasama');
             mapElement.addEventListener('mouseenter', function () {
-                map.scrollWheelZoom.enable(); // Aktifkan zoom saat mouse over
-                map.dragging.enable();        // Aktifkan dragging (geser peta)
+                map.scrollWheelZoom.enable(); // Enable zoom on mouse over
+                map.dragging.enable();        // Enable dragging
             });
 
-            // Event untuk menonaktifkan zoom ketika mouse keluar dari peta
+            // Disable zoom when mouse leaves the map
             mapElement.addEventListener('mouseleave', function () {
-                map.scrollWheelZoom.disable(); // Nonaktifkan zoom saat mouse keluar
-                map.dragging.disable();        // Nonaktifkan dragging
+                map.scrollWheelZoom.disable(); // Disable zoom on mouse leave
+                map.dragging.disable();        // Disable dragging
             });
         }
 
@@ -69,16 +109,17 @@
                 let group = new L.featureGroup(markers);
                 map.fitBounds(group.getBounds());
             } else {
-                alert("Masih belum ada kerjasama dengan negara ini")
+                alert("Masih belum ada kerjasama dengan negara ini");
             }
         }
 
+        // Initialize the map and update with data
         initializeMap();
-
         updateMap(@json($dataKerjaSamaNegara));
+
+        // Listen for the map visibility change
+        Livewire.on('mapVisibilityChanged', function (isVisible) {
+            document.getElementById('map-container').style.display = isVisible ? 'block' : 'none'; // Toggle map visibility
+        });
     });
 </script>
-
-<div>
-    <div id="map-kerjasama" style="width: 100%; height: 500px; z-index: 0;"></div>
-</div>

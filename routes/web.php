@@ -63,6 +63,8 @@ Route::middleware(['auth', 'can:only-admin'])->group(function () {
     Route::get('/iku6', [App\Http\Controllers\Controller::class, 'iku6'])->name('iku6');
 });
 
+//iku score
+
 //Menampilkan data IKU dalam negeri
 Route::middleware(['auth', 'can:only-admin'])->group(function () {
     // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
