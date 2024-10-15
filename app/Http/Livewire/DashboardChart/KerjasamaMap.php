@@ -26,9 +26,9 @@ class KerjasamaMap extends Component
         $this->fetchNegaraData();
     }
 
-    public function setMapVisibility(){
-        if(!$this->mapVisibility){
-            $this->mapVisibility = true;
+    public function setMapVisibility($visibility = null){
+        if($visibility){
+            $this->mapVisibility = $visibility;
         } else {
             $this->mapVisibility = !$this->mapVisibility;
         }
