@@ -26,7 +26,8 @@
                     {{ $kerjaSamaText }}
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" wire:click="setKerjasamaId(null, 'Semua Kerja Sama')">Semua Kerja Sama</a></li>
+                    <li><a class="dropdown-item" wire:click="setKerjasamaId(null, 'Semua Kerja Sama')">Semua Kerja
+                            Sama</a></li>
                     <li><a class="dropdown-item" wire:click="setKerjasamaId(1, 'Dalam Negeri')">Dalam Negeri</a></li>
                     <li><a class="dropdown-item" wire:click="setKerjasamaId(2, 'Luar Negeri')">Luar Negeri</a></li>
                 </ul>
@@ -40,7 +41,9 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" wire:click="setTahun(null, 'Semua Tahun')">Semua Tahun</a></li>
                     @foreach ($availableYears as $year)
-                        <li><a class="dropdown-item" wire:click="setTahun({{ $year }}, '{{ $year }}')">{{ $year }}</a></li>
+                        <li><a class="dropdown-item"
+                                wire:click="setTahun({{ $year }}, '{{ $year }}')">{{ $year }}</a>
+                        </li>
                     @endforeach
                 </ul>
             </div>
@@ -54,7 +57,6 @@
                     <li class="dropdown-item" wire:click="setOrderBy('prodi_id', 'Prodi')">PRODI</li>
                     <li class="dropdown-item" wire:click="setOrderBy('moa_reference_count', 'MoA')">MoA</li>
                     <li class="dropdown-item" wire:click="setOrderBy('ia_reference_count', 'IA')">IA</li>
-                    <li class="dropdown-item" wire:click="setOrderBy('mou_reference_count', 'MoU')">MoU</li>
                     <li class="dropdown-item" wire:click="setOrderBy('total_reference_count', 'Total Kerja Sama')">TOTAL
                         KERJA SAMA</li>
                 </ul>

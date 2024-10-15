@@ -9,14 +9,14 @@ class KerjasamaMap extends Component
 {
     public $negaraName;
     public $dataKerjaSamaNegara;
-    public $mapVisible; // Menambahkan properti untuk visibilitas peta
+    public $mapVisibility;
 
-    protected $listeners = ['setNegaraName'];
+    protected $listeners = ['setNegaraName', 'setMapVisibility'];
 
     public function mount()
     {
         $this->negaraName = 'Japan';
-        $this->mapVisible = true; // Set default visibility to true
+        $this->mapVisibility = true;
         $this->fetchNegaraData();
     }
 
@@ -26,10 +26,12 @@ class KerjasamaMap extends Component
         $this->fetchNegaraData();
     }
 
-    public function toggleMapVisibility()
-    {
-        $this->mapVisible = !$this->mapVisible; // Toggle the visibility state
-        $this->emit('mapVisibilityChanged', $this->mapVisible); // Emit event to notify frontend
+    public function setMapVisibility(){
+        if(!$this->mapVisibility){
+            $this->mapVisibility = true;
+        } else {
+            $this->mapVisibility = !$this->mapVisibility;
+        }
     }
 
     public function fetchNegaraData()

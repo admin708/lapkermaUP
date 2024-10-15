@@ -1,44 +1,13 @@
-<style>
-    #map-container {
-        width: 100%;
-        height: 500px;
-        position: relative;
-    }
-
-    #map-kerjasama {
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-    }
-
-    #toggle-map-btn {
-        margin-top: 10px;
-        padding: 5px 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    #toggle-map-btn:hover {
-        background-color: #0056b3;
-    }
-</style>
-
 <div>
-   @if($mapVisible)
-   <div id="map-container">
-       <div id="map-kerjasama" style="display: block;"></div>
-   </div> 
-   @endif
-   <button wire:click="toggleMapVisibility" id="toggle-map-btn">
-       {{ $mapVisible ? 'Close Map' : 'Open Map' }}
-   </button>
+    <button wire:click="setMapVisibility">
+        {{ $mapVisibility ? 'Hide Map' : 'Show Map' }}
+    </button>
+    <div id="map-kerjasama"
+        style="width: 100%; height: 500px; z-index: 0; display: {{ $mapVisibility ? 'block' : 'none' }}"></div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         let map = null;
         let markers = [];
 
@@ -51,7 +20,7 @@
             // Initialize the map
             map = L.map('map-kerjasama', {
                 scrollWheelZoom: false,
-                fullscreenControl: true, 
+                fullscreenControl: true,
             }).setView([0.78, 113.92], 5);
 
             // Set tile layer for the map
@@ -62,27 +31,27 @@
 
             // Enable zoom when mouse is over the map
             const mapElement = document.getElementById('map-kerjasama');
-            mapElement.addEventListener('mouseenter', function () {
-                map.scrollWheelZoom.enable(); // Enable zoom on mouse over
-                map.dragging.enable();        // Enable dragging
+            mapElement.addEventListener('mouseenter', function() {
+                map.scrollWheelZoom.enable(); // Aktifkan zoom saat mouse over
+                map.dragging.enable(); // Aktifkan dragging (geser peta)
             });
 
-            // Disable zoom when mouse leaves the map
-            mapElement.addEventListener('mouseleave', function () {
-                map.scrollWheelZoom.disable(); // Disable zoom on mouse leave
-                map.dragging.disable();        // Disable dragging
+            // Event untuk menonaktifkan zoom ketika mouse keluar dari peta
+            mapElement.addEventListener('mouseleave', function() {
+                map.scrollWheelZoom.disable(); // Nonaktifkan zoom saat mouse keluar
+                map.dragging.disable(); // Nonaktifkan dragging
             });
         }
 
         // Function to clear all markers from the map
         function clearMarkers() {
-            markers.forEach(function (marker) {
+            markers.forEach(function(marker) {
                 map.removeLayer(marker);
             });
             markers = [];
         }
 
-        Livewire.on('dataKerjaSamaNegaraUpdate', function (dataKerjaSamaNegara) {
+        Livewire.on('dataKerjaSamaNegaraUpdate', function(dataKerjaSamaNegara) {
             updateMap(dataKerjaSamaNegara);
         });
 
@@ -90,7 +59,7 @@
         function updateMap(dataKerjaSamaNegara) {
             clearMarkers();
 
-            dataKerjaSamaNegara.forEach(function (instansi) {
+            dataKerjaSamaNegara.forEach(function(instansi) {
                 let latitude = parseFloat(instansi.latitude);
                 let longitude = parseFloat(instansi.longitude);
 
