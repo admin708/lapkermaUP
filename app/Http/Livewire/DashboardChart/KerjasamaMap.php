@@ -46,7 +46,7 @@ class KerjasamaMap extends Component
         return view('livewire.dashboard-chart.kerjasama-map', [
             'negaraName' => $this->negaraName,
             'dataKerjaSamaNegara' => $this->dataKerjaSamaNegara,
-            'mapVisible' => $this->mapVisible // Pass the visibility state to the view
+           
         ]);
     }
 }
