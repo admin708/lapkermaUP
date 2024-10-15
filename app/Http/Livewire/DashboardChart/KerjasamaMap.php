@@ -9,12 +9,14 @@ class KerjasamaMap extends Component
 {
     public $negaraName;
     public $dataKerjaSamaNegara;
+    public $mapVisibility;
 
-    protected $listeners = ['setNegaraName'];
+    protected $listeners = ['setNegaraName', 'setMapVisibility'];
 
     public function mount()
     {
         $this->negaraName = 'Japan';
+        $this->mapVisibility = true;
         $this->fetchNegaraData();
     }
 
@@ -22,6 +24,14 @@ class KerjasamaMap extends Component
     {
         $this->negaraName = $name;
         $this->fetchNegaraData();
+    }
+
+    public function setMapVisibility(){
+        if(!$this->mapVisibility){
+            $this->mapVisibility = true;
+        } else {
+            $this->mapVisibility = !$this->mapVisibility;
+        }
     }
 
     public function fetchNegaraData()

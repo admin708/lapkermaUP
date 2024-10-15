@@ -1,3 +1,11 @@
+<div>
+    <button wire:click="setMapVisibility">
+        {{ $mapVisibility ? 'Hide Map' : 'Show Map' }}
+    </button>
+    <div id="map-kerjasama"
+        style="width: 100%; height: 500px; z-index: 0; display: {{ $mapVisibility ? 'block' : 'none' }}"></div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let map = null;
@@ -78,7 +86,3 @@
         updateMap(@json($dataKerjaSamaNegara));
     });
 </script>
-
-<div>
-    <div id="map-kerjasama" style="width: 100%; height: 500px; z-index: 0;"></div>
-</div>
