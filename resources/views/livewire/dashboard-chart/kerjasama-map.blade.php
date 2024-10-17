@@ -3,7 +3,7 @@
         {{ $mapVisibility ? 'Hide Map' : 'Show Map' }}
     </button>
     <div id="map-kerjasama"
-        style="width: 100%; height: 500px; z-index: 0; display: {{ $mapVisibility ? 'block' : 'none' }}"></div>
+        style="width: 100%; height: 500px; z-index: 0; display: {{ $mapVisibility ? 'block' : 'none' }};"></div>
 </div>
 
 <script>
@@ -88,7 +88,11 @@
 
         // Listen for the map visibility change
         Livewire.on('mapVisibilityChanged', function (isVisible) {
-            document.getElementById('map-container').style.display = isVisible ? 'block' : 'none'; // Toggle map visibility
+            const mapElement = document.getElementById('map-kerjasama');
+            mapElement.style.display = isVisible ? 'block' : 'none'; // Toggle map visibility
+            if (isVisible) {
+                map.invalidateSize(); // Update map size
+            }
         });
     });
 </script>
