@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-        return view('index');
-    })->name('home');
+    return view('index');
+})->name('home');
 
 // Route::get('/', [App\Http\Controllers\AuthController::class, 'showLogin'])->name('login');
 Route::get('/map', [App\Http\Controllers\AuthController::class, 'map'])->name('map');
@@ -16,6 +17,7 @@ Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::get('logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 Route::get('request', [App\Http\Controllers\AuthController::class, 'master'])->name('request_role');
 Route::get('/getDataKerjasama', [App\Http\Controllers\Controller::class, 'getDataKerjasama']);
+Route::get('/GuestInputMoU', [App\Http\Controllers\Controller::class, 'guestMouInput'])->name('guestMouInput');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -49,7 +51,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/Menu/Edit/{id}', [App\Http\Controllers\Controller::class, 'edit'])->name('edit');
     Route::get('/Menu/LayananInformasi', [App\Http\Controllers\Controller::class, 'informasi'])->name('informasi');
-
 });
 
 Route::middleware(['auth', 'can:only-admin'])->group(function () {
@@ -69,11 +70,9 @@ Route::middleware(['auth', 'can:only-admin'])->group(function () {
     Route::get('/ikuScores', [App\Http\Controllers\Controller::class, 'ikuScores'])->name('ikuScores');
 });
 
+
 Route::middleware(['auth', 'can:super-power'])->group(function () {
     // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
     Route::get('/add_prodi', [App\Http\Controllers\Controller::class, 'addProdi'])->name('add-prodi');
     Route::post('/add_prodi', [App\Http\Controllers\Controller::class, 'createProdi'])->name('add-prodi');
 });
-
-
-
