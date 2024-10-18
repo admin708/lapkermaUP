@@ -5,7 +5,7 @@
             <div class="dropdown jenis_kerja_sama">
                 <button class="btn btn-outline-primary dropdown-toggle width" style="width: 200px;" role="button"
                     data-bs-toggle="dropdown">
-                   
+                    Pilih Jenis Kerja Sama
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" wire:click="setKerjasamaId(null, 'Semua Kerja Sama')">PRODI</a></li>
@@ -13,19 +13,29 @@
                     <li><a class="dropdown-item" wire:click="setKerjasamaId(2, 'Luar Negeri')">UNIVERSITAS</a></li>
                 </ul>
             </div>
-            <table class="table table-bordered table-hover table-sm text-start mt-2" style="font-size: 13px" >
+            <table class="table table-bordered table-hover table-sm text-start mt-2" style="font-size: 13px">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>PRODI</th>
                         <th>SCORES</th>
+                        <th>TOTAL SCORES</th>
                     </tr>
                 </thead>
                 <tbody>
-                   
+                    @foreach($DataIa as $item)
+                        <tr>
+                            <td>{{ $item->uuid }}</td>
+                            <td>{{ $item->nama_resmi }}</td>
+                            <td>{{ $item->bobot }}</td>
+                            <td>{{ $item->total_bobot }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
-            
+            <div class="mt-4">
+                {{ $DataIa->links() }} <!-- Update to use $DataIa instead of $referenceCounts -->
+            </div>         
         </div>
     </div>
 </div>
