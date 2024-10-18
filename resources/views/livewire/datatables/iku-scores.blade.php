@@ -18,24 +18,22 @@
                     <tr>
                         <th>ID</th>
                         <th>PRODI</th>
-                        <th>SCORES</th>
-                        <th>TOTAL SCORES</th>
+                        <th>IKU SCORES</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($DataIa as $item)
+                    @foreach ($DataSkor as $item)
                         <tr>
-                            <td>{{ $item->uuid }}</td>
+                            <td>{{ $item->prodi_id }}</td>
                             <td>{{ $item->nama_resmi }}</td>
-                            <td>{{ $item->bobot }}</td>
-                            <td>{{ $item->total_bobot }}</td>
+                            <td>{{ $item->skor_iku }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
             <div class="mt-4">
-                {{ $DataIa->links() }} <!-- Update to use $DataIa instead of $referenceCounts -->
-            </div>         
+                {{ $DataSkor->links() }} <!-- Update to use $DataIa instead of $referenceCounts -->
+            </div>
         </div>
     </div>
 </div>

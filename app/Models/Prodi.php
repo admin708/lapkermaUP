@@ -73,6 +73,7 @@ class Prodi extends Model
                 DB::raw('(COALESCE(moa_counts.moa_reference_count, 0) + 
                           COALESCE(ia_counts.ia_reference_count, 0)) AS total_reference_count')
             )
+            ->where('prodis.jenjang', '=', 'sarjana')
             ->orderBy($orderBy, $orderDirection);
     
         

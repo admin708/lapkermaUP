@@ -32,6 +32,8 @@ class KerjasamaMap extends Component
         } else {
             $this->mapVisibility = !$this->mapVisibility;
         }
+
+        $this->emit('toggleMapVisibility');
     }
 
     public function fetchNegaraData()
