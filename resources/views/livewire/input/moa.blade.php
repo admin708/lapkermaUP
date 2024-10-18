@@ -333,8 +333,6 @@
                                             <option value="3">Mitra</option>
                                         </select>
                                     </div>
-
-
                                     <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 1 ? 'd-block':(optional($status)[$value] == 4 ? 'd-block':'') }}" style="display: none">
                                         <label class="mr-sm-2">PTQS <i class="small text-danger">*</i>
                                             @error('ptqs.'.$value) <i class="text-sm text-danger">* required</i> @enderror
