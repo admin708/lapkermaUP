@@ -1,5 +1,17 @@
 <div>
-    <button wire:click="setMapVisibility">
+    <button wire:click="setMapVisibility" style="
+        background-color: #4A90E2; /* Blue color similar to the example */
+        border: none;
+        color: white;
+        padding: 6px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 10px; /* More rounded corners for a circular appearance */
+        transition: background-color 0.3s ease;">
         {{ $mapVisibility ? 'Hide Map' : 'Show Map' }}
     </button>
     <div id="map-kerjasama"
@@ -13,7 +25,6 @@
 
         function initializeMap() {
             if (map !== null) {
-                map.invalidateSize(); // Ensure map size is updated
                 return; // Map already initialized
             }
 
@@ -82,17 +93,25 @@
             }
         }
 
-        // Initialize the map and update with data
-        initializeMap();
-        updateMap(@json($dataKerjaSamaNegara));
-
-        // Listen for the map visibility change
+        // Initialize the map only when it becomes visible
         Livewire.on('mapVisibilityChanged', function (isVisible) {
             const mapElement = document.getElementById('map-kerjasama');
-            mapElement.style.display = isVisible ? 'block' : 'none'; // Toggle map visibility
+            mapElement.style.display = isVisible ? 'block' : 'none';
+
             if (isVisible) {
-                map.invalidateSize(); // Update map size
+                if (!map) {
+                    initializeMap();
+                }
+                setTimeout(() => {
+                    map.invalidateSize(); // Update map size after making it visible
+                }, 300);
             }
         });
+
+        // Initialize the map and update with data only if map is initially visible
+        if ({{ $mapVisibility }}) {
+            initializeMap();
+            updateMap(@json($dataKerjaSamaNegara));
+        }
     });
 </script>
