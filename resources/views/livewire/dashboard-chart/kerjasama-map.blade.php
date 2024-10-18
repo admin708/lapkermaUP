@@ -15,10 +15,13 @@
 
         function initializeMap() {
             if (map !== null) {
+                map.invalidateSize(); // Ensure map size is updated
+                return; // Map already initialized
                 map.invalidateSize(); // Ensure the map size is updated
                 return;
             }
 
+            // Initialize the map
             map = L.map('map-kerjasama', {
                 scrollWheelZoom: false,
                 fullscreenControl: true,
@@ -89,6 +92,7 @@
                 map.fitBounds(group.getBounds());
             } else {
                 alert("Masih belum ada kerjasama dengan negara ini");
+                alert("Masih belum ada kerjasama dengan negara ini");
             }
         }
 
@@ -130,5 +134,17 @@
         }
 
         init();
+        // Initialize the map and update with data
+        initializeMap();
+        updateMap(@json($dataKerjaSamaNegara));
+
+        // Listen for the map visibility change
+        Livewire.on('mapVisibilityChanged', function(isVisible) {
+            const mapElement = document.getElementById('map-kerjasama');
+            mapElement.style.display = isVisible ? 'block' : 'none'; // Toggle map visibility
+            if (isVisible) {
+                map.invalidateSize(); // Update map size
+            }
+        });
     });
 </script>

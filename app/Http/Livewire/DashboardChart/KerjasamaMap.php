@@ -40,8 +40,6 @@ class KerjasamaMap extends Component
     {
         $negaraModel = new Negara();
         $this->dataKerjaSamaNegara = $negaraModel->getNegaraWithInstansiByName($this->negaraName);
-        $this->render();
-
         $this->emit('dataKerjaSamaNegaraUpdate', $this->dataKerjaSamaNegara);
     }
 
@@ -49,7 +47,8 @@ class KerjasamaMap extends Component
     {
         return view('livewire.dashboard-chart.kerjasama-map', [
             'negaraName' => $this->negaraName,
-            'dataKerjaSamaNegara' => $this->dataKerjaSamaNegara
+            'dataKerjaSamaNegara' => $this->dataKerjaSamaNegara,
+           
         ]);
     }
 }

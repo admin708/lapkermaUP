@@ -86,4 +86,19 @@ class DataIaPenggiat extends Model
         // dd($data);
         return $data;
     }
+
+
+    public static function getDataWithJoin($jenjang = 'sarjana')
+{
+    $data = self::join('data_ia as di', 'data_ia_penggiat.id_lapkerma', '=', 'di.id')
+        ->rightJoin('referensi_badan_kemitraans as rbk', 'rbk.id', '=', 'data_ia_penggiat.badan_kemitraan')
+        ->leftJoin('prodis as p', 'p.id', '=', 'di.prodi_id')
+        ->where('p.jenjang', $jenjang)
+        ->groupBy('di.uuid', 'p.nama_resmi', 'data_ia_penggiat.nama_pihak', 'rbk.bobot')
+        ->select('di.uuid', 'p.nama_resmi', 'data_ia_penggiat.nama_pihak', 'rbk.bobot')
+        ->get();
+
+    return $data;
+}
+
 }
