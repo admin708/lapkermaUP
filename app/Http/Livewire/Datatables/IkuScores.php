@@ -2,33 +2,36 @@
 
 namespace App\Http\Livewire\Datatables;
 
-use App\Models\DataIa;
-use Livewire\Component;
 use App\Models\DataIaPenggiat;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class IkuScores extends Component
 {
-    public $DataIa;
-    
+    use WithPagination; 
+
+    protected $paginationTheme = 'bootstrap'; 
+
+    // Change this property to protected or private
+    protected $DataIa;
+
     public function render()
     {
-        $this->DataIa=$this->getDataIa();
-
-        dd($this->DataIa[0]);
-
-
-        return view('livewire.datatables.iku-scores',[
-            'DataIa' => $this->DataIa,
+        $this->DataIa = $this->getDataIa(); 
+        return view('livewire.datatables.iku-scores', [
+            'DataIa' => $this->DataIa, // Pass the data to the view
         ]);
-
-
     }
 
-    public function getDataIa(){
-        $data = DataIaPenggiat::getDataWithJoin('sarjana');
-
-        return $data;
+    public function getDataIa()
+    {
+        
+        return DataIaPenggiat::getDataWithJoin('sarjana')->paginate(10);
     }
 
-
+    
+    public function getDataIaProperty()
+    {
+        return $this->DataIa;
+    }
 }
