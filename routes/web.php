@@ -17,7 +17,7 @@ Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::get('logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 Route::get('request', [App\Http\Controllers\AuthController::class, 'master'])->name('request_role');
 Route::get('/getDataKerjasama', [App\Http\Controllers\Controller::class, 'getDataKerjasama']);
-Route::get('/GuestInputMoU', [App\Http\Controllers\Controller::class, 'guestMouInput'])->name('guestMouInput');
+Route::post('register', [App\Http\Controllers\AuthController::class, 'register'])->name('register');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -51,6 +51,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/Menu/Edit/{id}', [App\Http\Controllers\Controller::class, 'edit'])->name('edit');
     Route::get('/Menu/LayananInformasi', [App\Http\Controllers\Controller::class, 'informasi'])->name('informasi');
+
+
+    Route::get('/GuestInputMoU', [App\Http\Controllers\Controller::class, 'guestMouInput'])->name('guestMouInput');
 });
 
 Route::middleware(['auth', 'can:only-admin'])->group(function () {

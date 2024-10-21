@@ -199,9 +199,52 @@
             @endif
             <hr>
             <button type="submit" class="btn btn-primary btn-block">Log In</button>
+            <a class="popup-with-form" style="color:blue; text-decoration: underline;" href="#regis-form">Register if
+                you don't have an
+                account</a>
         </div>
     </form>
     <!-- End Login Form -->
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Guest Registration Form -->
+    <form action="{{ route('register') }}" method="post" id="regis-form" class="mfp-hide white-popup-block">
+        <div class="login-social">
+            <h4>Register User</h4>
+            @csrf
+            <div>
+                <input type="text" name="name" class="form-control" placeholder="NAME">
+            </div>
+            <br>
+            <div>
+                <input type="text" name="email" class="form-control" placeholder="EMAIL">
+            </div>
+            <br>
+            <div>
+                <input type="password" id="password" name="password" class="form-control"
+                    placeholder="PASSWORD (8 Characters minimum)" required>
+            </div>
+            <br>
+            @if (session('errors'))
+                <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
+                    <i class="bx bx-info-circle align-middle"></i>
+                    <span class="align-middle">
+                        @foreach ($errors->register->all() as $error)
+                            {{ $error }}
+                        @endforeach
+                    </span>
+                </div>
+            @endif
+            <hr>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </div>
+    </form>
+    <!-- Guest Registration Form -->
 
     @livewire('dashboard-chart.search')
 
@@ -304,6 +347,9 @@
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
+                @foreach ($errors->register->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
             </ul>
         </div>
 
@@ -332,6 +378,9 @@
     @stack('chart-riwayatKerjasama')
     @stack('chart-statusKerjasama')
     <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
         function removeClass() {
             // Mendapatkan elemen div berdasarkan ID
             var divElement = document.getElementById('myDiv');

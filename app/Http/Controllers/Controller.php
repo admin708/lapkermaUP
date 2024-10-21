@@ -178,7 +178,7 @@ class Controller extends BaseController
 
     public function guestMoUInput()
     {
-        return view('MasterApp.guest-mou');
+        return view('Pages.Input.guest-mou');
     }
 
     // edit data
