@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Menu/LayananInformasi', [App\Http\Controllers\Controller::class, 'informasi'])->name('informasi');
 
 
-    Route::get('/GuestInputMoU', [App\Http\Controllers\Controller::class, 'guestMouInput'])->name('guestMouInput');
+    Route::get('Menu/GuestInputMoU', [App\Http\Controllers\Controller::class, 'guestMouInput'])->name('guestMouInput');
 });
 
 Route::middleware(['auth', 'can:only-admin'])->group(function () {

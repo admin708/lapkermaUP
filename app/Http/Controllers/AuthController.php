@@ -58,9 +58,9 @@ class AuthController extends Controller
         $validatedData = $validator->validated();
 
         $newUser = new User();
-        $newUser->name = $validatedData['regis_name'];
-        $newUser->email = $validatedData['regis_email'];
-        $newUser->password = bcrypt($validatedData['regis_password']);
+        $newUser->name = $validatedData['name'];
+        $newUser->email = $validatedData['email'];
+        $newUser->password = bcrypt($validatedData['password']);
         $newUser->fakultas_id = null;
         $newUser->prodi_id = null;
         $newUser->request = 1;

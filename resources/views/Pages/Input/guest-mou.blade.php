@@ -1,6 +1,6 @@
 @extends('MasterApp.Borders')
 @push('titleNav')
-    <span class="text-muted fw-light">Input Data /</span> Memorandum of Aggreement (MoA)
+    <span class="text-muted fw-light">Guest Input /</span> MoU
 @endpush
 @push('custom-style')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -119,7 +119,7 @@
             <div class="nav-align-top mb-4">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
-                        @livewire('dashboard-chart.guest-mou-input')
+                        @livewire('input.guest-mou-input')
                     </div>
                 </div>
             </div>

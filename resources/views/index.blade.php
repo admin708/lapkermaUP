@@ -91,7 +91,8 @@
                 @if (auth()->check())
                     <div class="user-login text-right col-md-4">
                         <a href="{{ route('index') }}">
-                            <i class="fas fa-table"></i> Admin Panel
+                            <i class="fas fa-table"></i>
+                            {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
                         </a>
                     </div>
                 @else
@@ -222,7 +223,7 @@
             </div>
             <br>
             <div>
-                <input type="text" name="email" class="form-control" placeholder="EMAIL">
+                <input type="text" name="email" class="form-control" placeholder="EMAIL" required>
             </div>
             <br>
             <div>
