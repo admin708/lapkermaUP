@@ -1,22 +1,11 @@
-<div>
-    <button wire:click="setMapVisibility" style="
-        background-color: #4A90E2; /* Blue color similar to the example */
-        border: none;
-        color: white;
-        padding: 6px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 10px; /* More rounded corners for a circular appearance */
-        transition: background-color 0.3s ease;">
+<div style="display: flex; justify-content: center; align-items: center;">
+    <button wire:click="setMapVisibility" class="btn btn-primary btn-sm" style="border-radius: 10px; margin-bottom: 10px;">
         {{ $mapVisibility ? 'Hide Map' : 'Show Map' }}
     </button>
-    <div style="display: {{ $mapVisibility ? 'block' : 'none' }};">
-        <div id="map-kerjasama" style="width: 100%; height: 500px; z-index: 0;">
-        </div>
+</div>
+
+<div style="display: {{ $mapVisibility ? 'flex' : 'none' }}; justify-content: center; align-items: center;">
+    <div id="map-kerjasama" style="width: 1200px; height: 600px; z-index: 0;">
     </div>
 </div>
 
@@ -103,8 +92,6 @@
                 map.fitBounds(group.getBounds());
             } else {
                 alert("Masih belum ada kerjasama dengan negara ini");
-                alert("Masih belum ada kerjasama dengan negara ini");
-                alert("Masih belum ada kerjasama dengan negara ini");
             }
         }
 
@@ -146,11 +133,7 @@
         }
 
         init();
-        // Initialize the map and update with data
-        initializeMap();
-        updateMap(@json($dataKerjaSamaNegara));
 
-        // Listen for the map visibility change
         Livewire.on('mapVisibilityChanged', function(isVisible) {
             const mapElement = document.getElementById('map-kerjasama');
             mapElement.style.display = isVisible ? 'block' : 'none';
@@ -165,7 +148,6 @@
             }
         });
 
-        // Initialize the map and update with data only if map is initially visible
         if ({{ $mapVisibility }}) {
             initializeMap();
             updateMap(@json($dataKerjaSamaNegara));
