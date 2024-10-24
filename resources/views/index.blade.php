@@ -208,7 +208,7 @@
     <!-- End Login Form -->
 
     <!-- OTP Form -->
-    <form method="POST" action="{{ route('verifyOtp') }}" id="otp-form" class="mfp-hide white-popup-block">
+    {{-- <form method="POST" action="{{ route('verifyOtp') }}" id="otp-form" class="mfp-hide white-popup-block">
         <div class="login-social">
             @csrf
             <div>
@@ -217,7 +217,7 @@
             </div>
             <button type="submit">Verify OTP</button>
         </div>
-    </form>
+    </form> --}}
     <!-- OTP Form -->
 
 
