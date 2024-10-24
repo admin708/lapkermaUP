@@ -92,14 +92,14 @@
 
                 <div class="d-flex justify-content-between">
                     @if (auth()->check())
-                    <div class="user-login text-right col-md-4">
+                    <div class="user-login text-right">
                         <a href="{{ route('index') }}">
                             <i class="fas fa-table"></i>
                             {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
                         </a>
                     </div>
                 @else
-                    <div class="user-login text-right col-md-4">
+                    <div class="user-login text-right ">
                         <a class="popup-with-form" href="#login-form">
                             <i class="fas fa-user"></i> Login
                         </a>
@@ -107,16 +107,16 @@
                 @endif
 
                 @if (auth()->check())
-                    <div class="user-login text-right col-md-4">
+                    <div class="user-login text-right ">
                         <a href="{{ route('index') }}">
                             <i class="fas fa-table"></i>
                             {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
                         </a>
                     </div>
                 @else
-                    <div class="user-login text-right col-md-4">
+                    <div class="user-login text-right ">
                         <a class="popup-with-form" href="#login-form">
-                            <i class="fas fa-user"></i> Login
+                            <i class="fas fa-user"></i> Request MoU
                         </a>
                     </div>
                 @endif
@@ -226,20 +226,6 @@
         </div>
     </form>
     <!-- End Login Form -->
-
-    <!-- OTP Form -->
-    <form method="POST" action="{{ route('verifyOtp') }}" id="otp-form" class="mfp-hide white-popup-block">
-        <div class="login-social">
-            @csrf
-            <div>
-                <h1 for="otp">Enter OTP:</h1>
-                <input type="text" name="otp" id="otp" required>
-            </div>
-            <button type="submit">Verify OTP</button>
-        </div>
-    </form>
-    <!-- OTP Form -->
-
 
     @if (session('success'))
         <div class="alert alert-success">
