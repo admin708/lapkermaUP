@@ -12,20 +12,34 @@
                     </div>
                     <div class="col-auto my-2">
                         <label class="form-label">Country of Origin (Negara Asal)</label>
-                        <input required wire:model.defer="country_of_origin" type="text"
-                            class="form-control form-control-sm @error('country_of_origin') is-invalid @enderror">
+                        <select required wire:model.defer="country_of_origin" class="form-select form-select-sm @error('country_of_origin') is-invalid @enderror">
+                            <option value="">Select Country</option>
+                            @foreach ($negaras as $negara)
+                                <option value="{{ $negara->name }}">{{ $negara->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('country_of_origin')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
+                    
                     <div>
                         <label class="form-label">Scope</label>
-                        <textarea required wire:model.defer="scope" placeholder="Add scope *if any*" class="form-control form-control-sm @error('scope') is-invalid @enderror" rows="5"></textarea>
-                        <ul class="small text-muted mt-2">
-                            <li>Research collaboration in areas of mutual interest</li>
-                            <li>Exchange of academic materials made available by both parties</li>
-                            <li>Exchange of scholars</li>
-                            <li>Student mobility</li>
-                            <li>Cooperative seminars, workshops, and other academic activities</li>
-                        </ul>
+                        <div contenteditable="true" class="form-control form-control-sm @error('scope') is-invalid @enderror" style="text-align: justify; min-height: 120px; border: 1px solid #ced4da; padding: 0.375rem 0.75rem;">
+                            <ul style="list-style-type: none; padding-left: 0;">
+                                <li>-Research collaboration in areas of mutual interest</li>
+                                <li>-Exchange of academic materials made available by both parties</li>
+                                <li>-Exchange of scholars</li>
+                                <li>-Student mobility</li>
+                                <li>-Cooperative seminars, workshops, and other academic activities</li>
+                            </ul>
+                        </div>
+                        <small class="text-muted mt-2">
+                            You can add, remove, or edit the items above.
+                        </small>
                     </div>
+                    
+                    
                 </div>
             </div>
         </div>
@@ -107,18 +121,43 @@
         </div>
 
         <!-- University Logo -->
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <h5 class="card-header text-primary"><i class="bx bx-image me-3"></i>University Logo</h5>
-                <div class="card-body demo-vertical-spacing demo-only-element">
-                    <label class="form-label">Logo (PNG format)</label>
-                    <input required wire:model="logo" type="file" class="form-control form-control-sm @error('logo') is-invalid @enderror" accept="image/png">
-                </div>
-            </div>
+<div class="col-md-4">
+    <div class="card mb-4">
+        <h5 class="card-header text-primary">
+            <i class="bx bx-image me-3"></i>University Logo
+        </h5>
+        <div class="card-body demo-vertical-spacing demo-only-element">
+            <label class="form-label">Logo (PNG format) 
+                <i class="small text-warning">* Max dimensions: 1024x1024 pixels, PNG format only</i>
+            </label>
+            <input required wire:model="logo" type="file" class="form-control form-control-sm @error('logo') is-invalid @enderror" accept="image/png" id="logoInput" onchange="validateImage(this)">
+            @error('logo')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+            <div id="imageError" class="text-danger d-none">Image must be in PNG format and below 1024x1024 pixels.</div>
         </div>
     </div>
-
-    <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
 </div>
+
+<div class="d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+
+<script>
+    function validateImage(input) {
+        const file = input.files[0];
+        if (file) {
+            const img = new Image();
+            img.onload = function () {
+                if (this.width > 1024 || this.height > 1024) {
+                    document.getElementById('imageError').classList.remove('d-none');
+                    input.value = ''; // Clear the input to prevent form submission
+                } else {
+                    document.getElementById('imageError').classList.add('d-none');
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        }
+    }
+</script>
+
