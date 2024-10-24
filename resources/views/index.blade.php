@@ -88,41 +88,27 @@
                         </ul>
                     </div>
                 </div>
-
-
-                <div class="d-flex justify-content-between">
+                <div style="display:flex; flex-direction:row-reverse">
                     @if (auth()->check())
-                    <div class="user-login text-right col-md-4">
-                        <a href="{{ route('index') }}">
-                            <i class="fas fa-table"></i>
-                            {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
-                        </a>
-                    </div>
-                @else
-                    <div class="user-login text-right col-md-4">
+                        <div class="user-login text-right">
+                            <a href="{{ route('index') }}">
+                                <i class="fas fa-table"></i>
+                                {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
+                            </a>
+                        </div>
+                    @else
+                        <div class="user-login text-right">
+                            <a class="popup-with-form" href="#login-form">
+                                <i class="fas fa-user"></i> Login
+                            </a>
+                        </div>
+                    @endif
+                    <div class="user-login text-right ">
                         <a class="popup-with-form" href="#login-form">
-                            <i class="fas fa-user"></i> Login
+                            <i class="fas fa-user"></i>Request MoU
                         </a>
                     </div>
-                @endif
-
-                @if (auth()->check())
-                    <div class="user-login text-right col-md-4">
-                        <a href="{{ route('index') }}">
-                            <i class="fas fa-table"></i>
-                            {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
-                        </a>
-                    </div>
-                @else
-                    <div class="user-login text-right col-md-4">
-                        <a class="popup-with-form" href="#login-form">
-                            <i class="fas fa-user"></i> Login
-                        </a>
-                    </div>
-                @endif
                 </div>
-                 
-
             </div>
         </div>
     </div>
