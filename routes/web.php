@@ -18,6 +18,7 @@ Route::get('logout', [App\Http\Controllers\AuthController::class, 'logout'])->na
 Route::get('request', [App\Http\Controllers\AuthController::class, 'master'])->name('request_role');
 Route::get('/getDataKerjasama', [App\Http\Controllers\Controller::class, 'getDataKerjasama']);
 Route::post('register', [App\Http\Controllers\AuthController::class, 'register'])->name('register');
+Route::post('/otpVerification', [App\Http\Controllers\AuthController::class, 'verifyOtp'])->name('verifyOtp');
 
 Route::middleware(['auth'])->group(function () {
 

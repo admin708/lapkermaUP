@@ -227,6 +227,20 @@
     </form>
     <!-- End Login Form -->
 
+    <!-- OTP Form -->
+    <form method="POST" action="{{ route('verifyOtp') }}" id="otp-form" class="mfp-hide white-popup-block">
+        <div class="login-social">
+            @csrf
+            <div>
+                <h1 for="otp">Enter OTP:</h1>
+                <input type="text" name="otp" id="otp" required>
+            </div>
+            <button type="submit">Verify OTP</button>
+        </div>
+    </form>
+    <!-- OTP Form -->
+
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
