@@ -75,8 +75,18 @@ Route::middleware(['auth', 'can:only-admin'])->group(function () {
 });
 
 
+// Route untuk DaftarReqMoU
+Route::middleware(['auth', 'can:only-admin'])->group(function () {
+    // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
+    Route::get('/DaftarReqMoU', [App\Http\Controllers\Controller::class, 'DaftarReqMoU'])->name('DaftarReqMoU');
+});
+
+
+
 Route::middleware(['auth', 'can:super-power'])->group(function () {
     // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
     Route::get('/add_prodi', [App\Http\Controllers\Controller::class, 'addProdi'])->name('add-prodi');
     Route::post('/add_prodi', [App\Http\Controllers\Controller::class, 'createProdi'])->name('add-prodi');
 });
+
+

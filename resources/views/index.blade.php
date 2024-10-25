@@ -88,41 +88,27 @@
                         </ul>
                     </div>
                 </div>
-
-
-                <div class="d-flex justify-content-between">
+                <div style="display:flex; flex-direction:row-reverse">
                     @if (auth()->check())
-                    <div class="user-login text-right">
-                        <a href="{{ route('index') }}">
-                            <i class="fas fa-table"></i>
-                            {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
+                        <div class="user-login text-right">
+                            <a href="{{ route('index') }}">
+                                <i class="fas fa-table"></i>
+                                {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
+                            </a>
+                        </div>
+                    @else
+                        <div class="user-login text-right">
+                            <a class="popup-with-form" href="#login-form">
+                                <i class="fas fa-user"></i> Login
+                            </a>
+                        </div>
+                    @endif
+                    <div class="user-login text-right " >
+                        <a class="popup-with-form" href="#MoU-login-form">
+                            <i class="fas fa-file-alt" style="margin-right: 5px;"></i>Request MoU
                         </a>
                     </div>
-                @else
-                    <div class="user-login text-right ">
-                        <a class="popup-with-form" href="#login-form">
-                            <i class="fas fa-user"></i> Login
-                        </a>
-                    </div>
-                @endif
-
-                @if (auth()->check())
-                    <div class="user-login text-right ">
-                        <a href="{{ route('index') }}">
-                            <i class="fas fa-table"></i>
-                            {{ auth()->user()->role_id == 6 ? 'Guest Input' : 'Admin Panel' }}
-                        </a>
-                    </div>
-                @else
-                    <div class="user-login text-right ">
-                        <a class="popup-with-form" href="#login-form">
-                            <i class="fas fa-user"></i> Request MoU
-                        </a>
-                    </div>
-                @endif
                 </div>
-                 
-
             </div>
         </div>
     </div>
@@ -220,12 +206,58 @@
             @endif
             <hr>
             <button type="submit" class="btn btn-primary btn-block">Log In</button>
+        </div>
+    </form>
+    <!-- End Login Form -->
+
+
+    <!-- Start Guest Mou Login Form
+    ============================================= -->
+    <form action="{{ route('login') }}" method="post" id="MoU-login-form" class="mfp-hide white-popup-block">
+        <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
+            <h4>Use your App Username & Password to create an MoU!</h4>
+            @csrf
+            <div>
+                <input type="text" name="email" class="form-control" value="{{ old('email') }}"
+                    placeholder="NIP / USER APPS">
+            </div>
+            <br>
+            <div>
+                <input type="password" name="password" class="form-control" placeholder="PASSWORD" required>
+            </div>
+            @if (session('errors'))
+                <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
+                    <i class="bx bx-info-circle align-middle"></i>
+                    <span class="align-middle">
+                        @foreach ($errors->all() as $error)
+                            {{ $error }}
+                        @endforeach
+                    </span>
+                </div>
+            @endif
+            <hr>
+            <button type="submit" class="btn btn-primary btn-block">Log In</button>
             <a class="popup-with-form" style="color:blue; text-decoration: underline;" href="#regis-form">Register if
                 you don't have an
                 account</a>
         </div>
     </form>
-    <!-- End Login Form -->
+    <!-- End Guest Mou Login Form -->
+
+
+    <!-- OTP Form -->
+    {{-- <form method="POST" action="{{ route('verifyOtp') }}" id="otp-form" class="mfp-hide white-popup-block">
+        <div class="login-social">
+            @csrf
+            <div>
+                <h1 for="otp">Enter OTP:</h1>
+                <input type="text" name="otp" id="otp" required>
+            </div>
+            <button type="submit">Verify OTP</button>
+        </div>
+    </form> --}}
+    <!-- OTP Form -->
+
 
     @if (session('success'))
         <div class="alert alert-success">
@@ -251,6 +283,17 @@
                     placeholder="PASSWORD (8 Characters minimum)" required>
             </div>
             <br>
+            <div>
+                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="PHONE NUMBER" required>
+            </div>
+            <br>
+            <div>
+                <input type="text" name="university" class="form-control" value="{{ old('university') }}" placeholder="UNIVERSITY" required>
+            </div>
+            <br>
+            <div>
+                <input type="text" name="faculty" class="form-control" value="{{ old('faculty') }}" placeholder="FACULTY" required>
+            </div>
             @if (session('errors'))
                 <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
                     <i class="bx bx-info-circle align-middle"></i>
