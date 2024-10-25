@@ -76,56 +76,56 @@ class AuthController extends Controller
         return redirect()->back()->with('success', 'OTP verified successfully! Your registration is complete.');
 
         // Store registration details temporarily (without saving user to database yet)
-        // session([
-        //     'name' => $validatedData['name'],
-        //     'email' => $validatedData['email'],
-        //     'password' => bcrypt($validatedData['password']),
-        //     'fakultas_id' => null,
-        //     'prodi_id' => null,
-        //     'request' => 1,
-        //     'role_id' => 6,
-        // ]);
+        session([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'fakultas_id' => null,
+            'prodi_id' => null,
+            'request' => 1,
+            'role_id' => 6,
+        ]);
     }
 
-    // public function verifyOtp(Request $request)
-    // {
+    public function verifyOtp(Request $request)
+    {
 
-    // // Generate OTP and send it via email
-    // $otp = mt_rand(100000, 999999);
-    // session(['otp' => $otp, 'otp_expiry' => now()->addMinutes(5)]);
+        // Generate OTP and send it via email
+        $otp = mt_rand(100000, 999999);
+        session(['otp' => $otp, 'otp_expiry' => now()->addMinutes(5)]);
 
-    // // Send OTP email to the registered email
-    // Mail::to($validatedData['email'])->send(new OtpMail($otp));
-    //     // Validate the OTP input
-    //     $request->validate([
-    //         'otp' => 'required|numeric',
-    //     ]);
+        // Send OTP email to the registered email
+        Mail::to(session('email'))->send(new OtpMail($otp));
+        // Validate the OTP input
+        $request->validate([
+            'otp' => 'required|numeric',
+        ]);
 
-    //     // Retrieve the OTP and its expiry from session
-    //     $storedOtp = session('otp');
-    //     $otpExpiry = session('otp_expiry');
+        // Retrieve the OTP and its expiry from session
+        $storedOtp = session('otp');
+        $otpExpiry = session('otp_expiry');
 
-    //     if ($storedOtp == $request->otp && now()->lessThanOrEqualTo($otpExpiry)) {
-    //         // OTP is valid, register the user
-    //         $newUser = new User();
-    //         $newUser->name = session('name');
-    //         $newUser->email = session('email');
-    //         $newUser->password = session('password');
-    //         $newUser->fakultas_id = session('fakultas_id');
-    //         $newUser->prodi_id = session('prodi_id');
-    //         $newUser->request = session('request');
-    //         $newUser->role_id = session('role_id');
-    //         $newUser->save();
+        if ($storedOtp == $request->otp && now()->lessThanOrEqualTo($otpExpiry)) {
+            // OTP is valid, register the user
+            $newUser = new User();
+            $newUser->name = session('name');
+            $newUser->email = session('email');
+            $newUser->password = session('password');
+            $newUser->fakultas_id = session('fakultas_id');
+            $newUser->prodi_id = session('prodi_id');
+            $newUser->request = session('request');
+            $newUser->role_id = session('role_id');
+            $newUser->save();
 
-    //         // Clear session after successful registration
-    //         session()->forget(['otp', 'otp_expiry', 'name', 'email', 'password', 'fakultas_id', 'prodi_id', 'request', 'role_id']);
+            // Clear session after successful registration
+            session()->forget(['otp', 'otp_expiry', 'name', 'email', 'password', 'fakultas_id', 'prodi_id', 'request', 'role_id']);
 
-    //         return redirect()->back()->with('success', 'OTP verified successfully! Your registration is complete.');
-    //     } else {
-    //         // OTP is invalid or expired
-    //         return back()->withErrors(['otp' => 'Invalid or expired OTP.']);
-    //     }
-    // }
+            return redirect()->back()->with('success', 'OTP verified successfully! Your registration is complete.');
+        } else {
+            // OTP is invalid or expired
+            return back()->withErrors(['otp' => 'Invalid or expired OTP.']);
+        }
+    }
 
     public function login(Request $request)
     {
