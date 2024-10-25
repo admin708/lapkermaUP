@@ -213,28 +213,8 @@
     </form>
     <!-- End Login Form -->
 
-    <!-- OTP Form -->
-    {{-- <form method="POST" action="{{ route('verifyOtp') }}" id="otp-form" class="mfp-hide white-popup-block">
-        <div class="login-social">
-            @csrf
-            <div>
-                <h1 for="otp">Enter OTP:</h1>
-                <input type="text" name="otp" id="otp" required>
-            </div>
-            <button type="submit">Verify OTP</button>
-        </div>
-    </form> --}}
-    <!-- OTP Form -->
-
-
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <!-- Guest Registration Form -->
-    <form action="{{ route('register') }}" method="post" id="regis-form" class="mfp-hide white-popup-block">
+    <form action="{{ route('register') }}" method="POST" id="regis-form" class="mfp-hide white-popup-block">
         <div class="login-social">
             <h4>Register User</h4>
             @csrf
@@ -266,6 +246,29 @@
         </div>
     </form>
     <!-- Guest Registration Form -->
+
+
+    <!-- OTP Form -->
+    @if (session('showOtpForm'))
+        <form action="{{ route('verifyOtp') }}" method="POST" id="otp-form" class="white-popup-block">
+            @csrf
+            <div class="otp-section">
+                <h4>Enter OTP</h4>
+                <input type="text" name="otp" class="form-control" placeholder="Enter OTP" required>
+                <button type="submit" class="btn btn-primary btn-block">Verify OTP</button>
+            </div>
+        </form>
+    @endif
+
+    <!-- OTP Form -->
+
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
 
     @livewire('dashboard-chart.search')
 
@@ -409,6 +412,18 @@
             // Menghapus class tertentu dari elemen div
             divElement.classList.remove('on');
         }
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if the session variable for OTP form is set
+            @if (session('showOtpForm'))
+                // Trigger the display of the OTP form popup
+                $.magnificPopup.open({
+                    items: {
+                        src: '#otp-form' // The id of the OTP form
+                    },
+                    type: 'inline'
+                });
+            @endif
+        });
     </script>
 </body>
 
