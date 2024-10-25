@@ -103,9 +103,9 @@
                             </a>
                         </div>
                     @endif
-                    <div class="user-login text-right ">
-                        <a class="popup-with-form" href="#login-form">
-                            <i class="fas fa-user"></i>Request MoU
+                    <div class="user-login text-right " >
+                        <a class="popup-with-form" href="#MoU-login-form">
+                            <i class="fas fa-file-alt" style="margin-right: 5px;"></i>Request MoU
                         </a>
                     </div>
                 </div>
@@ -206,12 +206,44 @@
             @endif
             <hr>
             <button type="submit" class="btn btn-primary btn-block">Log In</button>
+        </div>
+    </form>
+    <!-- End Login Form -->
+
+
+    <!-- Start Guest Mou Login Form
+    ============================================= -->
+    <form action="{{ route('login') }}" method="post" id="MoU-login-form" class="mfp-hide white-popup-block">
+        <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
+            <h4>Use your App Username & Password to create an MoU!</h4>
+            @csrf
+            <div>
+                <input type="text" name="email" class="form-control" value="{{ old('email') }}"
+                    placeholder="NIP / USER APPS">
+            </div>
+            <br>
+            <div>
+                <input type="password" name="password" class="form-control" placeholder="PASSWORD" required>
+            </div>
+            @if (session('errors'))
+                <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
+                    <i class="bx bx-info-circle align-middle"></i>
+                    <span class="align-middle">
+                        @foreach ($errors->all() as $error)
+                            {{ $error }}
+                        @endforeach
+                    </span>
+                </div>
+            @endif
+            <hr>
+            <button type="submit" class="btn btn-primary btn-block">Log In</button>
             <a class="popup-with-form" style="color:blue; text-decoration: underline;" href="#regis-form">Register if
                 you don't have an
                 account</a>
         </div>
     </form>
-    <!-- End Login Form -->
+    <!-- End Guest Mou Login Form -->
+
 
     <!-- Guest Registration Form -->
     <form action="{{ route('register') }}" method="POST" id="regis-form" class="mfp-hide white-popup-block">
@@ -231,6 +263,17 @@
                     placeholder="PASSWORD (8 Characters minimum)" required>
             </div>
             <br>
+            <div>
+                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="PHONE NUMBER" required>
+            </div>
+            <br>
+            <div>
+                <input type="text" name="university" class="form-control" value="{{ old('university') }}" placeholder="UNIVERSITY" required>
+            </div>
+            <br>
+            <div>
+                <input type="text" name="faculty" class="form-control" value="{{ old('faculty') }}" placeholder="FACULTY" required>
+            </div>
             @if (session('errors'))
                 <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
                     <i class="bx bx-info-circle align-middle"></i>

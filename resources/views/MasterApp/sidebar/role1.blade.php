@@ -149,6 +149,16 @@
             </a>
         </li>
 
+        
+        <li class="menu-item {{ request()->route()->getName() == 'DaftarReqMoU' ? 'active' : '' }}">
+            <a class="menu-link" href="{{ route('DaftarReqMoU') }}">
+                <i class="menu-icon tf-icons bx bx-file"></i>
+                <span>Daftar Request MoU</span>
+            </a>
+        </li>
+        
+        
+
         @php
             $userz = App\Models\User::where('request', 1)->whereNull('role_id')->count('id');
         @endphp
