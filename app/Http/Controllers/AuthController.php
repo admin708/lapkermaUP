@@ -60,22 +60,8 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        // Store validated data
+        // Store validated data temporarily (without saving user to database yet)
         $validatedData = $validator->validated();
-
-        $newUser = new User();
-        $newUser->name = $validatedData['name'];
-        $newUser->email = $validatedData['email'];
-        $newUser->password = bcrypt($validatedData['password']);
-        $newUser->fakultas_id = null;
-        $newUser->prodi_id = null;
-        $newUser->request = 1;
-        $newUser->role_id = 6;
-        $newUser->save();
-
-        return redirect()->back()->with('success', 'OTP verified successfully! Your registration is complete.');
-
-        // Store registration details temporarily (without saving user to database yet)
         session([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
@@ -85,17 +71,18 @@ class AuthController extends Controller
             'request' => 1,
             'role_id' => 6,
         ]);
-    }
-
-    public function verifyOtp(Request $request)
-    {
 
         // Generate OTP and send it via email
         $otp = mt_rand(100000, 999999);
-        session(['otp' => $otp, 'otp_expiry' => now()->addMinutes(5)]);
+        session(['otp' => $otp, 'otp_expiry' => now()->addMinutes(10), 'showOtpForm' => true]);
 
-        // Send OTP email to the registered email
-        Mail::to(session('email'))->send(new OtpMail($otp));
+        Mail::to($validatedData['email'])->send(new OtpMail($otp));
+        return redirect()->back()->with('showOtpForm', true);
+    }
+
+
+    public function verifyOtp(Request $request)
+    {
         // Validate the OTP input
         $request->validate([
             'otp' => 'required|numeric',
