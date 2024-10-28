@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Http\Livewire\Input\GuestRegistration;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,7 +18,7 @@ Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::get('logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 Route::get('request', [App\Http\Controllers\AuthController::class, 'master'])->name('request_role');
 Route::get('/getDataKerjasama', [App\Http\Controllers\Controller::class, 'getDataKerjasama']);
-Route::post('register', [App\Http\Controllers\AuthController::class, 'register'])->name('register');
+Route::post('register', [GuestRegistration::class, 'register'])->name('register');
 Route::post('/otpVerification', [App\Http\Controllers\AuthController::class, 'verifyOtp'])->name('verifyOtp');
 
 Route::middleware(['auth'])->group(function () {

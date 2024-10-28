@@ -21,7 +21,7 @@
         </div>
         <br>
         <div>
-            <select name="fakultas" wire:model="fakultas" class="form-control" required
+            <select name="fakultas" wire:model.defer="fakultas" class="form-control" required
                 onchange="event.stopPropagation();>
                 <option value="null">FACULTY/FAKULTAS (Don't change
                 if you don't have one)</option>
@@ -34,7 +34,7 @@
         </div>
         <br>
         <div>
-            <select name="prodi" wire:model="prodi" class="form-control" required
+            <select name="prodi" wire:model.defer="prodi" class="form-control" required
                 onchange="event.stopPropagation();>
                 <option value="null">MAJOR/PROGRAM STUDI (Don't
                 change if you don't have one)</option>
