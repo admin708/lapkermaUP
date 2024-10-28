@@ -1,8 +1,15 @@
 <form wire:submit.prevent="submit">
     <div class="container">
+
+         <!-- Checkbox to toggle document upload -->
+         <div class="col-md-12 mb-4">
+            <input type="checkbox" id="uploadMoUCheckbox" onchange="toggleMoUDetails(this)"> 
+            <label for="uploadMoUCheckbox">Upload MoU Document Instead of Creating New MoU</label> <!-- kode yang ditambahkan -->
+        </div>
+
         <div class="row">
             <!-- MoU Details -->
-            <div class="col-md-4">
+            <div id="mouDetails" class="col-md-4">
                 <div class="card mb-4">
                     <h5 class="card-header text-primary"><i class="bx bx-link me-3"></i>MoU Details</h5>
                     <div class="card-body demo-vertical-spacing demo-only-element">
@@ -11,6 +18,19 @@
                             <input required wire:model.defer="university_name" type="text"
                                 class="form-control form-control-sm @error('university_name') is-invalid @enderror">
                         </div>
+
+                        <div class="col-auto my-2">
+                            <label class="form-label">Type of Collaboration</label>
+                            <select required wire:model.defer="type_collaboration" class="form-select form-select-sm @error('type_collaboration') is-invalid @enderror">
+                                <option value="">Select Type Collaboration</option>
+                                <option value="dalam_negeri">Kerjasama Dalam Negeri</option>
+                                <option value="luar_negeri">Kerjasama Luar Negeri</option>
+                            </select>
+                            @error('type_collaboration')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
                         <div class="col-auto my-2">
                             <label class="form-label">Country of Origin (Negara Asal)</label>
                             <select required wire:model.defer="country_of_origin"
@@ -54,7 +74,7 @@
             </div>
 
             <!-- Signing Information -->
-            <div class="col-md-4">
+            <div id="signingInfo" class="col-md-4">
                 <div class="card mb-4">
                     <h5 class="card-header text-primary"><i class="bx bx-calendar me-3"></i>Signing Information</h5>
                     <div class="card-body demo-vertical-spacing demo-only-element">
@@ -79,7 +99,7 @@
             </div>
 
             <!-- PIC (Person in Charge) Information -->
-            <div class="col-md-4">
+            <div id="picInfo" class="col-md-4">
                 <div class="card mb-4">
                     <h5 class="card-header text-primary"><i class="bx bx-user me-3"></i>Person in Charge (PIC)</h5>
                     <div class="card-body demo-vertical-spacing demo-only-element">
@@ -113,7 +133,7 @@
             </div>
 
             <!-- Signing Authorized Representative -->
-            <div class="col-md-4">
+            <div id="signingRep" class="col-md-4">
                 <div class="card mb-4">
                     <h5 class="card-header text-primary"><i class="bx bx-id-card me-3"></i>Signing Representative</h5>
                     <div class="card-body demo-vertical-spacing demo-only-element">
@@ -132,7 +152,7 @@
             </div>
 
             <!-- University Logo -->
-            <div class="col-md-4">
+            <div id="universityLogo" class="col-md-4">
                 <div class="card mb-4">
                     <h5 class="card-header text-primary">
                         <i class="bx bx-image me-3"></i>University Logo
@@ -152,6 +172,23 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- Upload MoU Document -->
+            <div id="uploadDocument" class="col-md-4 d-none"> <!-- kode yang ditambahkan -->
+                <div class="card mb-4">
+                    <h5 class="card-header text-primary"><i class="bx bx-upload me-3"></i>Upload MoU Document</h5>
+                    <div class="card-body demo-vertical-spacing demo-only-element">
+                        <label class="form-label">Upload MoU Document (PDF format)</label>
+                        <input required wire:model="mou_document" type="file"
+                            class="form-control form-control-sm @error('mou_document') is-invalid @enderror"
+                            accept="application/pdf">
+                        @error('mou_document')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+            </div> <!-- End of Upload MoU Document -->
 
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -174,6 +211,33 @@
                 }
             };
             img.src = URL.createObjectURL(file);
+        }
+    }
+
+    function toggleMoUDetails(checkbox) {
+        // Get elements
+        const mouDetails = document.getElementById('mouDetails');
+        const signingInfo = document.getElementById('signingInfo');
+        const picInfo = document.getElementById('picInfo');
+        const signingRep = document.getElementById('signingRep');
+        const universityLogo = document.getElementById('universityLogo');
+        const uploadDocument = document.getElementById('uploadDocument');
+
+        // Toggle visibility based on checkbox
+        if (checkbox.checked) {
+            mouDetails.classList.add('d-none');
+            signingInfo.classList.add('d-none');
+            picInfo.classList.add('d-none');
+            signingRep.classList.add('d-none');
+            universityLogo.classList.add('d-none');
+            uploadDocument.classList.remove('d-none');
+        } else {
+            mouDetails.classList.remove('d-none');
+            signingInfo.classList.remove('d-none');
+            picInfo.classList.remove('d-none');
+            signingRep.classList.remove('d-none');
+            universityLogo.classList.remove('d-none');
+            uploadDocument.classList.add('d-none');
         }
     }
 </script>
