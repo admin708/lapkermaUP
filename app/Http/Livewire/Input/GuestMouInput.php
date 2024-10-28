@@ -15,7 +15,7 @@ class GuestMouInput extends Component
 {
     use WithFileUploads;
 
-    
+
     public $negaras; // Store the countries here 
     public $university_name, $country_of_origin, $scope, $signing_date, $duration_years;
     public $pic_name, $pic_designation, $pic_address, $pic_email, $pic_phone;
@@ -135,6 +135,8 @@ class GuestMouInput extends Component
     {
         // Fetch all countries when the component is initialized
         $this->negaras = Negara::all();
+        $this->pic_name = auth()->user()->name;
+        $this->pic_email = auth()->user()->email;
     }
 
     public function render()

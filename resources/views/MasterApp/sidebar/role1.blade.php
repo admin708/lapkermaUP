@@ -149,15 +149,28 @@
             </a>
         </li>
 
-        
-        <li class="menu-item {{ request()->route()->getName() == 'DaftarReqMoU' ? 'active' : '' }}">
-            <a class="menu-link" href="{{ route('DaftarReqMoU') }}">
-                <i class="menu-icon tf-icons bx bx-file"></i>
-                <span>Daftar Request MoU</span>
+        <li
+            class="menu-item {{ request()->route()->getName() == 'DaftarReqMoU' ? 'active open' : (request()->route()->getName() == 'daftar-req-user' ? 'active open' : '') }} ">
+            {{-- <a class="menu-link" href="{{ route('iku6') }}"> --}}
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-paper-plane"></i>
+                <span>Request</span>
             </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->route()->getName() == 'DaftarReqMoU' ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('DaftarReqMoU') }}">
+                        <div data-i18n="Without navbar">MoU</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->route()->getName() == 'daftar-req-user' ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('daftar-req-user') }}">
+                        <div data-i18n="Without navbar">Users</div>
+                    </a>
+                </li>
+            </ul>
         </li>
-        
-        
+
+
 
         @php
             $userz = App\Models\User::where('request', 1)->whereNull('role_id')->count('id');

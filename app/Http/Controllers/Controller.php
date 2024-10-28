@@ -160,15 +160,18 @@ class Controller extends BaseController
         return view('Pages.Table.iku6');
     }
 
-    
-
-   // DaftarMoU
-public function DaftarReqMoU()
-{
-    return view('Pages.Table.daftarreqmou');
-}
 
 
+    // DaftarMoU
+    public function DaftarReqMoU()
+    {
+        return view('Pages.Table.daftarreqmou');
+    }
+
+    public function daftar_req_user()
+    {
+        return view('Pages.Table.daftarrequser');
+    }
 
     public function ikuScores()
     {

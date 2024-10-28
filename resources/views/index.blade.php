@@ -103,7 +103,7 @@
                             </a>
                         </div>
                     @endif
-                    <div class="user-login text-right " >
+                    <div class="user-login text-right ">
                         <a class="popup-with-form" href="#MoU-login-form">
                             <i class="fas fa-file-alt" style="margin-right: 5px;"></i>Request MoU
                         </a>
@@ -246,48 +246,7 @@
 
 
     <!-- Guest Registration Form -->
-    <form action="{{ route('register') }}" method="POST" id="regis-form" class="mfp-hide white-popup-block">
-        <div class="login-social">
-            <h4>Register User</h4>
-            @csrf
-            <div>
-                <input type="text" name="name" class="form-control" placeholder="NAME">
-            </div>
-            <br>
-            <div>
-                <input type="text" name="email" class="form-control" placeholder="EMAIL" required>
-            </div>
-            <br>
-            <div>
-                <input type="password" id="password" name="password" class="form-control"
-                    placeholder="PASSWORD (8 Characters minimum)" required>
-            </div>
-            <br>
-            <div>
-                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="PHONE NUMBER" required>
-            </div>
-            <br>
-            <div>
-                <input type="text" name="university" class="form-control" value="{{ old('university') }}" placeholder="UNIVERSITY" required>
-            </div>
-            <br>
-            <div>
-                <input type="text" name="faculty" class="form-control" value="{{ old('faculty') }}" placeholder="FACULTY" required>
-            </div>
-            @if (session('errors'))
-                <div class="mt-1 alert bg-rgba-danger mb-1" style="margin-bottom: 0px">
-                    <i class="bx bx-info-circle align-middle"></i>
-                    <span class="align-middle">
-                        @foreach ($errors->register->all() as $error)
-                            {{ $error }}
-                        @endforeach
-                    </span>
-                </div>
-            @endif
-            <hr>
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
-        </div>
-    </form>
+    @livewire('input.guest-registration')
     <!-- Guest Registration Form -->
 
 

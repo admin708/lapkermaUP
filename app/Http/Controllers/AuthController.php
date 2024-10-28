@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OtpMail;
-
 use Hash;
 use Session;
 use App\Models\User;
@@ -42,45 +40,6 @@ class AuthController extends Controller
         dd($result);
     }
 
-    public function register(Request $request)
-    {
-        // Validate the registration form data
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ], [
-            'email.unique' => 'This email address is already registered. Please choose another one.',
-        ]);
-
-        // Check if validation fails
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator, 'register') // Assign the 'register' error bag
-                ->withInput();
-        }
-
-        // Store validated data temporarily (without saving user to database yet)
-        $validatedData = $validator->validated();
-        session([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-            'fakultas_id' => null,
-            'prodi_id' => null,
-            'request' => 1,
-            'role_id' => 6,
-        ]);
-
-        // Generate OTP and send it via email
-        $otp = mt_rand(100000, 999999);
-        session(['otp' => $otp, 'otp_expiry' => now()->addMinutes(10), 'showOtpForm' => true]);
-
-        Mail::to($validatedData['email'])->send(new OtpMail($otp));
-        return redirect()->back()->with('showOtpForm', true);
-    }
-
-
     public function verifyOtp(Request $request)
     {
         // Validate the OTP input
@@ -102,12 +61,15 @@ class AuthController extends Controller
             $newUser->prodi_id = session('prodi_id');
             $newUser->request = session('request');
             $newUser->role_id = session('role_id');
+            $newUser->request = session("request");
+            $newUser->prodi_id = session('prodi');
+            $newUser->fakultas_id = session('fakultas');
             $newUser->save();
 
             // Clear session after successful registration
             session()->forget(['otp', 'otp_expiry', 'name', 'email', 'password', 'fakultas_id', 'prodi_id', 'request', 'role_id']);
 
-            return redirect()->back()->with('success', 'OTP verified successfully! Your registration is complete.');
+            return redirect()->back()->with('success', 'Account has been registered, please contact our team for activation');
         } else {
             // OTP is invalid or expired
             return back()->withErrors(['otp' => 'Invalid or expired OTP.']);
@@ -135,6 +97,8 @@ class AuthController extends Controller
             Auth::login($simpan);
             if (auth()->user()->role_id == null) {
                 return redirect()->route('request_role');
+            } elseif (auth()->user()->request == 0) {
+                return redirect()->back()->withInput()->withErrors(['pesan' => 'Account has not been activated, please contact our team for activation']);
             } else {
                 // if (auth()->user()->id == 3 || auth()->user()->id == 379 || auth()->user()->id == 382) {
                 return redirect()->route('index');
@@ -150,6 +114,8 @@ class AuthController extends Controller
             if (Auth::check()) {
                 if (auth()->user()->role_id == null) {
                     return redirect()->route('request_role');
+                } elseif (auth()->user()->request == 0) {
+                    return redirect()->back()->withInput()->withErrors(['pesan' => 'Account has not been activated, please contact our team for activation']);
                 } else {
                     // if (auth()->user()->id == 3 || auth()->user()->id == 379 || auth()->user()->id == 382) {
                     return redirect()->route('index');
@@ -163,6 +129,9 @@ class AuthController extends Controller
             }
         }
     }
+
+
+
     public function master()
     {
         return view('MasterApp.ChangeApp');

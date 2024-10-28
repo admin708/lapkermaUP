@@ -53,7 +53,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Menu/Edit/{id}', [App\Http\Controllers\Controller::class, 'edit'])->name('edit');
     Route::get('/Menu/LayananInformasi', [App\Http\Controllers\Controller::class, 'informasi'])->name('informasi');
 
-
     Route::get('Menu/GuestInputMoU', [App\Http\Controllers\Controller::class, 'guestMouInput'])->name('guestMouInput');
 });
 
@@ -78,7 +77,8 @@ Route::middleware(['auth', 'can:only-admin'])->group(function () {
 // Route untuk DaftarReqMoU
 Route::middleware(['auth', 'can:only-admin'])->group(function () {
     // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
-    Route::get('/DaftarReqMoU', [App\Http\Controllers\Controller::class, 'DaftarReqMoU'])->name('DaftarReqMoU');
+    Route::get('Menu/DaftarReqMoU', [App\Http\Controllers\Controller::class, 'DaftarReqMoU'])->name('DaftarReqMoU');
+    Route::get('Menu/DaftarUserReq', [\App\Http\Controllers\Controller::class, 'daftar_req_user'])->name('daftar-req-user');
 });
 
 
@@ -88,5 +88,3 @@ Route::middleware(['auth', 'can:super-power'])->group(function () {
     Route::get('/add_prodi', [App\Http\Controllers\Controller::class, 'addProdi'])->name('add-prodi');
     Route::post('/add_prodi', [App\Http\Controllers\Controller::class, 'createProdi'])->name('add-prodi');
 });
-
-
