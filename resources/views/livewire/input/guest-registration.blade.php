@@ -22,11 +22,11 @@
         <br>
         <div>
             <select name="fakultas" wire:model.defer="fakultas" class="form-control" required
-                onchange="event.stopPropagation();>
+                onchange="event.stopPropagation();">
                 <option value="null">FACULTY/FAKULTAS (Don't change
-                if you don't have one)</option>
+                    if you don't have one)</option>
                 @foreach ($fakultasList as $faculty)
-                    <option value="{{ $faculty->id }}" {{ old('fakultas') == $faculty->id ? 'selected' : '' }}>
+                    <option value="{{ $faculty->id }}">
                         {{ $faculty->nama_fakultas }}
                     </option>
                 @endforeach
@@ -35,11 +35,11 @@
         <br>
         <div>
             <select name="prodi" wire:model.defer="prodi" class="form-control" required
-                onchange="event.stopPropagation();>
-                <option value="null">MAJOR/PROGRAM STUDI (Don't
-                change if you don't have one)</option>
+                onchange="event.stopPropagation();">
+                <option value=null>MAJOR/PROGRAM STUDI (Don't
+                    change if you don't have one)</option>
                 @foreach ($prodiList as $prodiData)
-                    <option value="{{ $prodiData->id }}" {{ old('prodi') == $prodiData->id ? 'selected' : '' }}>
+                    <option value="{{ $prodiData->id }}">
                         {{ $prodiData->nama_resmi }}
                     </option>
                 @endforeach
