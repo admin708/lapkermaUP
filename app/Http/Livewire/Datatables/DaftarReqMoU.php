@@ -37,6 +37,7 @@ class DaftarReqMoU extends Component
 
     public function render()
     {
+<<<<<<< HEAD
         $dataMoUs = DataMou::query()
             ->when($this->cariNamaMoU, function($query) {
                 $query->where('judul', 'like', '%' . $this->cariNamaMoU . '%');
@@ -81,5 +82,9 @@ class DaftarReqMoU extends Component
     public function closeEdit()
     {
         $this->showModalsEdit = false;
+=======
+
+        return view('livewire.datatables.daftar-req-mo-u');
+>>>>>>> 5a64683e7514f721c4af4149d1d9c9e1b7e8ab64
     }
 }

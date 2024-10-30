@@ -84,7 +84,6 @@ class AuthController extends Controller
         $client->setCredentials("informatikaUNHAS", "createdbyMe", "basic");
         $result = $client->call("login2", array("username" => $username, "password" => md5($password)));
         $result = json_decode($result);
-
         # Checking as apps user
         if ($result != NULL) {
             $simpan = User::firstOrCreate([
@@ -94,11 +93,13 @@ class AuthController extends Controller
                 'password' => bcrypt($password)
             ]);
 
+            if ($simpan->request == 0) {
+                return redirect()->back()->withInput()->withErrors(['pesan' => 'Your account has not been activated.']);
+            }
+
             Auth::login($simpan);
             if (auth()->user()->role_id == null) {
                 return redirect()->route('request_role');
-            } elseif (auth()->user()->request == 0) {
-                return redirect()->back()->withInput()->withErrors(['pesan' => 'Account has not been activated, please contact our team for activation']);
             } else {
                 // if (auth()->user()->id == 3 || auth()->user()->id == 379 || auth()->user()->id == 382) {
                 return redirect()->route('index');
@@ -112,10 +113,12 @@ class AuthController extends Controller
             #checking local db
             Auth::attempt(['email' => $username, 'password' => $password]);
             if (Auth::check()) {
+                if (auth()->user()->request == 0) {
+                    Auth::logout();
+                    return redirect()->back()->withErrors(['pesan' => 'Your account has not been activated.']);
+                }
                 if (auth()->user()->role_id == null) {
                     return redirect()->route('request_role');
-                } elseif (auth()->user()->request == 0) {
-                    return redirect()->back()->withInput()->withErrors(['pesan' => 'Account has not been activated, please contact our team for activation']);
                 } else {
                     // if (auth()->user()->id == 3 || auth()->user()->id == 379 || auth()->user()->id == 382) {
                     return redirect()->route('index');

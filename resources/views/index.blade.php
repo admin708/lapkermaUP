@@ -256,7 +256,8 @@
             @csrf
             <div class="otp-section">
                 <h4>Enter OTP</h4>
-                <input type="text" name="otp" class="form-control" placeholder="Enter OTP" required>
+                <input max="6" type="text" name="otp" class="form-control" placeholder="Enter OTP"
+                    required>
                 <button type="submit" class="btn btn-primary btn-block">Verify OTP</button>
             </div>
         </form>
