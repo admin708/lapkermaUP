@@ -4,8 +4,10 @@
         <div class="table-responsive text-nowrap mt-3">
             <!-- Search Filters -->
             <div class="mb-3 d-flex">
-                <input type="text" class="form-control form-control-sm me-2" placeholder="Cari Nama MoU" wire:model="cariNamaMoU">
-                <input type="text" class="form-control form-control-sm" placeholder="Cari Pengirim MoU" wire:model="cariPengirimMoU">
+                <input type="text" class="form-control form-control-sm me-2" placeholder="Cari Nama MoU"
+                    wire:model="cariNamaMoU">
+                <input type="text" class="form-control form-control-sm" placeholder="Cari Pengirim MoU"
+                    wire:model="cariPengirimMoU">
             </div>
 
             <!-- Data Table -->
@@ -15,7 +17,7 @@
                         <th>
                             <a href="#" wire:click.prevent="sortBy('judul')">
                                 DAFTAR MoU
-                                @if($sortBy === 'judul')
+                                @if ($sortBy === 'judul')
                                     <span class="text-muted">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
                             </a>
@@ -23,7 +25,7 @@
                         <th>
                             <a href="#" wire:click.prevent="sortBy('penggiat')">
                                 PENGIRIM MoU
-                                @if($sortBy === 'penggiat')
+                                @if ($sortBy === 'penggiat')
                                     <span class="text-muted">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
                             </a>
@@ -32,14 +34,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($dataMoUs as $item)
-                    <tr>
-                        <td>{{ $item->judul }}</td>
-                        <td>{{ $item->penggiat }}</td>
-                        <td>
-                            <button wire:click="showDetail({{ $item->id }})" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detailModal">Lihat Detail</button>
-                        </td>
-                    </tr>
+                    @foreach ($dataMoUs as $item)
+                        <tr>
+                            <td>{{ $item->judul }}</td>
+                            <td>{{ $item->penggiat }}</td>
+                            <td>
+                                <button wire:click="showDetail({{ $item->id }})" class="btn btn-sm btn-info"
+                                    data-bs-toggle="modal" data-bs-target="#detailModal">Lihat Detail</button>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -52,7 +55,8 @@
     </div>
 
     <!-- Modal for Details -->
-    <div wire:ignore.self class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -60,7 +64,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @if($selectedMoU)
+                    @if ($selectedMoU)
                         <p><strong>Judul:</strong> {{ $selectedMoU->judul }}</p>
                         <p><strong>Penggiat:</strong> {{ $selectedMoU->penggiat }}</p>
                         <p><strong>Detail Lainnya:</strong> {{ $selectedMoU->detail }}</p>

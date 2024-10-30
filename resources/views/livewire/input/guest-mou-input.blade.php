@@ -1,10 +1,11 @@
 <form wire:submit.prevent="submit">
     <div class="container">
 
-         <!-- Checkbox to toggle document upload -->
-         <div class="col-md-12 mb-4">
-            <input type="checkbox" id="uploadMoUCheckbox" onchange="toggleMoUDetails(this)"> 
-            <label for="uploadMoUCheckbox">Upload MoU Document Instead of Creating New MoU</label> <!-- kode yang ditambahkan -->
+        <!-- Checkbox to toggle document upload -->
+        <div class="col-md-12 mb-4">
+            <input type="checkbox" id="uploadMoUCheckbox" onchange="toggleMoUDetails(this)">
+            <label for="uploadMoUCheckbox">Upload MoU Document Instead of Creating New MoU</label>
+            <!-- kode yang ditambahkan -->
         </div>
 
         <div class="row">
@@ -21,7 +22,8 @@
 
                         <div class="col-auto my-2">
                             <label class="form-label">Type of Collaboration</label>
-                            <select required wire:model.defer="type_collaboration" class="form-select form-select-sm @error('type_collaboration') is-invalid @enderror">
+                            <select required wire:model.defer="type_collaboration"
+                                class="form-select form-select-sm @error('type_collaboration') is-invalid @enderror">
                                 <option value="">Select Type Collaboration</option>
                                 <option value="1">Kerjasama Dalam Negeri</option>
                                 <option value="2">Kerjasama Luar Negeri</option>
@@ -30,14 +32,14 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="col-auto my-2">
                             <label class="form-label">Country of Origin (Negara Asal)</label>
                             <select required wire:model.defer="country_of_origin"
                                 class="form-select form-select-sm @error('country_of_origin') is-invalid @enderror">
                                 <option value="">Select Country</option>
                                 @foreach ($negaras as $negara)
-                                    <option value="{{ $negara->id}}">{{ $negara->name }}</option>
+                                    <option value="{{ $negara->id }}">{{ $negara->name }}</option>
                                 @endforeach
                             </select>
                             @error('country_of_origin')
