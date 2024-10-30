@@ -23,8 +23,8 @@
                             <label class="form-label">Type of Collaboration</label>
                             <select required wire:model.defer="type_collaboration" class="form-select form-select-sm @error('type_collaboration') is-invalid @enderror">
                                 <option value="">Select Type Collaboration</option>
-                                <option value="dalam_negeri">Kerjasama Dalam Negeri</option>
-                                <option value="luar_negeri">Kerjasama Luar Negeri</option>
+                                <option value="1">Kerjasama Dalam Negeri</option>
+                                <option value="2">Kerjasama Luar Negeri</option>
                             </select>
                             @error('type_collaboration')
                                 <div class="text-danger">{{ $message }}</div>
@@ -37,7 +37,7 @@
                                 class="form-select form-select-sm @error('country_of_origin') is-invalid @enderror">
                                 <option value="">Select Country</option>
                                 @foreach ($negaras as $negara)
-                                    <option value="{{ $negara->name }}">{{ $negara->name }}</option>
+                                    <option value="{{ $negara->id}}">{{ $negara->name }}</option>
                                 @endforeach
                             </select>
                             @error('country_of_origin')
