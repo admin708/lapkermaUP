@@ -15,6 +15,7 @@ class MouRequest extends Model
         'negara',
         'tanggal_ttd',
         'durasi',
+        'alamat_pj_pihak',
         'nama_pejabat_pihak',
         'jabatan_pejabat_pihak',
         'pj_pihak',

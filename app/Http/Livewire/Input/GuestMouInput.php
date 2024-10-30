@@ -66,6 +66,21 @@ class GuestMouInput extends Component
         // Handle the logo upload
         $logoPath = $this->logo->store('logos', 'public');
 
+        $data = [
+            'nama_instansi' => $this->university_name, 
+            'tipe_kerjasama' => $this->type_collaboration, 
+            'negara' => $this->country_of_origin, 
+            'tanggal_ttd' => $this->signing_date, 
+            'alamat_pj_pihak' => $this->pic_address,
+            'durasi' => $this->duration_years, 
+            'nama_pejabat_pihak' => $this->rep_name, 
+            'jabatan_pejabat_pihak' => $this->rep_designation, 
+            'pj_pihak' => $this->pic_name, 
+            'jabatan_pj_pihak' => $this->pic_designation, 
+            'email_pj_pihak' => $this->pic_email, 
+            'hp_pj_pihak' => $this->pic_phone, 
+        ];
+
         if ($this->uploadDocument) {
             // Handle MoU document upload if checkbox is checked
             $mouDocPath = $this->mou_document->store('mou_documents', 'public');
