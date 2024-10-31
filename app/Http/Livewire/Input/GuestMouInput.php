@@ -35,6 +35,13 @@ class GuestMouInput extends Component
         "Cooperative seminars, workshops, and other academic activities"
     ];
     public $newScopeItem;
+    public function rules()
+{
+    return [
+        'type_collaboration' => 'required|in:1,2', // Pastikan nilai sesuai dengan opsi dropdown
+        // aturan validasi lainnya
+    ];
+}
 
     protected $rules = [
         'university_name' => 'required|string|max:255',
@@ -62,9 +69,13 @@ class GuestMouInput extends Component
             $this->addError('newScopeItem', 'The scope list cannot be empty. Please add at least one item.');
             return; // Prevent submission if the scopeList is empty
         }
+        $this->validate([
+            'logo' => 'nullable|image|mimes:png|max:1024',
+        ]);
 
         // Handle the logo upload
         $logoPath = $this->logo->store('logos', 'public');
+       
 
         $data = [
             'nama_instansi' => $this->university_name,
