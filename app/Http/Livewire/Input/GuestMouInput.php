@@ -10,6 +10,7 @@ use App\Mail\DocumentMail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Models\MouRequest;
 
 class GuestMouInput extends Component
 {
@@ -75,6 +76,7 @@ class GuestMouInput extends Component
 
         // Handle the logo upload
         $logoPath = $this->logo->store('logos', 'public');
+        dd($logoPath);
        
 
         $data = [
@@ -91,6 +93,11 @@ class GuestMouInput extends Component
             'email_pj_pihak' => $this->pic_email,
             'hp_pj_pihak' => $this->pic_phone,
         ];
+
+        dd($data);
+
+         // Simpan data ke dalam model MouRequest
+    $mouRequest = MouRequest::create($data);
 
         if ($this->uploadDocument) {
             // Handle MoU document upload if checkbox is checked

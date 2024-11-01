@@ -182,7 +182,7 @@
                         <h5 class="card-header text-primary"><i class="bx bx-upload me-3"></i>Upload MoU Document</h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <label class="form-label">MoU Document (PDF/DOC)</label>
-                            <input wire:model="mou_document" type="file"
+                            <input wire:ignore="mou_document" type="file"
                                 class="form-control form-control-sm @error('mou_document') is-invalid @enderror"
                                 accept=".pdf,.doc,.docx" id="mouDocumentInput">
                             @error('mou_document')
@@ -195,7 +195,7 @@
 
             <div class="row">
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Save MoU</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </div>
