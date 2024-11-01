@@ -11,7 +11,7 @@ class KerjasamaMap extends Component
     public $dataKerjaSamaNegara;
     public $mapVisibility;
 
-    protected $listeners = ['setNegaraName', 'setMapVisibility'];
+    protected $listeners = ['setNegaraName'];
 
     public function mount()
     {
@@ -26,16 +26,6 @@ class KerjasamaMap extends Component
         $this->fetchNegaraData();
     }
 
-    public function setMapVisibility($visibility = null){
-        if($visibility){
-            $this->mapVisibility = $visibility;
-        } else {
-            $this->mapVisibility = !$this->mapVisibility;
-        }
-
-        $this->emit('toggleMapVisibility');
-    }
-
     public function fetchNegaraData()
     {
         $negaraModel = new Negara();
@@ -48,7 +38,7 @@ class KerjasamaMap extends Component
         return view('livewire.dashboard-chart.kerjasama-map', [
             'negaraName' => $this->negaraName,
             'dataKerjaSamaNegara' => $this->dataKerjaSamaNegara,
-           
+
         ]);
     }
 }
