@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Datatables;
 
 use Livewire\Component;
 use App\Models\DataMou;
+use App\Models\MouRequest;
 use Livewire\WithPagination;
 
 class DaftarReqMoU extends Component
@@ -37,13 +38,7 @@ class DaftarReqMoU extends Component
 
     public function render()
     {
-        $dataMoUs = DataMou::query()
-            ->when($this->cariNamaMoU, function ($query) {
-                $query->where('judul', 'like', '%' . $this->cariNamaMoU . '%');
-            })
-            ->when($this->cariPengirimMoU, function ($query) {
-                $query->where('penggiat', 'like', '%' . $this->cariPengirimMoU . '%');
-            })
+        $dataMoUs = MouRequest::query()
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 
