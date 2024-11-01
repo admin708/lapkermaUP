@@ -37,12 +37,12 @@ class GuestMouInput extends Component
     ];
     public $newScopeItem;
     public function rules()
-{
-    return [
-        'type_collaboration' => 'required|in:1,2', // Pastikan nilai sesuai dengan opsi dropdown
-        // aturan validasi lainnya
-    ];
-}
+    {
+        return [
+            'type_collaboration' => 'required|in:1,2', // Pastikan nilai sesuai dengan opsi dropdown
+            // aturan validasi lainnya
+        ];
+    }
 
     protected $rules = [
         'university_name' => 'required|string|max:255',
@@ -76,8 +76,7 @@ class GuestMouInput extends Component
 
         // Handle the logo upload
         $logoPath = $this->logo->store('logos', 'public');
-        dd($logoPath);
-       
+
 
         $data = [
             'nama_instansi' => $this->university_name,
@@ -94,10 +93,8 @@ class GuestMouInput extends Component
             'hp_pj_pihak' => $this->pic_phone,
         ];
 
-        dd($data);
-
-         // Simpan data ke dalam model MouRequest
-    $mouRequest = MouRequest::create($data);
+        // Simpan data ke dalam model MouRequest
+        $mouRequest = MouRequest::create($data);
 
         if ($this->uploadDocument) {
             // Handle MoU document upload if checkbox is checked

@@ -195,7 +195,11 @@
 
             <div class="row">
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"
+                            role="status" aria-hidden="true"></span>
+                        <span wire:loading.remove wire:target="submit">Submit</span></button>
+                    </button>
                 </div>
             </div>
         </div>

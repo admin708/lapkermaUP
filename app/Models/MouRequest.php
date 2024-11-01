@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class MouRequest extends Model
 {
     use HasFactory;
+    protected $table = 'mou_request';
+    public $timestamps = false;
 
     protected $fillable = [
         'nama_instansi',
