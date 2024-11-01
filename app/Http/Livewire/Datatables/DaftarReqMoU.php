@@ -38,10 +38,10 @@ class DaftarReqMoU extends Component
     public function render()
     {
         $dataMoUs = DataMou::query()
-            ->when($this->cariNamaMoU, function($query) {
+            ->when($this->cariNamaMoU, function ($query) {
                 $query->where('judul', 'like', '%' . $this->cariNamaMoU . '%');
             })
-            ->when($this->cariPengirimMoU, function($query) {
+            ->when($this->cariPengirimMoU, function ($query) {
                 $query->where('penggiat', 'like', '%' . $this->cariPengirimMoU . '%');
             })
             ->orderBy($this->sortBy, $this->sortDirection)

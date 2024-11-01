@@ -4,7 +4,7 @@
 
             <!-- Checkbox to toggle upload document -->
             <div class="col-md-12 mb-4">
-                <input type="checkbox" id="uploadMoUCheckbox" onchange="toggleMoUDetails(this)"> 
+                <input type="checkbox" id="uploadMoUCheckbox" onchange="toggleMoUDetails(this)">
                 <label for="uploadMoUCheckbox">Upload MoU Document Instead of Creating New MoU</label>
             </div>
 
@@ -19,10 +19,11 @@
                                 <input required wire:model.defer="university_name" type="text"
                                     class="form-control form-control-sm @error('university_name') is-invalid @enderror">
                             </div>
-    
+
                             <div class="col-auto my-2">
                                 <label class="form-label">Collaboration Type</label>
-                                <select required wire:model.defer="type_collaboration" class="form-select form-select-sm @error('type_collaboration') is-invalid @enderror">
+                                <select required wire:model.defer="type_collaboration"
+                                    class="form-select form-select-sm @error('type_collaboration') is-invalid @enderror">
                                     <option value="">Select Collaboration Type</option>
                                     <option value="1">Domestic Collaboration</option>
                                     <option value="2">International Collaboration</option>
@@ -31,7 +32,7 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="col-auto my-2">
                                 <label class="form-label">Country of Origin</label>
                                 <select required wire:model.defer="country_of_origin"
@@ -45,7 +46,7 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-    
+
                             <div>
                                 <label class="form-label">Scope</label>
                                 <ul>
@@ -61,7 +62,8 @@
                                     <input type="text" wire:model="newScopeItem"
                                         class="form-control form-control-sm @error('newScopeItem') is-invalid @enderror"
                                         placeholder="Add new scope">
-                                    <button type="button" class="btn btn-primary btn-sm" wire:click="addScope">Add</button>
+                                    <button type="button" class="btn btn-primary btn-sm"
+                                        wire:click="addScope">Add</button>
                                 </div>
                                 <small class="text-muted mt-2">You can add, remove, or edit the scope as needed.</small>
                             </div>
@@ -85,7 +87,8 @@
                                     class="form-select form-select-sm @error('duration_years') is-invalid @enderror">
                                     <option value="">Select Duration</option>
                                     @for ($i = 1; $i <= 5; $i++)
-                                        <option value="{{ $i }}">{{ $i }} year{{ $i > 1 ? 's' : '' }}</option>
+                                        <option value="{{ $i }}">{{ $i }}
+                                            year{{ $i > 1 ? 's' : '' }}</option>
                                     @endfor
                                 </select>
                                 @error('duration_years')
@@ -133,7 +136,8 @@
                 <!-- Signing Representative -->
                 <div id="signingRep" class="col-md-4">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-id-card me-3"></i>Signing Representative</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-id-card me-3"></i>Signing Representative
+                        </h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <div class="col-auto my-2">
                                 <label class="form-label">Name</label>
@@ -157,7 +161,8 @@
                         </h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <label class="form-label">Logo (PNG format)
-                                <i class="small text-warning">* Maximum dimensions: 1024x1024 pixels, PNG format only</i>
+                                <i class="small text-warning">* Maximum dimensions: 1024x1024 pixels, PNG format
+                                    only</i>
                             </label>
                             <input required wire:model="logo" type="file"
                                 class="form-control form-control-sm @error('logo') is-invalid @enderror"
@@ -165,7 +170,8 @@
                             @error('logo')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
-                            <div id="imageError" class="text-danger d-none">Image must be in PNG format and under 1024x1024 pixels.</div>
+                            <div id="imageError" class="text-danger d-none">Image must be in PNG format and under
+                                1024x1024 pixels.</div>
                         </div>
                     </div>
                 </div>

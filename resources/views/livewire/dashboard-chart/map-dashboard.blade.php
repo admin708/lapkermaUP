@@ -74,7 +74,6 @@
                             });
 
                             Livewire.emit('setNegaraName', countryName);
-                            Livewire.emit('setMapVisibility', true)
                         });
                     });
                 });
