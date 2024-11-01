@@ -1,7 +1,4 @@
 <div>
-    <button wire:click="setMapVisibility" class="btn btn-primary btn-sm" style="border-radius: 10px; margin-bottom: 10px;">
-        {{ $mapVisibility ? 'Hide Map' : 'Show Map' }}
-    </button>
     <div style="display: {{ $mapVisibility ? 'block' : 'none' }};">
         <div id="map-kerjasama" style="width: 100%; height: 500px; z-index: 0;">
         </div>
