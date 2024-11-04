@@ -11,14 +11,17 @@ class DaftarReqMoU extends Component
 {
     use WithPagination;
 
+    public $reqMoUId;
     public $cariNamaMoU = '';
     public $cariPengirimMoU = '';
     public $sortBy = 'tanggal_ttd';
     public $sortDirection = 'asc';
     public $selectedMoU = null;
     public $showModalsEdit = false;
+    public $isEdit = false;
 
     protected $updatesQueryString = ['cariNamaMoU', 'cariPengirimMoU', 'sortBy', 'sortDirection'];
+    public $listeners = ['deleteMouRequest'];
 
     public function updatingCariNamaMoU()
     {
@@ -36,6 +39,16 @@ class DaftarReqMoU extends Component
         $this->sortBy = $field;
     }
 
+    public function deleteMouRequest()
+    {
+        $mouRequest = MouRequest::find($this->reqMoUId);
+
+        // Check if the request exists
+        if ($mouRequest) {
+            $mouRequest->delete();
+        }
+    }
+
     public function render()
     {
         $dataMoUs = MouRequest::query()
@@ -49,28 +62,10 @@ class DaftarReqMoU extends Component
 
     public function showDetail($id)
     {
-        $this->selectedMoU = DataMou::find($id);
+        $this->isEdit = true;
+        $this->reqMoUId = $id;
         $this->showModalsEdit = true; // Menampilkan modal detail
-    }
-
-    public function viewDocument($id)
-    {
-        $document = DataMou::find($id);
-        if ($document) {
-            return redirect()->away(url('path/to/document/' . $document->file_path));
-        }
-    }
-
-    public function removeDocument($id)
-    {
-        $document = DataMou::find($id);
-        if ($document) {
-            $document->delete();
-            session()->flash('message', 'Dokumen berhasil dihapus.');
-            $this->resetPage();
-        } else {
-            session()->flash('error', 'Dokumen tidak ditemukan.');
-        }
+        $this->emit('guestInputData', $id);
     }
 
     public function closeEdit()

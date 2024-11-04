@@ -25,7 +25,7 @@ class MouDatatables extends Component
     public $getFakultas, $getProdi, $getPermohonan, $filess, $getStatus, $getJenis, $cariKerjasama;
     public $cariPenggiat, $cariJudul, $cariNegara, $cariFakultas, $cariProdi, $dataExel;
     public $cariTahun, $cariNomorDokumen, $cariStatus, $cariUniv = 1000;
-    public $cek, $showModalsEdit = false, $idDelete, $showModalsEdit2 = false ;
+    public $cek, $showModalsEdit = false, $idDelete, $showModalsEdit2 = false;
     public $goEdit, $sortData;
     protected $listeners = ['yakinHapus' => 'hapus',];
 
@@ -45,7 +45,7 @@ class MouDatatables extends Component
         // if (auth()->user()->role_id == 1 || auth()->user()->role_id == 99) {
         //     $this->reset(['cariPenggiat','cariJudul','cariTahun','cariNomorDokumen','cariStatus','cariKerjasama','cariNegara']);
         // } else {
-            $this->reset(['cariPenggiat','cariJudul','cariTahun','cariNomorDokumen','cariStatus','cariKerjasama','cariNegara']);
+        $this->reset(['cariPenggiat', 'cariJudul', 'cariTahun', 'cariNomorDokumen', 'cariStatus', 'cariKerjasama', 'cariNegara']);
         // }
     }
     public function download()
@@ -64,23 +64,43 @@ class MouDatatables extends Component
     }
     public function emitEdit()
     {
-        $this->emit('updateData',$this->cek);
+        $this->emit('updateData', $this->cek);
     }
     public function render()
     {
         $data = [];
-        $this->dataExel = DataMou::searchBy($this->cariTahun,$this->cariPenggiat,$this->cariNomorDokumen,
-                                            $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNegara,
-                                            $this->cariFakultas, $this->cariProdi, $this->cariUniv,$this->sortData)->get();
+        $this->dataExel = DataMou::searchBy(
+            $this->cariTahun,
+            $this->cariPenggiat,
+            $this->cariNomorDokumen,
+            $this->cariJudul,
+            $this->cariStatus,
+            $this->cariKerjasama,
+            $this->cariNegara,
+            $this->cariFakultas,
+            $this->cariProdi,
+            $this->cariUniv,
+            $this->sortData
+        )->get();
         if ($this->showModalsEdit == false) {
             $data = [
-                'DataMou' => DataMou::searchBy($this->cariTahun,$this->cariPenggiat,$this->cariNomorDokumen,
-                                                $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNegara,
-                                                $this->cariFakultas, $this->cariProdi, $this->cariUniv,$this->sortData)->paginate(10),
-                'getTahun' => DataMou::select('tanggal_ttd')->orderBy('tanggal_ttd','asc')
-                                    ->pluck('tanggal_ttd')->groupBy(function($val) {
-                                    return Carbon::parse($val)->format('Y');
-                        })
+                'DataMou' => DataMou::searchBy(
+                    $this->cariTahun,
+                    $this->cariPenggiat,
+                    $this->cariNomorDokumen,
+                    $this->cariJudul,
+                    $this->cariStatus,
+                    $this->cariKerjasama,
+                    $this->cariNegara,
+                    $this->cariFakultas,
+                    $this->cariProdi,
+                    $this->cariUniv,
+                    $this->sortData
+                )->paginate(10),
+                'getTahun' => DataMou::select('tanggal_ttd')->orderBy('tanggal_ttd', 'asc')
+                    ->pluck('tanggal_ttd')->groupBy(function ($val) {
+                        return Carbon::parse($val)->format('Y');
+                    })
             ];
         }
 
@@ -103,7 +123,6 @@ class MouDatatables extends Component
         } else {
             return redirect()->route('moa-in', $id);
         }
-        
     }
 
     public function updatedFiless()
@@ -117,14 +136,14 @@ class MouDatatables extends Component
     {
         $this->showModalsEdit = true;
         $this->cek = $id;
-        $this->emit('getEditData',$id);
+        $this->emit('getEditData', $id);
     }
 
     public function getEdit2($id)
     {
         $this->showModalsEdit2 = true;
         $this->cek = $id;
-        $this->emit('getEditData2',$id);
+        $this->emit('getEditData2', $id);
     }
 
     public function closeEdit()
@@ -160,7 +179,7 @@ class MouDatatables extends Component
 
     public function updatedCariPenggiat()
     {
-        $this->resetPage();    
+        $this->resetPage();
     }
 
     public function updateMe()
@@ -179,26 +198,26 @@ class MouDatatables extends Component
     public function hapus()
     {
         $find = DataMou::find($this->idDelete);
-        $cek = DataMoa::where('dasar_dokumen',$find->uuid)->count('uuid');
-        $cek2 = DataIa::where('dasar_dokumen',$find->uuid)->count('uuid');
+        $cek = DataMoa::where('dasar_dokumen', $find->uuid)->count('uuid');
+        $cek2 = DataIa::where('dasar_dokumen', $find->uuid)->count('uuid');
         if ($cek != 0) {
-            $this->emit('alerts', ['pesan' => 'Data terkait dengan data lainnya', 'icon'=>'error'] );
+            $this->emit('alerts', ['pesan' => 'Data terkait dengan data lainnya', 'icon' => 'error']);
         } else {
             if ($cek2 != 0) {
-                $this->emit('alerts', ['pesan' => 'Data terkait dengan data lainnya', 'icon'=>'error'] );
+                $this->emit('alerts', ['pesan' => 'Data terkait dengan data lainnya', 'icon' => 'error']);
             } else {
                 $findMe = DataMouBentukKegiatanKerjasama::where('id_mou', $find->id);
                 $findMeTo = DataMouDokumen::where('kerjasama_id', $find->id);
                 $findMeLagi = DataMouPenggiat::where('id_lapkerma', $find->id);
                 foreach ($findMeTo->get() as $key => $value) {
                     $gambar = $value->url;
-                    File::delete('storage/DokumenMoU/'.$gambar);
+                    File::delete('storage/DokumenMoU/' . $gambar);
                 }
                 $findMe->delete();
                 $findMeTo->delete();
                 $findMeLagi->delete();
                 $find->delete();
-                $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon'=>'success'] );
+                $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon' => 'success']);
             }
         }
     }

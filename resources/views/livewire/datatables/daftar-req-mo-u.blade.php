@@ -36,7 +36,7 @@
                 <tbody>
                     @foreach ($dataMoUs as $item)
                         <tr>
-                            <td>{{ $item->nama_instansi }}</td>
+                            <td>{{ $item->nama_instansi }} - {{ $item->tanggal_ttd }}</td>
                             <td>{{ $item->nama_pejabat_pihak }}</td>
                             <td>
                                 <div class="dropdown">
@@ -70,26 +70,30 @@
             </div>
         </div>
     </div>
-
-
-    <!-- Modal for Details -->
-    <div wire:ignore.self class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
+    <div class="modal fade show" id="fullscreenModal" tabindex="-1"
+        style="display: {{ $showModalsEdit == true ? 'block' : 'none' }};" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-fullscreen" role="document">
             <div class="modal-content">
                 <div class="modal-header container">
-                    <h5 class="modal-title h4" id="detailModalLabel">Detail Data MoU</h5>
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" aria-label="Close">
-                        <span class="tf-icons bx bx-chevron-left"></span>&nbsp; Close
-                    </button>
+                    <h4 class="modal-title h4" id="modalFullTitle">{{ $showModalsEdit == true ? 'Detail' : '' }} Data MoU
+                    </h4>
+                    <div class="demo-inline-spacing">
+                        <button type="button" wire:click="closeEdit" class="btn btn-secondary btn-sm">
+                            <span class="tf-icons bx bx-chevron-left"></span>&nbsp; Close
+                        </button>
+                        @if (auth()->user()->role_id == 1)
+                            <button type="button" wire:click="emitEdit" class="btn btn-primary btn-sm">
+                                <span class="tf-icons bx bx-save"></span>&nbsp; Update
+                            </button>
+                        @endif
+                    </div>
                 </div>
                 <div class="modal-body">
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        @livewire('input.guest-mou-input')
+                        @livewire('input.mou')
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
