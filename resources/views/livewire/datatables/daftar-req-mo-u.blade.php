@@ -52,7 +52,7 @@
                                         </a>
                                         @if (auth()->user()->role_id == 1)
                                             <a class="dropdown-item text-danger small" role="button"
-                                                wire:click="removeItem({{ $item->id }})">
+                                                wire:click="deleteMouRequest({{ $item->id }})">
                                                 <i class="bx bx-trash me-1"></i> Remove
                                             </a>
                                         @endif
@@ -75,18 +75,9 @@
         <div class="modal-dialog modal-fullscreen" role="document">
             <div class="modal-content">
                 <div class="modal-header container">
-                    <h4 class="modal-title h4" id="modalFullTitle">{{ $showModalsEdit == true ? 'Detail' : '' }} Data MoU
+                    <h4 class="modal-title h4" id="modalFullTitle">{{ $showModalsEdit == true ? 'Detail' : '' }} Data
+                        MoU
                     </h4>
-                    <div class="demo-inline-spacing">
-                        <button type="button" wire:click="closeEdit" class="btn btn-secondary btn-sm">
-                            <span class="tf-icons bx bx-chevron-left"></span>&nbsp; Close
-                        </button>
-                        @if (auth()->user()->role_id == 1)
-                            <button type="button" wire:click="emitEdit" class="btn btn-primary btn-sm">
-                                <span class="tf-icons bx bx-save"></span>&nbsp; Update
-                            </button>
-                        @endif
-                    </div>
                 </div>
                 <div class="modal-body">
                     <div class="container-xxl flex-grow-1 container-p-y">

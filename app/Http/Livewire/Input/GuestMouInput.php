@@ -66,16 +66,19 @@ class GuestMouInput extends Component
         // Validate the form data
         $this->validate();
 
-        if (empty($this->scopeList)) {
-            $this->addError('newScopeItem', 'The scope list cannot be empty. Please add at least one item.');
-            return; // Prevent submission if the scopeList is empty
-        }
-        $this->validate([
-            'logo' => 'nullable|image|mimes:png|max:1024',
-        ]);
+        if ($this->uploadDocument) {
 
-        // Handle the logo upload
-        $logoPath = $this->logo->store('logos', 'public');
+            if (empty($this->scopeList)) {
+                $this->addError('newScopeItem', 'The scope list cannot be empty. Please add at least one item.');
+                return; // Prevent submission if the scopeList is empty
+            }
+            $this->validate([
+                'logo' => 'nullable|image|mimes:png|max:1024',
+            ]);
+
+            // Handle the logo upload
+            $logoPath = $this->logo->store('logos', 'public');
+        }
 
 
         $data = [
@@ -96,12 +99,7 @@ class GuestMouInput extends Component
         // Simpan data ke dalam model MouRequest
         $mouRequest = MouRequest::create($data);
 
-        if ($this->uploadDocument) {
-            // Handle MoU document upload if checkbox is checked
-            $mouDocPath = $this->mou_document->store('mou_documents', 'public');
-            // You can add any further processing here if necessary
-        } else {
-            // If the document is not uploaded, create a new TemplateProcessor instance with the .docx template
+        if ($this->uploadDocument) { // If the document is not uploaded, create a new TemplateProcessor instance with the .docx template
             $templateProcessor = new TemplateProcessor(storage_path('document/Template_MOU.docx')); // Adjust the path to your template
 
             // Replace placeholders with form data in the template
@@ -135,6 +133,15 @@ class GuestMouInput extends Component
 
             // Return the .docx file as a download
             return response()->download($outputFile)->deleteFileAfterSend(true);
+        } else {
+            $mouDocPath = $this->mou_document->store('mou_documents', 'public');
+            $uploadedFilePath = storage_path('app/public/' . $mouDocPath);
+
+            // Send the uploaded document via email
+            Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($uploadedFilePath, $this->university_name));
+
+            // Return the uploaded file as a download
+            return response()->download($uploadedFilePath)->deleteFileAfterSend(true);
         }
     }
 

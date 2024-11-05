@@ -39,9 +39,9 @@ class DaftarReqMoU extends Component
         $this->sortBy = $field;
     }
 
-    public function deleteMouRequest()
+    public function deleteMouRequest($id)
     {
-        $mouRequest = MouRequest::find($this->reqMoUId);
+        $mouRequest = MouRequest::find($id);
 
         // Check if the request exists
         if ($mouRequest) {
@@ -63,7 +63,6 @@ class DaftarReqMoU extends Component
     public function showDetail($id)
     {
         $this->isEdit = true;
-        $this->reqMoUId = $id;
         $this->showModalsEdit = true; // Menampilkan modal detail
         $this->emit('guestInputData', $id);
     }

@@ -43,6 +43,9 @@ class Mou extends Component
 
     public $tanggal_ttd, $tanggal_awal, $tanggal_berakhir, $status_kerjasama, $jangka_waktu;
 
+    //Section MoU Request
+    public $MouRequestId;
+
     protected $listeners = [
         'successMe' => 'takeSuccess',
         'updateData' => 'saveEdit',
@@ -138,6 +141,7 @@ class Mou extends Component
     public function showGuestInputData($id)
     {
         $findMe = MouRequest::find($id);
+        $this->MouRequestId = $id;
         $this->tanggal_ttd = $findMe->tanggal_ttd;
         $this->jenisKerjasamaField = $findMe->tipe_kerjasama;
         $negara = Negara::find($findMe->negara);
@@ -733,7 +737,7 @@ class Mou extends Component
                             ]);
                         }
                         DB::commit();
-                        $this->emit('deleteMouRequest');
+                        $this->emit('deleteMouRequest', $this->MouRequestId);
                         $this->emit('alerts', ['pesan' => 'Data Berhasil Ditambahkan', 'icon' => 'success']);
                     } else {
                         $this->emit('alertz', ['pesan' => 'Invalid Proses, Data Duplikat', 'icon' => 'error']);

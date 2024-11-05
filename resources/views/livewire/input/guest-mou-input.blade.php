@@ -4,8 +4,8 @@
 
             <!-- Checkbox to toggle upload document -->
             <div class="col-md-12 mb-4">
-                <input type="checkbox" id="uploadMoUCheckbox" onchange="toggleMoUDetails(this)">
-                <label for="uploadMoUCheckbox">Upload MoU Document Instead of Creating New MoU</label>
+                <input type="checkbox" id="uploadMoUCheckbox" wire:model="uploadDocument">
+                <label for="uploadMoUCheckbox">Use Our MoU Document Template</label>
             </div>
 
             <div class="row">
@@ -47,26 +47,40 @@
                                 @enderror
                             </div>
 
-                            <div>
-                                <label class="form-label">Scope</label>
-                                <ul>
-                                    @foreach ($scopeList as $index => $scopeItem)
-                                        <li>
-                                            {{ $scopeItem }}
-                                            <i class="text-danger bx bx-trash-alt" style="cursor:pointer;"
-                                                wire:click="removeScope({{ $index }})"></i>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                <div class="input-group mb-2">
-                                    <input type="text" wire:model="newScopeItem"
-                                        class="form-control form-control-sm @error('newScopeItem') is-invalid @enderror"
-                                        placeholder="Add new scope">
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                        wire:click="addScope">Add</button>
+                            @if ($uploadDocument)
+                                <div class="col-auto my-2">
+                                    <label class="form-label">Scope</label>
+                                    <ul>
+                                        @foreach ($scopeList as $index => $scopeItem)
+                                            <li>
+                                                {{ $scopeItem }}
+                                                <i class="text-danger bx bx-trash-alt" style="cursor:pointer;"
+                                                    wire:click="removeScope({{ $index }})"></i>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    <div class="input-group mb-2">
+                                        <input type="text" wire:model="newScopeItem"
+                                            class="form-control form-control-sm @error('newScopeItem') is-invalid @enderror"
+                                            placeholder="Add new scope">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            wire:click="addScope">Add</button>
+                                    </div>
+                                    <small class="text-muted mt-2">You can add, remove, or edit the scope as
+                                        needed.</small>
                                 </div>
-                                <small class="text-muted mt-2">You can add, remove, or edit the scope as needed.</small>
-                            </div>
+                            @else
+                                <div class="col-auto my-2">
+                                    <label class="form-label">MoU Document (PDF/DOC)</label>
+                                    <input type="file" wire:model="mou_document"
+                                        class="form-control form-control-sm @error('mou_document') is-invalid @enderror"
+                                        accept=".pdf,.doc,.docx">
+                                    @error('mou_document')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">* Accepts PDF, DOC, or DOCX format only.</small>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -154,27 +168,29 @@
                 </div>
 
                 <!-- University Logo -->
-                <div id="universityLogo" class="col-md-4">
-                    <div class="card mb-4">
-                        <h5 class="card-header text-primary">
-                            <i class="bx bx-image me-3"></i>University Logo
-                        </h5>
-                        <div class="card-body demo-vertical-spacing demo-only-element">
-                            <label class="form-label">Logo (PNG format)
-                                <i class="small text-warning">* Maximum dimensions: 1024x1024 pixels, PNG format
-                                    only</i>
-                            </label>
-                            <input required wire:model="logo" type="file"
-                                class="form-control form-control-sm @error('logo') is-invalid @enderror"
-                                accept="image/png" id="logoInput" onchange="validateImage(this)">
-                            @error('logo')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                            <div id="imageError" class="text-danger d-none">Image must be in PNG format and under
-                                1024x1024 pixels.</div>
+                @if ($uploadDocument)
+                    <div id="universityLogo" class="col-md-4">
+                        <div class="card mb-4">
+                            <h5 class="card-header text-primary">
+                                <i class="bx bx-image me-3"></i>University Logo
+                            </h5>
+                            <div class="card-body demo-vertical-spacing demo-only-element">
+                                <label class="form-label">Logo (PNG format)
+                                    <i class="small text-warning">* Maximum dimensions: 1024x1024 pixels, PNG format
+                                        only</i>
+                                </label>
+                                <input required wire:model="logo" type="file"
+                                    class="form-control form-control-sm @error('logo') is-invalid @enderror"
+                                    accept="image/png" id="logoInput" onchange="validateImage(this)">
+                                @error('logo')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                                <div id="imageError" class="text-danger d-none">Image must be in PNG format and under
+                                    1024x1024 pixels.</div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <!-- Upload MoU Document -->
                 <div id="uploadDocument" class="col-md-4 d-none">
@@ -207,31 +223,6 @@
 </div>
 
 <script>
-    function toggleMoUDetails(checkbox) {
-        const mouDetails = document.getElementById('mouDetails');
-        const signingInfo = document.getElementById('signingInfo');
-        const picInfo = document.getElementById('picInfo');
-        const signingRep = document.getElementById('signingRep');
-        const universityLogo = document.getElementById('universityLogo');
-        const uploadDocument = document.getElementById('uploadDocument');
-
-        if (checkbox.checked) {
-            mouDetails.classList.add('d-none');
-            signingInfo.classList.add('d-none');
-            picInfo.classList.add('d-none');
-            signingRep.classList.add('d-none');
-            universityLogo.classList.add('d-none');
-            uploadDocument.classList.remove('d-none');
-        } else {
-            mouDetails.classList.remove('d-none');
-            signingInfo.classList.remove('d-none');
-            picInfo.classList.remove('d-none');
-            signingRep.classList.remove('d-none');
-            universityLogo.classList.remove('d-none');
-            uploadDocument.classList.add('d-none');
-        }
-    }
-
     function validateImage(input) {
         const file = input.files[0];
         const imageError = document.getElementById('imageError');

@@ -20,10 +20,16 @@ class DocumentMail extends Mailable
 
     public function build()
     {
-        return $this->view('email.document') // Create a view for your email body
+        // Determine MIME type based on file extension
+        $extension = pathinfo($this->filePath, PATHINFO_EXTENSION);
+        $mimeType = $extension === 'pdf'
+            ? 'application/pdf'
+            : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+        return $this->view('email.document') // Create a view for the email body
             ->attach($this->filePath, [
-                'as' => $this->fileName . ".docx", // Rename file in email
-                'mime' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'as' => $this->fileName . '.' . $extension, // Display name with the original extension
+                'mime' => $mimeType,
             ])
             ->subject('Dokumen MoU');
     }
