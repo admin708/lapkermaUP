@@ -11,16 +11,19 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Models\MouRequest;
+use App\Models\Region;
 
 class GuestMouInput extends Component
 {
     use WithFileUploads;
 
 
-    public $negaras; // Store the countries here 
+    public $negaras; 
+    public $regions; 
     public $university_name, $country_of_origin, $scope, $signing_date, $duration_years;
     public $pic_name, $pic_designation, $pic_address, $pic_email, $pic_phone;
     public $rep_name, $rep_designation, $logo;
+    public $region;
 
     public $type_collaboration;
 
@@ -66,6 +69,12 @@ class GuestMouInput extends Component
         // Validate the form data
         $this->validate();
 
+        if ($this->type_collaboration === 2 ) {
+            $this->validate([
+                'region' => 'required|string|max:255',
+            ]);
+        }
+
         if ($this->uploadDocument) {
 
             if (empty($this->scopeList)) {
@@ -94,6 +103,7 @@ class GuestMouInput extends Component
             'jabatan_pj_pihak' => $this->pic_designation,
             'email_pj_pihak' => $this->pic_email,
             'hp_pj_pihak' => $this->pic_phone,
+            'region' => $this->region,
         ];
 
         // Simpan data ke dalam model MouRequest
@@ -172,9 +182,28 @@ class GuestMouInput extends Component
     {
         // Fetch all countries when the component is initialized
         $this->negaras = Negara::all();
+        $this->regions = Region::all();
         $this->pic_name = auth()->user()->name;
         $this->pic_email = auth()->user()->email;
     }
+
+    // Properti untuk mengatur kondisi dinamis
+public $showCountryInput = false;
+
+// Perbarui metode untuk menangani perubahan pada dropdown type_collaboration
+public function updatedTypeCollaboration($value)
+{
+    if ($value == "1") {
+        $this->country_of_origin = "103"; 
+        $this->region = 1;
+        $this->showCountryInput = false;
+    } elseif ($value == "2") {
+        $this->country_of_origin = null; 
+        $this->region = null;
+        $this->showCountryInput = true;
+    }
+}
+
 
     public function render()
     {

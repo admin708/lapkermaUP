@@ -22,7 +22,7 @@
 
                             <div class="col-auto my-2">
                                 <label class="form-label">Collaboration Type</label>
-                                <select required wire:model.defer="type_collaboration"
+                                <select required wire:model="type_collaboration"
                                     class="form-select form-select-sm @error('type_collaboration') is-invalid @enderror">
                                     <option value="">Select Collaboration Type</option>
                                     <option value="1">Domestic Collaboration</option>
@@ -32,20 +32,37 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            
+                            <!-- Tampilkan input tambahan jika showCountryInput bernilai true -->
+                            @if ($showCountryInput)
+    <div class="col-auto my-2">
+        <label class="form-label">Country of Origin</label>
+        <select required wire:model="country_of_origin" class="form-select form-select-sm">
+            <option value="">Select Country</option>
+            @foreach ($negaras as $negara)
+                <option value="{{ $negara->id }}">{{ $negara->name }}</option>
+            @endforeach
+        </select>
+        @error('country_of_origin')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
 
-                            <div class="col-auto my-2">
-                                <label class="form-label">Country of Origin</label>
-                                <select required wire:model.defer="country_of_origin"
-                                    class="form-select form-select-sm @error('country_of_origin') is-invalid @enderror">
-                                    <option value="">Select Country</option>
-                                    @foreach ($negaras as $negara)
-                                        <option value="{{ $negara->id }}">{{ $negara->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('country_of_origin')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+    <div class="col-auto my-2">
+        <label class="form-label">Region</label>
+        <select required wire:model="region" class="form-select form-select-sm">
+            <option value="">Select Region</option>
+            @foreach ($regions as $region)
+                <option value="{{ $region->id }}">{{ $region->nama }}</option>
+            @endforeach
+        </select>
+        @error('region')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+@endif
+
+                            
 
                             @if ($uploadDocument)
                                 <div class="col-auto my-2">

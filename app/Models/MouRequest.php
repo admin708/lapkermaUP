@@ -23,7 +23,11 @@ class MouRequest extends Model
         'pj_pihak',
         'jabatan_pj_pihak',
         'email_pj_pihak',
+        'region',
         'hp_pj_pihak',
+        
+       
+
     ];
 
     // Relasi ke tabel Negara
