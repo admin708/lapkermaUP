@@ -78,6 +78,16 @@
                     <h4 class="modal-title h4" id="modalFullTitle">{{ $showModalsEdit == true ? 'Detail' : '' }} Data
                         MoU
                     </h4>
+                    <div class="demo-inline-spacing">
+                        <button type="button" wire:click="closeEdit" class="btn btn-secondary btn-sm">
+                            <span class="tf-icons bx bx-chevron-left"></span>&nbsp; Close
+                        </button>
+                        @if (auth()->user()->role_id == 1)
+                            <button type="button" wire:click="emitEdit" class="btn btn-primary btn-sm">
+                                <span class="tf-icons bx bx-save"></span>&nbsp; Update
+                            </button>
+                        @endif
+                    </div>
                 </div>
                 <div class="modal-body">
                     <div class="container-xxl flex-grow-1 container-p-y">

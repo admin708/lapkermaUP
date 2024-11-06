@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException as ERROR;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class Mou extends Component
 {
@@ -146,6 +147,9 @@ class Mou extends Component
         $this->jenisKerjasamaField = $findMe->tipe_kerjasama;
         $negara = Negara::find($findMe->negara);
         $this->negara = $negara ? $negara->name : '';
+
+        $this->region = $findMe->region;
+
         $this->tanggal_ttd = $findMe->tanggal_ttd;
         $this->tanggal_awal = $findMe->tanggal_ttd;
         $this->jangka_waktu = $findMe->durasi;
