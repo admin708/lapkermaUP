@@ -335,19 +335,17 @@
                                             class="form-control btn btn-sm btn-secondary">click</a>
                                     </div>
 
-                                    <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 3 ? 'd-block' : '' }}"
-                                        style="display: none">
+                                    <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 3 ? 'd-block' : '' }}" style="display: none">
                                         <select wire:model="badanKemitraan.{{ $value }}"
-                                            class="form-select form-select-sm mr-sm-2 @error('badanKemitraan.' . $value) is-invalid @enderror">
+                                                class="form-select form-select-sm mr-sm-2 @error('badanKemitraan.' . $value) is-invalid @enderror">
                                             <option value=""></option>
-                                            <option value="1">Perusahaan Nasional</option>
-                                            <option value="2">Perusahaan Multinasional</option>
-                                            <option value="3">Institusi Pemerintahan (kementrian)</option>
-                                            <option value="4">Pemerintah Daerah (Provinsi/Kabupaten)</option>
-                                            <option value="5">BUMN / BUMD</option>
-                                            <option value="99">Lainnya</option>
+                                            @foreach($badanKemitraanOptions as $option)
+                                           
+                                            <option value="{{ $option->id }}">{{ $option->nama }}</option>
+                                        @endforeach
                                         </select>
                                     </div>
+                                    
 
                                     <div class="col-12 my-2 {{ optional($status)[$value] == 3 ? (optional($badanKemitraan)[$value] == 99 ? 'd-block' : '') : '' }}"
                                         style="display: none">

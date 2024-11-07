@@ -19,6 +19,8 @@ class ReferensiBadanKemitraan extends Model
         return $this->hasMany('App\Models\DataMoaPenggiat', 'badan_kemitraan', 'id');
     }
 
+    
+
 }
 
 
