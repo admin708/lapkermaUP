@@ -18,6 +18,7 @@ use Livewire\WithFileUploads;
 use Livewire\Component;
 use App\Http\Livewire\Field;
 use App\Models\MouRequest;
+use App\Models\ReferensiBadanKemitraan;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException as ERROR;
 use Illuminate\Support\Str;
@@ -43,6 +44,7 @@ class Mou extends Component
     public $nomor_unhas, $nomor_mitra, $judul_kerjasama, $deskripsi;
 
     public $tanggal_ttd, $tanggal_awal, $tanggal_berakhir, $status_kerjasama, $jangka_waktu;
+    public $badanKemitraanOptions;
 
     //Section MoU Request
     public $MouRequestId;
@@ -67,7 +69,11 @@ class Mou extends Component
         $this->negaraKerjasama = Negara::get();
         $this->jenisKerjasamaField = 1;
         $this->updatedJenisKerjasamaField();
+        $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
+
+   
     }
+
 
     public function render()
     {

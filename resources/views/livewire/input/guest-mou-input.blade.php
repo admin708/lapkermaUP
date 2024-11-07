@@ -102,38 +102,11 @@
                     </div>
                 </div>
 
-                <!-- Signing Information -->
-                <div id="signingInfo" class="col-md-4">
-                    <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-calendar me-3"></i>Signing Information</h5>
-                        <div class="card-body demo-vertical-spacing demo-only-element">
-                            <div class="col-auto my-2">
-                                <label class="form-label">MoU Activation Date / Signing Date</label>
-                                <input required wire:model.defer="signing_date" type="date"
-                                    class="form-control form-control-sm @error('signing_date') is-invalid @enderror">
-                            </div>
-                            <div class="col-auto my-2">
-                                <label class="form-label">MoU Duration (in years)</label>
-                                <select required wire:model.defer="duration_years"
-                                    class="form-select form-select-sm @error('duration_years') is-invalid @enderror">
-                                    <option value="">Select Duration</option>
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <option value="{{ $i }}">{{ $i }}
-                                            year{{ $i > 1 ? 's' : '' }}</option>
-                                    @endfor
-                                </select>
-                                @error('duration_years')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PIC (Person in Charge) Information -->
+               
+                <!-- PIC-Mitra (Person in Charge) Information -->
                 <div id="picInfo" class="col-md-4">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-user me-3"></i>Person in Charge (PIC)</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-user me-3"></i>Person in Charge (PIC) Partner</h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <div class="col-auto my-2">
                                 <label class="form-label">Name</label>
@@ -164,6 +137,189 @@
                     </div>
                 </div>
 
+                <!-- PIC-Unhas (Person in Charge) Information -->
+                <div id="picInfo" class="col-md-4">
+                    <div class="card mb-4">
+                        <h5 class="card-header text-primary"><i class="bx bx-user me-3"></i>Person in Charge (PIC) UNHAS</h5>
+                        <div class="card-body demo-vertical-spacing demo-only-element">
+                            <div class="col-auto my-2">
+                                <label class="form-label">Name</label>
+                                <input required wire:model.defer="pic_name" type="text"
+                                    class="form-control form-control-sm @error('pic_name') is-invalid @enderror">
+                            </div>
+                            <div class="col-auto my-2">
+                                <label class="form-label">Position</label>
+                                <input required wire:model.defer="pic_designation" type="text"
+                                    class="form-control form-control-sm @error('pic_designation') is-invalid @enderror">
+                            </div>
+                            <div class="col-auto my-2">
+                                <label class="form-label">Address</label>
+                                <input required wire:model.defer="pic_address" type="text"
+                                    class="form-control form-control-sm @error('pic_address') is-invalid @enderror">
+                            </div>
+                            <div class="col-auto my-2">
+                                <label class="form-label">Email</label>
+                                <input required wire:model.defer="pic_email" type="email"
+                                    class="form-control form-control-sm @error('pic_email') is-invalid @enderror">
+                            </div>
+                            <div class="col-auto my-2">
+                                <label class="form-label">Phone Number</label>
+                                <input required wire:model.defer="pic_phone" type="text"
+                                    class="form-control form-control-sm @error('pic_phone') is-invalid @enderror">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="col-sm-12 col-lg-5">
+                    <div class="card mb-4">
+                        <h5 class="card-header text-primary"><i class="bx bx-unite me-3"></i>Bentuk Kegiatan
+                            <div wire:loading wire:target="bentukKegiatan"
+                                class="mx-1 spinner-border spinner-border-sm text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </h5>
+                        <div class="card-body">
+                            <div class="col-auto my-2">
+                                <select wire:model="bentukKegiatan"
+                                    class="form-select form-select-sm mr-sm-2 @error('arrayBentukKegiatan') is-invalid @enderror">
+                                    <option value="0">Pilih Bentuk Kegiatan</option>
+                                    @foreach ($getBentukKegiatan as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @forelse ($arrayBentukKegiatan as $key => $item)
+                                <div class="card my-1">
+                                    <label class="m-1">
+                                        <button type="button" wire:click="minArrayBentuk({{ $key }})"
+                                            class="btn-sm btn text-danger" style="float: right"><i
+                                                class="bx bx-layer-minus"></i></button>
+                                    </label>
+                                    <label class="mx-3"><i
+                                            class="bx bx-bullseye me-2"></i>{{ $getBentukKegiatan->find($item)->nama }}
+                                    </label>
+        
+                                    <div class="card-body">
+                                        <div class="col-auto my-1">
+                                            <div class="col-sm-12">
+                                                <label class="@error('nilai_kontrak.' . $key) text-danger @enderror">Nilai
+                                                    kontrak</label>
+                                                <div class="text-muted small m-b-xs mb-1">Nominal nilai kontrak proposal</div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="input-group input-group-merge">
+                                                    <span class="input-group-text">Rp.</span>
+                                                    <input type="text" wire:model.lazy="nilai_kontrak.{{ $key }}"
+                                                        class="form-control form-control-sm" id="{{ $key }}"
+                                                        placeholder="0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto my-1">
+                                            <div class="col-sm-12"><label>Luaran</label></div>
+                                            <div class="col-sm-12">
+                                                <div class="input-group input-group-merge">
+                                                    <span
+                                                        class="input-group-text @error('volume_luaran.' . $key) text-danger @enderror">Volume</span>
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        wire:model.lazy="volume_luaran.{{ $key }}" placeholder="0">
+                                                    <span
+                                                        class="input-group-text @error('volume_satuan.' . $key) text-danger @enderror">@</span>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        wire:model.lazy="volume_satuan.{{ $key }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto my-1">
+                                            <div class="col-sm-12">
+                                                <label
+                                                    class="@error('keterangan.' . $key) text-danger @enderror">Keterangan</label>
+                                                <div class="text-muted small m-b-xs mb-1">Ringkasan luaran dari kegiatan</div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <textarea wire:model.lazy="keterangan.{{ $key }}" rows="3" class="form-control form-control-sm"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="col-sm-12">
+                                                <label
+                                                    class="@error('arraySasaran.' . $key) text-danger @enderror"s>Sasaran</label>
+                                                <div wire:loading wire:target="arraySasaran.{{ $key }}"
+                                                    class="mx-1 spinner-border spinner-border-sm text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <select wire:model="arraySasaran.{{ $key }}"
+                                                    class="form-select form-select-sm" aria-hidden="true">
+                                                    <option></option>
+                                                    @foreach ($getSasaranKegiatan as $items)
+                                                        <option value="{{ $items->id }}">{{ $items->nama }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="col-sm-12">
+                                                <label class="@error('arrayKinerja.' . $key) text-danger @enderror">Indikator
+                                                    Kinerja</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <select class="form-select form-select-sm" aria-hidden="true"
+                                                    wire:model="arrayKinerja.{{ $key }}">
+                                                    <option></option>
+                                                    @foreach ($getIndikatorKinerja->where('id_sasaran_kegiatan', $arraySasaran[$key] ?? null) as $itemz)
+                                                        <option value="{{ $itemz->id }}">{{ $itemz->nama }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    var tanpa_rupiah = document.getElementById('{{ $key }}');
+                                    tanpa_rupiah.addEventListener('keyup', function(e) {
+                                        tanpa_rupiah.value = formatRupiah(this.value);
+                                    });
+                                </script>
+                            @empty
+                                <label class="my-2 text-warning">Belum Memilih Bentuk Kegiatan</label>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+                
+         <!-- Signing Information -->
+         <div id="signingInfo" class="col-md-4">
+            <div class="card mb-4">
+                <h5 class="card-header text-primary"><i class="bx bx-calendar me-3"></i>Signing Information</h5>
+                <div class="card-body demo-vertical-spacing demo-only-element">
+                    <div class="col-auto my-2">
+                        <label class="form-label">MoU Activation Date / Signing Date</label>
+                        <input required wire:model.defer="signing_date" type="date"
+                            class="form-control form-control-sm @error('signing_date') is-invalid @enderror">
+                    </div>
+                    <div class="col-auto my-2">
+                        <label class="form-label">MoU Duration (in years)</label>
+                        <select required wire:model.defer="duration_years"
+                            class="form-select form-select-sm @error('duration_years') is-invalid @enderror">
+                            <option value="">Select Duration</option>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}">{{ $i }}
+                                    year{{ $i > 1 ? 's' : '' }}</option>
+                            @endfor
+                        </select>
+                        @error('duration_years')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
                 <!-- Signing Representative -->
                 <div id="signingRep" class="col-md-4">
                     <div class="card mb-4">
@@ -183,6 +339,7 @@
                         </div>
                     </div>
                 </div>
+            
 
                 <!-- University Logo -->
                 @if ($uploadDocument)

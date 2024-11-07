@@ -3,7 +3,12 @@
 namespace App\Http\Livewire\Input;
 
 use App\Models\Negara;
+
+use App\Models\ReferensiBadanKemitraan;
 use Livewire\Component;
+use App\Models\LapkermaRefBentukKegiatan;
+use App\Models\LapkermaRefSasaranKegiatan;
+use App\Models\LapkermaRefIndikatorKinerja;
 use Livewire\WithFileUploads;
 use PhpOffice\PhpWord\TemplateProcessor;
 use App\Mail\DocumentMail;
@@ -24,6 +29,22 @@ class GuestMouInput extends Component
     public $pic_name, $pic_designation, $pic_address, $pic_email, $pic_phone;
     public $rep_name, $rep_designation, $logo;
     public $region;
+    public $getBentukKegiatan;
+    public $arrayBentukKegiatan=[];
+    public $getSasaranKegiatan;
+    public $getIndikatorKinerja;
+    public $badanKemitraanOptions;
+
+    public $alamat_pj_pihak_unhas, $tanggal_ttd_unhas, $durasi_unhas;
+public $nama_pejabat_pihak_unhas, $jabatan_pejabat_pihak_unhas;
+public $pj_pihak_unhas, $jabatan_pj_pihak_unhas;
+public $email_pj_pihak_unhas, $hp_pj_pihak_unhas;
+public $bentuk_kegiatan, $mitra, $ptqs;
+
+
+
+   
+
 
     public $type_collaboration;
 
@@ -48,6 +69,7 @@ class GuestMouInput extends Component
     }
 
     protected $rules = [
+        'bentukKegiatan' => 'required|exists:lapkerma_ref_bentuk_kegiatans,id',
         'university_name' => 'required|string|max:255',
         'country_of_origin' => 'required|string|max:255',
         'signing_date' => 'required|date',
@@ -60,10 +82,22 @@ class GuestMouInput extends Component
         'rep_name' => 'required|string|max:255',
         'rep_designation' => 'required|string|max:255',
         'type_collaboration' => 'required|string|in:dalam_negeri,luar_negeri',
-        'logo' => 'required|image|mimes:png|max:2048|dimensions:max_width=2048,max_height=2048', // Corrected dimension validation
-        'mou_document' => 'nullable|file|mimes:pdf,doc,docx|max:2048' // Add rules for document upload
+        'logo' => 'required|image|mimes:png|max:2048|dimensions:max_width=2048,max_height=2048',
+        'mou_document' => 'nullable|file|mimes:pdf,doc,docx|max:2048', 
+        'alamat_pj_pihak_unhas' => 'nullable|string|max:255',
+        'tanggal_ttd_unhas' => 'nullable|date',
+        'durasi_unhas' => 'nullable|integer|min:1|max:5',
+        'nama_pejabat_pihak_unhas' => 'nullable|string|max:255',
+        'jabatan_pejabat_pihak_unhas' => 'nullable|string|max:255',
+        'pj_pihak_unhas' => 'nullable|string|max:255',
+        'jabatan_pj_pihak_unhas' => 'nullable|string|max:255',
+        'email_pj_pihak_unhas' => 'nullable|email|max:255',
+        'hp_pj_pihak_unhas' => 'nullable|string|max:20',
+        'bentuk_kegiatan' => 'nullable|string|max:255',
+        'mitra' => 'nullable|string|max:255',
+        'ptqs' => 'nullable|string|max:255',
     ];
-
+    
     public function submit()
     {
         // Validate the form data
@@ -104,6 +138,19 @@ class GuestMouInput extends Component
             'email_pj_pihak' => $this->pic_email,
             'hp_pj_pihak' => $this->pic_phone,
             'region' => $this->region,
+
+            'alamat_pj_pihak_unhas' => $this->alamat_pj_pihak_unhas,
+            'tanggal_ttd_unhas' => $this->tanggal_ttd_unhas,
+            'durasi_unhas' => $this->durasi_unhas,
+            'nama_pejabat_pihak_unhas' => $this->nama_pejabat_pihak_unhas,
+            'jabatan_pejabat_pihak_unhas' => $this->jabatan_pejabat_pihak_unhas,
+            'pj_pihak_unhas' => $this->pj_pihak_unhas,
+            'jabatan_pj_pihak_unhas' => $this->jabatan_pj_pihak_unhas,
+            'email_pj_pihak_unhas' => $this->email_pj_pihak_unhas,
+            'hp_pj_pihak_unhas' => $this->hp_pj_pihak_unhas,
+            'bentuk_kegiatan' => $this->bentuk_kegiatan,
+            'mitra' => $this->mitra,
+            'ptqs' => $this->ptqs,
         ];
 
         // Simpan data ke dalam model MouRequest
@@ -178,6 +225,22 @@ class GuestMouInput extends Component
         $this->scopeList = array_values($this->scopeList);
     }
 
+    public $bentukKegiatan = 0;
+
+    public function updatedBentukKegiatan()
+    {
+        if ($this->bentukKegiatan != 0) {
+            array_push($this->arrayBentukKegiatan, $this->bentukKegiatan);
+        }
+        $this->reset('bentukKegiatan');
+    }
+
+    public function minArrayBentuk($key)
+{
+    // Hapus bentuk kegiatan tertentu berdasarkan key
+    unset($this->arrayBentukKegiatan[$key]);
+}
+
     public function mount()
     {
         // Fetch all countries when the component is initialized
@@ -185,6 +248,14 @@ class GuestMouInput extends Component
         $this->regions = Region::all();
         $this->pic_name = auth()->user()->name;
         $this->pic_email = auth()->user()->email;
+        $this->getBentukKegiatan = LapkermaRefBentukKegiatan::all();
+       
+        $this->getSasaranKegiatan = LapkermaRefSasaranKegiatan::all();
+        $this->getIndikatorKinerja = LapkermaRefIndikatorKinerja::all(); 
+        $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
+
+   
+
     }
 
     // Properti untuk mengatur kondisi dinamis
@@ -207,6 +278,8 @@ public function updatedTypeCollaboration($value)
 
     public function render()
     {
-        return view('livewire.input.guest-mou-input');
+        return view('livewire.input.guest-mou-input', [
+            'bentukKegiatan' => $this->arrayBentukKegiatan,
+        ]);
     }
 }
