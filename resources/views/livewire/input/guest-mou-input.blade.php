@@ -1,3 +1,26 @@
+@push('costum-scripts')
+    <script>
+        function validateImage(input) {
+            const file = input.files[0];
+            const imageError = document.getElementById('imageError');
+
+            if (file) {
+                const fileSize = file.size / 5120 / 5120; // size in MB
+                const allowedExtensions = /(\.png)$/i;
+
+                if (!allowedExtensions.exec(file.name) || fileSize > 1) { // 1 MB limit
+                    imageError.classList.remove('d-none');
+                    input.value = ''; // Clear the input
+                } else {
+                    imageError.classList.add('d-none');
+                }
+            }
+        }
+        window.addEventListener('show-alert', event => {
+            alert(`${event.detail.title}\n\n${event.detail.message}`);
+        });
+    </script>
+@endpush
 <div>
     <form wire:submit.prevent="submit">
         <div class="container">
@@ -32,37 +55,37 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <!-- Tampilkan input tambahan jika showCountryInput bernilai true -->
                             @if ($showCountryInput)
-    <div class="col-auto my-2">
-        <label class="form-label">Country of Origin</label>
-        <select required wire:model="country_of_origin" class="form-select form-select-sm">
-            <option value="">Select Country</option>
-            @foreach ($negaras as $negara)
-                <option value="{{ $negara->id }}">{{ $negara->name }}</option>
-            @endforeach
-        </select>
-        @error('country_of_origin')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-    </div>
+                                <div class="col-auto my-2">
+                                    <label class="form-label">Country of Origin</label>
+                                    <select required wire:model="country_of_origin" class="form-select form-select-sm">
+                                        <option value="">Select Country</option>
+                                        @foreach ($negaras as $negara)
+                                            <option value="{{ $negara->id }}">{{ $negara->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('country_of_origin')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-    <div class="col-auto my-2">
-        <label class="form-label">Region</label>
-        <select required wire:model="region" class="form-select form-select-sm">
-            <option value="">Select Region</option>
-            @foreach ($regions as $region)
-                <option value="{{ $region->id }}">{{ $region->nama }}</option>
-            @endforeach
-        </select>
-        @error('region')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-    </div>
-@endif
+                                <div class="col-auto my-2">
+                                    <label class="form-label">Region</label>
+                                    <select required wire:model="region" class="form-select form-select-sm">
+                                        <option value="">Select Region</option>
+                                        @foreach ($regions as $region)
+                                            <option value="{{ $region->id }}">{{ $region->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('region')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
 
-                            
+
 
                             @if ($uploadDocument)
                                 <div class="col-auto my-2">
@@ -105,7 +128,8 @@
                 <!-- Signing Information -->
                 <div id="signingInfo" class="col-md-4">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-calendar me-3"></i>Signing Information</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-calendar me-3"></i>Signing Information
+                        </h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <div class="col-auto my-2">
                                 <label class="form-label">MoU Activation Date / Signing Date</label>
@@ -133,7 +157,8 @@
                 <!-- PIC (Person in Charge) Information -->
                 <div id="picInfo" class="col-md-4">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-user me-3"></i>Person in Charge (PIC)</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-user me-3"></i>Person in Charge (PIC)
+                        </h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <div class="col-auto my-2">
                                 <label class="form-label">Name</label>
@@ -167,7 +192,8 @@
                 <!-- Signing Representative -->
                 <div id="signingRep" class="col-md-4">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-id-card me-3"></i>Signing Representative
+                        <h5 class="card-header text-primary"><i class="bx bx-id-card me-3"></i>Signing
+                            Representative
                         </h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <div class="col-auto my-2">
@@ -193,7 +219,8 @@
                             </h5>
                             <div class="card-body demo-vertical-spacing demo-only-element">
                                 <label class="form-label">Logo (PNG format)
-                                    <i class="small text-warning">* Maximum dimensions: 1024x1024 pixels, PNG format
+                                    <i class="small text-warning">* Maximum dimensions: 1024x1024 pixels, PNG
+                                        format
                                         only</i>
                                 </label>
                                 <input required wire:model="logo" type="file"
@@ -202,7 +229,8 @@
                                 @error('logo')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                                <div id="imageError" class="text-danger d-none">Image must be in PNG format and under
+                                <div id="imageError" class="text-danger d-none">Image must be in PNG format and
+                                    under
                                     1024x1024 pixels.</div>
                             </div>
                         </div>
@@ -212,7 +240,8 @@
                 <!-- Upload MoU Document -->
                 <div id="uploadDocument" class="col-md-4 d-none">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-upload me-3"></i>Upload MoU Document</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-upload me-3"></i>Upload MoU Document
+                        </h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <label class="form-label">MoU Document (PDF/DOC)</label>
                             <input wire:ignore="mou_document" type="file"
@@ -238,22 +267,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    function validateImage(input) {
-        const file = input.files[0];
-        const imageError = document.getElementById('imageError');
-
-        if (file) {
-            const fileSize = file.size / 1024 / 1024; // size in MB
-            const allowedExtensions = /(\.png)$/i;
-
-            if (!allowedExtensions.exec(file.name) || fileSize > 1) { // 1 MB limit
-                imageError.classList.remove('d-none');
-                input.value = ''; // Clear the input
-            } else {
-                imageError.classList.add('d-none');
-            }
-        }
-    }
-</script>

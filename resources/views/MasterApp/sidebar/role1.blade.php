@@ -134,11 +134,11 @@
                         <div data-i18n="Without navbar">Total</div>
                     </a>
                 </li>
-                <li class="menu-item {{ request()->route()->getName() == 'ikuScores' ? 'active' : '' }}">
+                {{-- <li class="menu-item {{ request()->route()->getName() == 'ikuScores' ? 'active' : '' }}">
                     <a class="menu-link" href="{{ route('ikuScores') }}">
                         <div data-i18n="Without navbar">Scores</div>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </li>
 

@@ -18,8 +18,8 @@ class GuestMouInput extends Component
     use WithFileUploads;
 
 
-    public $negaras; 
-    public $regions; 
+    public $negaras;
+    public $regions;
     public $university_name, $country_of_origin, $scope, $signing_date, $duration_years;
     public $pic_name, $pic_designation, $pic_address, $pic_email, $pic_phone;
     public $rep_name, $rep_designation, $logo;
@@ -69,7 +69,7 @@ class GuestMouInput extends Component
         // Validate the form data
         $this->validate();
 
-        if ($this->type_collaboration === 2 ) {
+        if ($this->type_collaboration === 2) {
             $this->validate([
                 'region' => 'required|string|max:255',
             ]);
@@ -139,19 +139,31 @@ class GuestMouInput extends Component
             $outputFile = storage_path('app/public/mou_generated.docx');
             $templateProcessor->saveAs($outputFile);
 
-            Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->university_name));
+            Mail::to('lapkermatest@gmail.com')->send(new DocumentMail($outputFile, $this->university_name));
+
+            $this->dispatchBrowserEvent('show-alert', [
+                'icon' => 'success',
+                'title' => 'Email sent successfully!',
+                'message' => 'The document has been sent to the specified email.'
+            ]);
 
             // Return the .docx file as a download
-            return response()->download($outputFile)->deleteFileAfterSend(true);
+            return response();
         } else {
             $mouDocPath = $this->mou_document->store('mou_documents', 'public');
             $uploadedFilePath = storage_path('app/public/' . $mouDocPath);
 
             // Send the uploaded document via email
-            Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($uploadedFilePath, $this->university_name));
+            Mail::to('lapkermatest@gmail.com')->send(new DocumentMail($uploadedFilePath, $this->university_name));
+
+            $this->dispatchBrowserEvent('show-alert', [
+                'icon' => 'success',
+                'title' => 'Email sent successfully!',
+                'message' => 'The document has been sent to the specified email.'
+            ]);
 
             // Return the uploaded file as a download
-            return response()->download($uploadedFilePath)->deleteFileAfterSend(true);
+            return response();
         }
     }
 
@@ -188,21 +200,21 @@ class GuestMouInput extends Component
     }
 
     // Properti untuk mengatur kondisi dinamis
-public $showCountryInput = false;
+    public $showCountryInput = false;
 
-// Perbarui metode untuk menangani perubahan pada dropdown type_collaboration
-public function updatedTypeCollaboration($value)
-{
-    if ($value == "1") {
-        $this->country_of_origin = "103"; 
-        $this->region = 1;
-        $this->showCountryInput = false;
-    } elseif ($value == "2") {
-        $this->country_of_origin = null; 
-        $this->region = null;
-        $this->showCountryInput = true;
+    // Perbarui metode untuk menangani perubahan pada dropdown type_collaboration
+    public function updatedTypeCollaboration($value)
+    {
+        if ($value == "1") {
+            $this->country_of_origin = "103";
+            $this->region = 1;
+            $this->showCountryInput = false;
+        } elseif ($value == "2") {
+            $this->country_of_origin = null;
+            $this->region = null;
+            $this->showCountryInput = true;
+        }
     }
-}
 
 
     public function render()

@@ -15,7 +15,7 @@ class DocumentMail extends Mailable
     public function __construct($filePath, $documentName)
     {
         $this->filePath = $filePath;
-        $this->fileName = $documentName;
+        $this->fileName = $documentName . '_' . date('Y-m-d_H-i-s');
     }
 
     public function build()
@@ -26,9 +26,9 @@ class DocumentMail extends Mailable
             ? 'application/pdf'
             : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
-        return $this->view('email.document') // Create a view for the email body
+        return $this->view('email.document')
             ->attach($this->filePath, [
-                'as' => $this->fileName . '.' . $extension, // Display name with the original extension
+                'as' => $this->fileName . '.' . $extension,
                 'mime' => $mimeType,
             ])
             ->subject('Dokumen MoU');
