@@ -70,7 +70,6 @@ class Mou extends Component
         $this->jenisKerjasamaField = 1;
         $this->updatedJenisKerjasamaField();
         $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
-
    
     }
 
@@ -174,7 +173,25 @@ class Mou extends Component
         $this->hp_pj_pihak[1] = $findMe->hp_pj_pihak;
 
         $this->nama_pihak[0] = "Universitas Hasanuddin";
-        $this->alamat_pihak[0] = "Jl. Perintis Kemerdekaan Km. 10";
+        $this->alamat_pihak[0] = $findMe->alamat_pj_pihak_unhas ?? "Jl. Perintis Kemerdekaan Km. 10";
+        $this->nama_pejabat_pihak[0] = $findMe->nama_pejabat_pihak_unhas;
+        $this->jabatan_pejabat_pihak[0] = $findMe->jabatan_pejabat_pihak_unhas;
+        $this->pj_pihak[0] = $findMe->pj_pihak_unhas;
+        $this->jabatan_pj_pihak[0] = $findMe->jabatan_pj_pihak_unhas;
+        $this->email_pj_pihak[0] = $findMe->email_pj_pihak_unhas;
+        $this->hp_pj_pihak[0] = $findMe->hp_pj_pihak_unhas;
+
+        $findKegiatan = DataMouBentukKegiatanKerjasama::where('id_mou', $this->MouRequestId)->get();
+        $this->arrayBentukKegiatan = [];
+        foreach ($findKegiatan as $key => $value) {
+            array_push($this->arrayBentukKegiatan, $value->id_ref_bentuk_kegiatan);
+            $this->nilai_kontrak[$key] = $value->nilai_kontrak;
+            $this->volume_satuan[$key] = $value->volume_satuan;
+            $this->volume_luaran[$key] = $value->volume_luaran;
+            $this->keterangan[$key] = $value->keterangan;
+            $this->arrayKinerja[$key] = $value->id_ref_indikator_kinerja;
+            $this->arraySasaran[$key] = $value->id_ref_sasaran_kegiatan;
+        }
     }
 
     public function saveEdit($id)
@@ -220,9 +237,6 @@ class Mou extends Component
                     'fakultas_pihak.' . $value => 'required',
                     'alamat_pihak.' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
-                    //   'pj_pihak.'.$value => 'required',
-                    //   'email_pj_pihak.'.$value => 'required|email',
-                    //   'hp_pj_pihak.'.$value => 'required',
                 ]);
             }
             if ($this->status[$value] == 4) {
@@ -233,9 +247,6 @@ class Mou extends Component
                     //   'arrayProdi.'.$value => 'required',
                     'alamat_pihak.' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
-                    //   'pj_pihak.'.$value => 'required',
-                    //   'email_pj_pihak.'.$value => 'required',
-                    //   'hp_pj_pihak.'.$value => 'required',
                 ]);
             }
             if ($this->status[$value] == 2) {
@@ -244,9 +255,6 @@ class Mou extends Component
                     'fakultas_pihak.' . $value => 'required',
                     'alamat_pihak.' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
-                    //   'pj_pihak.'.$value => 'required',
-                    //   'email_pj_pihak.'.$value => 'required|email',
-                    //   'hp_pj_pihak.'.$value => 'required',
                 ]);
             }
             if ($this->status[$value] == 3) {
@@ -262,9 +270,6 @@ class Mou extends Component
                         'badanKemitraan.' . $value => 'required',
                         'alamat_pihak.' . $value => 'required',
                         'nama_pejabat_pihak.' . $value => 'required',
-                        //   'pj_pihak.'.$value => 'required',
-                        //   'email_pj_pihak.'.$value => 'required|email',
-                        //   'hp_pj_pihak.'.$value => 'required',
                     ]);
                 } else {
                     $this->validate([
@@ -272,9 +277,6 @@ class Mou extends Component
                         'badanKemitraan.' . $value => 'required',
                         'alamat_pihak.' . $value => 'required',
                         'nama_pejabat_pihak.' . $value => 'required',
-                        //   'pj_pihak.'.$value => 'required',
-                        //   'email_pj_pihak.'.$value => 'required',
-                        //   'hp_pj_pihak.'.$value => 'required',
                     ]);
                 }
             }
@@ -284,13 +286,6 @@ class Mou extends Component
             'arrayBentukKegiatan' => 'required'
         ]);
 
-        // validate bentuk kegiatan
-        // foreach ($this->arrayBentukKegiatan as $key => $value) {
-        //     $this->validate([
-        //         'arrayKinerja.'.$key => 'required',
-        //         'arraySasaran.'.$key => 'required',
-        //     ]);
-        // }
 
         $this->arrayNamaPenggiat = [];
         $hitung = 0;
@@ -455,8 +450,6 @@ class Mou extends Component
 
     public function takeArray()
     {
-        // $this->arrayJawaban = $this->arrayJawaban + 1;
-        // array_push($this->inputs ,$this->arrayJawaban);
         if ($this->arrayJawaban < 8) {
             $this->arrayJawaban++;
         }
@@ -535,9 +528,7 @@ class Mou extends Component
                     'fakultas_pihak.' . $value => 'required',
                     'alamat_pihak.' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
-                    //   'pj_pihak.'.$value => 'required',
-                    //   'email_pj_pihak.'.$value => 'required|email',
-                    //   'hp_pj_pihak.'.$value => 'required',
+                   
                 ]);
             }
             if ($this->status[$value] == 4) {
@@ -548,9 +539,7 @@ class Mou extends Component
                     //   'arrayProdi.'.$value => 'required',
                     'alamat_pihak.' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
-                    //   'pj_pihak.'.$value => 'required',
-                    //   'email_pj_pihak.'.$value => 'required',
-                    //   'hp_pj_pihak.'.$value => 'required',
+                    
                 ]);
             }
             if ($this->status[$value] == 2) {
@@ -559,9 +548,7 @@ class Mou extends Component
                     'fakultas_pihak.' . $value => 'required',
                     'alamat_pihak.' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
-                    //   'pj_pihak.'.$value => 'required',
-                    //   'email_pj_pihak.'.$value => 'required|email',
-                    //   'hp_pj_pihak.'.$value => 'required',
+            
                 ]);
             }
             if ($this->status[$value] == 3) {
@@ -576,9 +563,7 @@ class Mou extends Component
                         'badanKemitraan.' . $value => 'required',
                         'alamat_pihak.' . $value => 'required',
                         'nama_pejabat_pihak.' . $value => 'required',
-                        //   'pj_pihak.'.$value => 'required',
-                        //   'email_pj_pihak.'.$value => 'required|email',
-                        //   'hp_pj_pihak.'.$value => 'required',
+                        
                     ]);
                 } else {
                     $this->validate([
@@ -586,9 +571,7 @@ class Mou extends Component
                         'badanKemitraan.' . $value => 'required',
                         'alamat_pihak.' . $value => 'required',
                         'nama_pejabat_pihak.' . $value => 'required',
-                        //   'pj_pihak.'.$value => 'required',
-                        //   'email_pj_pihak.'.$value => 'required|email',
-                        //   'hp_pj_pihak.'.$value => 'required',
+                        
                     ]);
                 }
             }
@@ -598,13 +581,6 @@ class Mou extends Component
             'arrayBentukKegiatan' => 'required'
         ]);
 
-        // validate bentuk kegiatan
-        // foreach ($this->arrayBentukKegiatan as $key => $value) {
-        //     $this->validate([
-        //         'arrayKinerja.'.$key => 'required',
-        //         'arraySasaran.'.$key => 'required',
-        //     ]);
-        // }
     }
 
     public function save()
@@ -733,6 +709,9 @@ class Mou extends Component
                                     'badan_kemitraan' => $this->lainnya[$key]
                                 ]);
                             }
+                        }
+                        if($this->MouRequestId != null){
+                            DataMouBentukKegiatanKerjasama::where('id_mou', $this->MouRequestId)->delete();
                         }
                         foreach ($this->arrayBentukKegiatan as $key => $value) {
                             $storeBentukKegiatanKerjasama = DataMouBentukKegiatanKerjasama::create([
