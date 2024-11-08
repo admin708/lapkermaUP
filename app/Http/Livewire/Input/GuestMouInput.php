@@ -30,20 +30,20 @@ class GuestMouInput extends Component
     public $rep_name, $rep_designation, $logo;
     public $region;
     public $getBentukKegiatan;
-    public $arrayBentukKegiatan=[];
+    public $arrayBentukKegiatan = [];
     public $getSasaranKegiatan;
     public $getIndikatorKinerja;
     public $badanKemitraanOptions;
 
     public $alamat_pj_pihak_unhas, $tanggal_ttd_unhas, $durasi_unhas;
-public $nama_pejabat_pihak_unhas, $jabatan_pejabat_pihak_unhas;
-public $pj_pihak_unhas, $jabatan_pj_pihak_unhas;
-public $email_pj_pihak_unhas, $hp_pj_pihak_unhas;
-public $bentuk_kegiatan, $mitra, $ptqs;
+    public $nama_pejabat_pihak_unhas, $jabatan_pejabat_pihak_unhas;
+    public $pj_pihak_unhas, $jabatan_pj_pihak_unhas;
+    public $email_pj_pihak_unhas, $hp_pj_pihak_unhas;
+    public $bentuk_kegiatan, $mitra, $ptqs;
 
 
 
-   
+
 
 
     public $type_collaboration;
@@ -83,7 +83,7 @@ public $bentuk_kegiatan, $mitra, $ptqs;
         'rep_designation' => 'required|string|max:255',
         'type_collaboration' => 'required|string|in:dalam_negeri,luar_negeri',
         'logo' => 'required|image|mimes:png|max:2048|dimensions:max_width=2048,max_height=2048',
-        'mou_document' => 'nullable|file|mimes:pdf,doc,docx|max:2048', 
+        'mou_document' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         'alamat_pj_pihak_unhas' => 'nullable|string|max:255',
         'tanggal_ttd_unhas' => 'nullable|date',
         'durasi_unhas' => 'nullable|integer|min:1|max:5',
@@ -97,7 +97,7 @@ public $bentuk_kegiatan, $mitra, $ptqs;
         'mitra' => 'nullable|string|max:255',
         'ptqs' => 'nullable|string|max:255',
     ];
-    
+
     public function submit()
     {
         // Validate the form data
@@ -153,6 +153,7 @@ public $bentuk_kegiatan, $mitra, $ptqs;
             'ptqs' => $this->ptqs,
         ];
 
+        dd($data);
         // Simpan data ke dalam model MouRequest
         $mouRequest = MouRequest::create($data);
 
@@ -248,10 +249,10 @@ public $bentuk_kegiatan, $mitra, $ptqs;
     }
 
     public function minArrayBentuk($key)
-{
-    // Hapus bentuk kegiatan tertentu berdasarkan key
-    unset($this->arrayBentukKegiatan[$key]);
-}
+    {
+        // Hapus bentuk kegiatan tertentu berdasarkan key
+        unset($this->arrayBentukKegiatan[$key]);
+    }
 
     public function mount()
     {
@@ -261,13 +262,10 @@ public $bentuk_kegiatan, $mitra, $ptqs;
         $this->pic_name = auth()->user()->name;
         $this->pic_email = auth()->user()->email;
         $this->getBentukKegiatan = LapkermaRefBentukKegiatan::all();
-       
+
         $this->getSasaranKegiatan = LapkermaRefSasaranKegiatan::all();
-        $this->getIndikatorKinerja = LapkermaRefIndikatorKinerja::all(); 
+        $this->getIndikatorKinerja = LapkermaRefIndikatorKinerja::all();
         $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
-
-   
-
     }
 
     // Properti untuk mengatur kondisi dinamis
