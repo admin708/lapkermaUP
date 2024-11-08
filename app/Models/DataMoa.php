@@ -43,37 +43,48 @@ class DataMoa extends Model
 
     public function getmeOut()
     {
-        return $this->hasMany('App\Models\DataMouPenggiat', 'id_lapkerma', 'id');
+        return $this->hasMany('App\Models\DataMoaPenggiat', 'id_lapkerma', 'id');
     }
 
     public function getPihak($pihak)
     {
         $data = self::whereHas('getmeOut', function ($query) use ($pihak) {
-                        $query->when($pihak, function ($query) use ($pihak) {
-                            $query->where('pihak', $pihak);
-                        });
-                    })
-                    ->first();
+            $query->when($pihak, function ($query) use ($pihak) {
+                $query->where('pihak', $pihak);
+            });
+        })
+            ->first();
         return $data;
     }
 
-    public static function searchBy($tahun=null, $fakultas=null, $noDokumen=null, $judul=null, $status=null, $jenis=null, $namaProdi=null,
-                                    $negara=null, $mitra=null, $prodi=null, $tingkat=null, $sortData=null)
-    {
+    public static function searchBy(
+        $tahun = null,
+        $fakultas = null,
+        $noDokumen = null,
+        $judul = null,
+        $status = null,
+        $jenis = null,
+        $namaProdi = null,
+        $negara = null,
+        $mitra = null,
+        $prodi = null,
+        $tingkat = null,
+        $sortData = null
+    ) {
         if ($sortData == 1) {
             $sortData = "tanggal_ttd";
         } else {
             $sortData = "id";
         }
-        
+
         $data = self::when($tahun, function ($query) use ($tahun) {
             $query->whereYear('tanggal_ttd', $tahun);
         })->when($fakultas, function ($query) use ($fakultas) {
             $query->where('fakultas_pihak', $fakultas);
         })->when($noDokumen, function ($query) use ($noDokumen) {
-            $query->where('nomor_dok_unhas', 'LIKE', '%'.$noDokumen.'%');
+            $query->where('nomor_dok_unhas', 'LIKE', '%' . $noDokumen . '%');
         })->when($judul, function ($query) use ($judul) {
-            $query->where('judul', 'LIKE', '%'.$judul.'%');
+            $query->where('judul', 'LIKE', '%' . $judul . '%');
         })->when($status, function ($query) use ($status) {
             $query->where('status', $status);
         })->when($jenis, function ($query) use ($jenis) {
@@ -81,9 +92,9 @@ class DataMoa extends Model
         })->when($namaProdi, function ($query) use ($namaProdi) {
             $query->where('nama_prodi', 'LIKE', $namaProdi);
         })->when($negara, function ($query) use ($negara) {
-            $query->where('negara', 'LIKE', '%'.$negara.'%');
+            $query->where('negara', 'LIKE', '%' . $negara . '%');
         })->when($mitra, function ($query) use ($mitra) {
-            $query->where('penggiat', 'LIKE', '%'.$mitra.'%');
+            $query->where('penggiat', 'LIKE', '%' . $mitra . '%');
         })->when($prodi, function ($query) use ($prodi) {
             $query->where('prodi_id', $prodi);
         })->when($tingkat, function ($query) use ($tingkat) {
@@ -95,11 +106,11 @@ class DataMoa extends Model
 
     public static function countStatus($val)
     {
-       $data = self::where('status',$val)->count('id');
-       return $data;
+        $data = self::where('status', $val)->count('id');
+        return $data;
     }
 
-    public static function countBy($month=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countBy($month = null, $year = null, $fakultas = null, $prodi = null)
     {
         // $data = self::whereYear('tanggal_awal', '=', $year)->whereMonth('tanggal_awal','=', $month)
         $data = self::when($month, function ($query) use ($month) {
@@ -120,7 +131,7 @@ class DataMoa extends Model
         return $this->hasMany('App\Models\DataMoaBentukKegiatanKerjasama', 'id_moa', 'id');
     }
 
-    public static function countBentukKegiatan($kegiatan=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countBentukKegiatan($kegiatan = null, $year = null, $fakultas = null, $prodi = null)
     {
         $data = self::whereHas('getBentukKegiatan', function ($query) use ($kegiatan) {
             $query->when($kegiatan, function ($query) use ($kegiatan) {
@@ -137,18 +148,18 @@ class DataMoa extends Model
         return $data;
     }
 
-    public static function countNegara($negara=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countNegara($negara = null, $year = null, $fakultas = null, $prodi = null)
     {
-        $data = self::where('status',1)
-        ->when($negara, function ($query) use ($negara) {
-            $query->where('negara', $negara);
-        })->when($year, function ($query) use ($year) {
-            $query->whereYear('tanggal_awal', $year);
-        })->when($fakultas, function ($query) use ($fakultas) {
-            $query->where('fakultas_pihak', $fakultas);
-        })->when($prodi, function ($query) use ($prodi) {
-            $query->where('prodi_id', $prodi);
-        })->count();
+        $data = self::where('status', 1)
+            ->when($negara, function ($query) use ($negara) {
+                $query->where('negara', $negara);
+            })->when($year, function ($query) use ($year) {
+                $query->whereYear('tanggal_awal', $year);
+            })->when($fakultas, function ($query) use ($fakultas) {
+                $query->where('fakultas_pihak', $fakultas);
+            })->when($prodi, function ($query) use ($prodi) {
+                $query->where('prodi_id', $prodi);
+            })->count();
         // dd($data);
         return $data;
     }
@@ -158,7 +169,7 @@ class DataMoa extends Model
         return $this->hasMany('App\Models\DataMoaPenggiat', 'id_lapkerma', 'id');
     }
 
-    public static function countBadanKemitraan($kemitraan=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countBadanKemitraan($kemitraan = null, $year = null, $fakultas = null, $prodi = null)
     {
         $data = self::whereHas('getPenggiatKerjasama', function ($query) use ($kemitraan) {
             $query->when($kemitraan, function ($query) use ($kemitraan) {
@@ -175,7 +186,7 @@ class DataMoa extends Model
         return $data;
     }
 
-    public static function countPtqs($ptqs=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countPtqs($ptqs = null, $year = null, $fakultas = null, $prodi = null)
     {
         $data = self::whereHas('getPenggiatKerjasama', function ($query) use ($ptqs) {
             $query->when($ptqs, function ($query) use ($ptqs) {
@@ -192,7 +203,7 @@ class DataMoa extends Model
         return $data;
     }
 
-    public static function countPerguruanTinggi($pt=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countPerguruanTinggi($pt = null, $year = null, $fakultas = null, $prodi = null)
     {
         $data = self::whereHas('getPenggiatKerjasama', function ($query) use ($pt) {
             $query->when($pt, function ($query) use ($pt) {
@@ -208,6 +219,4 @@ class DataMoa extends Model
         // dd($data);
         return $data;
     }
-
-
 }

@@ -367,16 +367,28 @@ class GuestMouInput extends Component
             $outputFile = storage_path('app/public/mou_generated.docx');
             $templateProcessor->saveAs($outputFile);
 
-            Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->university_name));
+            Mail::to('lapkermatest@gmail.com')->send(new DocumentMail($outputFile, $this->university_name));
+
+            $this->dispatchBrowserEvent('show-alert', [
+                'icon' => 'success',
+                'title' => 'Email sent successfully!',
+                'message' => 'The document has been sent to the specified email.'
+            ]);
 
             // Return the .docx file as a download
-            return response()->download($outputFile)->deleteFileAfterSend(true);
+            return response();
         } else {
             $mouDocPath = $this->mou_document->store('mou_documents', 'public');
             $uploadedFilePath = storage_path('app/public/' . $mouDocPath);
 
             // Send the uploaded document via email
-            Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($uploadedFilePath, $this->university_name));
+            Mail::to('lapkermatest@gmail.com')->send(new DocumentMail($uploadedFilePath, $this->university_name));
+
+            $this->dispatchBrowserEvent('show-alert', [
+                'icon' => 'success',
+                'title' => 'Email sent successfully!',
+                'message' => 'The document has been sent to the specified email.'
+            ]);
 
             // Return the uploaded file as a download
             return response()->download($uploadedFilePath)->deleteFileAfterSend(true);

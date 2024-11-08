@@ -1,3 +1,26 @@
+@push('costum-scripts')
+    <script>
+        function validateImage(input) {
+            const file = input.files[0];
+            const imageError = document.getElementById('imageError');
+
+            if (file) {
+                const fileSize = file.size / 5120 / 5120; // size in MB
+                const allowedExtensions = /(\.png)$/i;
+
+                if (!allowedExtensions.exec(file.name) || fileSize > 1) { // 1 MB limit
+                    imageError.classList.remove('d-none');
+                    input.value = ''; // Clear the input
+                } else {
+                    imageError.classList.add('d-none');
+                }
+            }
+        }
+        window.addEventListener('show-alert', event => {
+            alert(`${event.detail.title}\n\n${event.detail.message}`);
+        });
+    </script>
+@endpush
 <div>
     <form wire:submit.prevent="submit">
         <div class="container">
@@ -624,7 +647,8 @@
                 <!-- Upload MoU Document -->
                 <div id="uploadDocument" class="col-md-4 d-none">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-upload me-3"></i>Upload MoU Document</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-upload me-3"></i>Upload MoU Document
+                        </h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <label class="form-label">MoU Document (PDF/DOC)</label>
                             <input wire:ignore="mou_document" type="file"
