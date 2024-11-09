@@ -4,7 +4,7 @@
         <div class="table-responsive text-nowrap mt-3">
             <!-- Search Filters -->
             <div class="mb-3 d-flex">
-                <input type="text" class="form-control form-control-sm me-2" placeholder="Cari Nama MoU"
+                <input type="text" class="form-control form-control-sm me-2" placeholder="Cari UID MoU"
                     wire:model="cariNamaMoU">
                 <input type="text" class="form-control form-control-sm" placeholder="Cari Pengirim MoU"
                     wire:model="cariPengirimMoU">
@@ -16,7 +16,7 @@
                     <tr>
                         <th>
                             <a href="#" wire:click.prevent="sortBy('judul')">
-                                DAFTAR MoU
+                                UID
                                 @if ($sortBy === 'judul')
                                     <span class="text-muted">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
@@ -36,8 +36,8 @@
                 <tbody>
                     @foreach ($dataMoUs as $item)
                         <tr>
-                            <td>{{ $item->nama_instansi }} - {{ $item->tanggal_ttd }}</td>
-                            <td>{{ $item->nama_pejabat_pihak }}</td>
+                            <td>{{ $item->uuid }} - {{ $item->tanggal_ttd }}</td>
+                            <td>{{ $item->uploaded_by }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -82,11 +82,6 @@
                         <button type="button" wire:click="closeEdit" class="btn btn-secondary btn-sm">
                             <span class="tf-icons bx bx-chevron-left"></span>&nbsp; Close
                         </button>
-                        @if (auth()->user()->role_id == 1)
-                            <button type="button" wire:click="emitEdit" class="btn btn-primary btn-sm">
-                                <span class="tf-icons bx bx-save"></span>&nbsp; Update
-                            </button>
-                        @endif
                     </div>
                 </div>
                 <div class="modal-body">

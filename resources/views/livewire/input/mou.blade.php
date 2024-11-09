@@ -66,8 +66,7 @@
                         <i class="small text-warning">* max 1 mb</i>
                     </label><br>
                     <input class="form-control form-control-sm @error('files') is-invalid @enderror" type="file"
-                        wire:model="files" id="uploadFiles2" multiple accept=".pdf"
-                        onchange="checkFileUploadExt2(this);" />
+                        wire:model="files" id="uploadFiles2" multiple accept=".pdf" {{-- onchange="checkFileUploadExt2(this);"  --}} />
                     @if ($idEdit)
                         <ul>
                             @foreach ($findDokumen as $item)
@@ -335,17 +334,17 @@
                                             class="form-control btn btn-sm btn-secondary">click</a>
                                     </div>
 
-                                    <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 3 ? 'd-block' : '' }}" style="display: none">
+                                    <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 3 ? 'd-block' : '' }}"
+                                        style="display: none">
                                         <select wire:model="badanKemitraan.{{ $value }}"
-                                                class="form-select form-select-sm mr-sm-2 @error('badanKemitraan.' . $value) is-invalid @enderror">
+                                            class="form-select form-select-sm mr-sm-2 @error('badanKemitraan.' . $value) is-invalid @enderror">
                                             <option value=""></option>
-                                            @foreach($badanKemitraanOptions as $option)
-                                           
-                                            <option value="{{ $option->id }}">{{ $option->nama }}</option>
-                                        @endforeach
+                                            @foreach ($badanKemitraanOptions as $option)
+                                                <option value="{{ $option->id }}">{{ $option->nama }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
-                                    
+
 
                                     <div class="col-12 my-2 {{ optional($status)[$value] == 3 ? (optional($badanKemitraan)[$value] == 99 ? 'd-block' : '') : '' }}"
                                         style="display: none">

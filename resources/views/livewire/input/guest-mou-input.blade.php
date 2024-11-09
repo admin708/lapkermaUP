@@ -1,20 +1,96 @@
+@push('custom-scripts')
+    <script>
+        function reloadPage() {
+            location.reload();
+        }
+        /* Fungsi */
+        function formatRupiah(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
+
+        function validateImage(input) {
+            const file = input.files[0];
+            const imageError = document.getElementById('imageError');
+
+            if (file) {
+                const fileSize = file.size / 1024 / 1024; // size in MB
+                const allowedExtensions = /(\.png)$/i;
+
+                if (!allowedExtensions.exec(file.name) || fileSize > 1) { // 1 MB limit
+                    imageError.classList.remove('d-none');
+                    input.value = ''; // Clear the input
+                } else {
+                    imageError.classList.add('d-none');
+                }
+            }
+        }
+
+        function validateImage(input) {
+            const file = input.files[0];
+            const imageError = document.getElementById('imageError');
+
+            if (file) {
+                const fileSize = file.size / 5120 / 5120; // size in MB
+                const allowedExtensions = /(\.png)$/i;
+
+                if (!allowedExtensions.exec(file.name) || fileSize > 1) { // 1 MB limit
+                    imageError.classList.remove('d-none');
+                    input.value = ''; // Clear the input
+                } else {
+                    imageError.classList.add('d-none');
+                }
+            }
+        }
+        window.addEventListener('show-alert', event => {
+            alert(`${event.detail.title}\n\n${event.detail.message}`);
+        });
+
+        document.addEventListener('livewire:load', function() {
+            $('#submissionModal').on('hidden.bs.modal', function() {
+                location.reload();
+            })
+            Livewire.on('formSubmitted', () => {
+                // Trigger the success modal
+                var submissionModal = new bootstrap.Modal(document.getElementById('submissionModal'));
+                submissionModal.show();
+            });
+
+            Livewire.on('formFailed', () => {
+                var submissionModal = new bootstrap.Modal(document.getElementById('submissionFailedModal'));
+                submissionModal.show();
+            });
+        });
+    </script>
+@endpush
+
 <div>
     <form wire:submit.prevent="submit">
         <div class="container">
 
+            @if (session()->has('message'))
+                <div class="alert alert-danger">
+                    {{ session('message') }}
+                </div>
+            @endif
             <!-- Checkbox to toggle upload document -->
             <div class="col-md-12 mb-4">
                 <input type="checkbox" id="uploadMoUCheckbox" wire:model="uploadDocument">
-                <label for="uploadMoUCheckbox">Use Our MoU Document Template</label>
+                <label for="uploadMoUCheckbox" class="text-primary">Use Our MoU Document Template</label>
             </div>
 
             <div class="row">
-                <!-- Basic -->
-                <div class="col-12 {{ $idEdit == false ? 'd-none' : '' }} ">
-                    <button class="btn btn-primary my-3 form-control" wire:click="saveEdit('{{ $idEdit }}')">Simpan
-                        Perubahan</button>
-                </div>
-
                 <div class="col-md-4">
                     <div class="card mb-1">
                         <h5 class="card-header text-primary"><i class="bx bx-link me-3"></i>Jenis Kerjasama</h5>
@@ -642,21 +718,31 @@
                             <div class="modal-header">
                                 <h5 class="modal-title text-primary" id="submissionModalLabel">Submission Received
                                 </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                    onclick="reloadPage()"></button>
+                            </div>
+                            <div class="modal-body">
+                                Your MoU submission has been received and will be processed within 5 working days.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="reloadPage()"
+                                    data-bs-dismiss="modal">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="submissionFailedModal" tabindex="-1"
+                    aria-labelledby="submissionFailedModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" id="submissionModalLabel">Submission Denied
+                                </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @else
-                                    Your MoU submission has been received and will be processed within 5 working days.
-                                @endif
+                                This MoU request already exists
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
@@ -678,86 +764,3 @@
             </div>
     </form>
 </div>
-
-<script></script>
-@push('custom-scripts')
-    <script>
-        /* Fungsi */
-        function formatRupiah(angka) {
-            var number_string = angka.replace(/[^,\d]/g, '').toString(),
-                split = number_string.split(','),
-                sisa = split[0].length % 3,
-                rupiah = split[0].substr(0, sisa),
-                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-            if (ribuan) {
-                separator = sisa ? '.' : '';
-                rupiah += separator + ribuan.join('.');
-            }
-
-            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return rupiah;
-        }
-
-        function validateImage(input) {
-            const file = input.files[0];
-            const imageError = document.getElementById('imageError');
-
-            if (file) {
-                const fileSize = file.size / 1024 / 1024; // size in MB
-                const allowedExtensions = /(\.png)$/i;
-
-                if (!allowedExtensions.exec(file.name) || fileSize > 1) { // 1 MB limit
-                    imageError.classList.remove('d-none');
-                    input.value = ''; // Clear the input
-                } else {
-                    imageError.classList.add('d-none');
-                }
-            }
-        }
-
-        function validateImage(input) {
-            const file = input.files[0];
-            const imageError = document.getElementById('imageError');
-
-            if (file) {
-                const fileSize = file.size / 5120 / 5120; // size in MB
-                const allowedExtensions = /(\.png)$/i;
-
-                if (!allowedExtensions.exec(file.name) || fileSize > 1) { // 1 MB limit
-                    imageError.classList.remove('d-none');
-                    input.value = ''; // Clear the input
-                } else {
-                    imageError.classList.add('d-none');
-                }
-            }
-        }
-        window.addEventListener('show-alert', event => {
-            alert(`${event.detail.title}\n\n${event.detail.message}`);
-        });
-
-        document.addEventListener('livewire:load', function() {
-            Livewire.on('formSubmitted', () => {
-                // Trigger the success modal
-                var submissionModal = new bootstrap.Modal(document.getElementById('submissionModal'));
-                submissionModal.show();
-            });
-
-            Livewire.on('formFailed', (errors) => {
-                // Display errors in the modal
-                let errorHtml = '<ul>';
-                errors.forEach(error => {
-                    errorHtml += `<li>${error}</li>`;
-                });
-                errorHtml += '</ul>';
-
-                // Update the modal content with errors
-                document.querySelector('#submissionModal .modal-body').innerHTML = errorHtml;
-
-                // Show the modal
-                var submissionModal = new bootstrap.Modal(document.getElementById('submissionModal'));
-                submissionModal.show();
-            });
-        });
-    </script>
-@endpush

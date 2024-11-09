@@ -17,12 +17,17 @@ use App\Models\StatusKerjasama;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 use App\Http\Livewire\Field;
+use App\Mail\MoUAcceptedNotification;
 use App\Models\MouRequest;
+use App\Models\MouRequestBentukKegiatanKerjasama;
+use App\Models\MouRequestDokumen;
+use App\Models\MouRequestPenggiat;
 use App\Models\ReferensiBadanKemitraan;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException as ERROR;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class Mou extends Component
@@ -70,7 +75,6 @@ class Mou extends Component
         $this->jenisKerjasamaField = 1;
         $this->updatedJenisKerjasamaField();
         $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
-   
     }
 
 
@@ -147,41 +151,56 @@ class Mou extends Component
     public function showGuestInputData($id)
     {
         $findMe = MouRequest::find($id);
-        $this->MouRequestId = $id;
+
+        // $this->nomor_unhas = $findMe->uuid;
         $this->tanggal_ttd = $findMe->tanggal_ttd;
-        $this->jenisKerjasamaField = $findMe->tipe_kerjasama;
+        $this->jenisKerjasamaField = $findMe->jenis_kerjasama;
         $negara = Negara::find($findMe->negara);
         $this->negara = $negara ? $negara->name : '';
-
         $this->region = $findMe->region;
+        $this->tempat_pelaksanaan = $findMe->tempat_pelaksanaan;
+        $this->status_kerjasama = $findMe->status;
+        $this->tanggal_awal = $findMe->tanggal_awal;
+        $this->tanggal_berakhir = $findMe->tanggal_berakhir;
+        $this->jangka_waktu = $findMe->jangka_waktu;
+        $this->nomor_unhas = $findMe->nomor_dok_unhas;
+        $this->nomor_mitra = $findMe->nomor_dok_mitra;
+        $this->judul_kerjasama = $findMe->judul;
+        $this->deskripsi = $findMe->deskripsi;
+        $this->upBy = $findMe->uploaded_by;
 
-        $this->tanggal_ttd = $findMe->tanggal_ttd;
-        $this->tanggal_awal = $findMe->tanggal_ttd;
-        $this->jangka_waktu = $findMe->durasi;
+        $findMeTo = MouRequestPenggiat::where('id_lapkerma', $id);
+        $this->arrayJawaban = $findMeTo->count('id');
+        $this->inputs = [];
 
-        $tanggal_ttd = new \DateTime($this->tanggal_ttd);
-        $tanggal_ttd->modify("+{$this->jangka_waktu} years");
-        $this->tanggal_berakhir = $tanggal_ttd->format('Y-m-d');
+        foreach ($findMeTo->get() as $key => $value) {
+            array_push($this->inputs, $key);
+            $this->status[$key] = $value->status_pihak;
+            $this->fakultas_pihak[$key] = $value->fakultas_pihak;
+            $this->nama_pihak[$key] = $value->nama_pihak;
+            $this->alamat_pihak[$key] = $value->alamat_pihak;
+            $this->nama_pejabat_pihak[$key] = $value->nama_pejabat_pihak;
+            $this->jabatan_pejabat_pihak[$key] = $value->jabatan_pejabat_pihak;
+            $this->pj_pihak[$key] = $value->pj_pihak;
+            $this->jabatan_pj_pihak[$key] = $value->jabatan_pj_pihak;
+            $this->email_pj_pihak[$key] = $value->email_pj_pihak;
+            $this->hp_pj_pihak[$key] = $value->hp_pj_pihak;
+            $this->ptqs[$key] = $value->ptqs;
 
-        $this->nama_pihak[1] = $findMe->nama_instansi;
-        $this->alamat_pihak[1] = $findMe->alamat_pj_pihak;
-        $this->nama_pejabat_pihak[1] = $findMe->nama_pejabat_pihak;
-        $this->jabatan_pejabat_pihak[1] = $findMe->jabatan_pejabat_pihak;
-        $this->pj_pihak[1] = $findMe->pj_pihak;
-        $this->jabatan_pj_pihak[1] = $findMe->jabatan_pj_pihak;
-        $this->email_pj_pihak[1] = $findMe->email_pj_pihak;
-        $this->hp_pj_pihak[1] = $findMe->hp_pj_pihak;
+            if ($value->status_pihak == 3) {
+                if (is_int($value->badan_kemitraan)) {
+                    $this->badanKemitraan[$key] = $value->badan_kemitraan;
+                } else {
+                    $this->badanKemitraan[$key] = 99;
+                    $this->lainnya[$key] = $value->badan_kemitraan;
+                }
+            }
+        }
+        // dd($this->arrayProdi[$key]);
+        $this->findDokumen = MouRequestDokumen::where('kerjasama_id', $id)->get();
+        // dd($this->findDokumen);
 
-        $this->nama_pihak[0] = "Universitas Hasanuddin";
-        $this->alamat_pihak[0] = $findMe->alamat_pj_pihak_unhas ?? "Jl. Perintis Kemerdekaan Km. 10";
-        $this->nama_pejabat_pihak[0] = $findMe->nama_pejabat_pihak_unhas;
-        $this->jabatan_pejabat_pihak[0] = $findMe->jabatan_pejabat_pihak_unhas;
-        $this->pj_pihak[0] = $findMe->pj_pihak_unhas;
-        $this->jabatan_pj_pihak[0] = $findMe->jabatan_pj_pihak_unhas;
-        $this->email_pj_pihak[0] = $findMe->email_pj_pihak_unhas;
-        $this->hp_pj_pihak[0] = $findMe->hp_pj_pihak_unhas;
-
-        $findKegiatan = DataMouBentukKegiatanKerjasama::where('id_mou', $this->MouRequestId)->get();
+        $findKegiatan = MouRequestBentukKegiatanKerjasama::where('id_mou', $id)->get();
         $this->arrayBentukKegiatan = [];
         foreach ($findKegiatan as $key => $value) {
             array_push($this->arrayBentukKegiatan, $value->id_ref_bentuk_kegiatan);
@@ -481,10 +500,13 @@ class Mou extends Component
 
     public function validasiSave()
     {
+
+        // dd("VALIDASI");
         if ($this->nomorSistem == 1) {
             $this->nomor_unhas = 'mou-uh';
         }
 
+        // dd("VALIDASI2");
         if ($this->jenisKerjasamaField == 2) {
             $this->validate([
                 'region' => 'required',
@@ -500,6 +522,8 @@ class Mou extends Component
                 'status_kerjasama' => 'required',
                 'jangka_waktu' => 'required',
             ]);
+
+            dd("VALIDASI3");
         } else {
             $this->validate([
                 'tempat_pelaksanaan' => 'required',
@@ -516,78 +540,74 @@ class Mou extends Component
             ]);
         }
 
+
         // validate penggiat kerjasama
-        foreach (range(0, $this->arrayJawaban) as $key => $value) {
+        foreach (array_keys($this->status) as $key) {
             $this->validate([
-                'status.' . $value => 'required',
+                "status.$key" => 'required',
             ]);
-            if ($this->status[$value] == 1) {
+
+            if ($this->status[$key] == 1) {
                 $this->validate([
-                    'nama_pihak.' . $value => 'required',
-                    'ptqs.' . $value => 'required',
-                    'fakultas_pihak.' . $value => 'required',
-                    'alamat_pihak.' . $value => 'required',
-                    'nama_pejabat_pihak.' . $value => 'required',
-                   
+                    "nama_pihak.$key" => 'required',
+                    "ptqs.$key" => 'required',
+                    "fakultas_pihak.$key" => 'required',
+                    "alamat_pihak.$key" => 'required',
+                    "nama_pejabat_pihak.$key" => 'required',
                 ]);
-            }
-            if ($this->status[$value] == 4) {
+            } elseif ($this->status[$key] == 4) {
                 $this->validate([
-                    'nama_pihak.' . $value => 'required',
-                    'ptqs.' . $value => 'required',
-                    'fakultas_pihak.' . $value => 'required',
-                    //   'arrayProdi.'.$value => 'required',
-                    'alamat_pihak.' . $value => 'required',
-                    'nama_pejabat_pihak.' . $value => 'required',
-                    
+                    "nama_pihak.$key" => 'required',
+                    "ptqs.$key" => 'required',
+                    "fakultas_pihak.$key" => 'required',
+                    "alamat_pihak.$key" => 'required',
+                    "nama_pejabat_pihak.$key" => 'required',
                 ]);
-            }
-            if ($this->status[$value] == 2) {
+            } elseif ($this->status[$key] == 2) {
                 $this->validate([
-                    'nama_pihak.' . $value => 'required',
-                    'fakultas_pihak.' . $value => 'required',
-                    'alamat_pihak.' . $value => 'required',
-                    'nama_pejabat_pihak.' . $value => 'required',
-            
+                    "nama_pihak.$key" => 'required',
+                    "fakultas_pihak.$key" => 'required',
+                    "alamat_pihak.$key" => 'required',
+                    "nama_pejabat_pihak.$key" => 'required',
                 ]);
-            }
-            if ($this->status[$value] == 3) {
+            } elseif ($this->status[$key] == 3) {
                 $this->validate([
-                    'nama_pihak.' . $value => 'required',
-                    'badanKemitraan.' . $value => 'required',
+                    "nama_pihak.$key" => 'required',
+                    "badanKemitraan.$key" => 'required',
                 ]);
-                if ($this->badanKemitraan[$value] == 99) {
+
+                if (isset($this->badanKemitraan[$key]) && $this->badanKemitraan[$key] == 99) {
                     $this->validate([
-                        'lainnya.' . $value => 'required',
-                        'nama_pihak.' . $value => 'required',
-                        'badanKemitraan.' . $value => 'required',
-                        'alamat_pihak.' . $value => 'required',
-                        'nama_pejabat_pihak.' . $value => 'required',
-                        
+                        "lainnya.$key" => 'required',
+                        "nama_pihak.$key" => 'required',
+                        "badanKemitraan.$key" => 'required',
+                        "alamat_pihak.$key" => 'required',
+                        "nama_pejabat_pihak.$key" => 'required',
                     ]);
                 } else {
                     $this->validate([
-                        'nama_pihak.' . $value => 'required',
-                        'badanKemitraan.' . $value => 'required',
-                        'alamat_pihak.' . $value => 'required',
-                        'nama_pejabat_pihak.' . $value => 'required',
-                        
+                        "nama_pihak.$key" => 'required',
+                        "badanKemitraan.$key" => 'required',
+                        "alamat_pihak.$key" => 'required',
+                        "nama_pejabat_pihak.$key" => 'required',
                     ]);
                 }
             }
         }
 
-        $this->validate([
-            'arrayBentukKegiatan' => 'required'
-        ]);
-
+        // Optional final debug check
+        // dd("VALIDATION PASSED"); // Will only reach here if a
+        // $this->validate([
+        //     'arrayBentukKegiatan' => 'required'
+        // ]);
     }
 
     public function save()
     {
         $this->validasiSave();
-
         // membuat kode sistem dokumen
+
+        // dd('SAVE TERVALIDASI');
         $uuid = DataMou::max('id');
         $uuid = str_pad($uuid + 1, 3, '0', STR_PAD_LEFT);
         $uuid = 'MoU-' . date('y') . $uuid;
@@ -596,9 +616,11 @@ class Mou extends Component
             $this->nomor_unhas = $uuid;
         }
 
+        // dd('ARRAY NAME PENGGIAT');
+
         $this->arrayNamaPenggiat = [];
         $hitung = 0;
-        foreach (range(0, $this->arrayJawaban) as $key => $value) {
+        foreach (array_keys($this->status) as $key => $value) {
 
             $namanama = Str::lower($this->nama_pihak[$key]);
             if ($namanama == 'unhas' || $namanama == 'universitas hasanuddin') {
@@ -675,6 +697,7 @@ class Mou extends Component
                         'penggiat' => json_encode($this->arrayNamaPenggiat),
                         'uploaded_by' => auth()->user()->name,
                     ]);
+
                     if ($store->wasRecentlyCreated) {
                         $code = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                         foreach ($this->files as $file) {
@@ -686,7 +709,7 @@ class Mou extends Component
                                 'kerjasama_id' => $store->id
                             ]);
                         }
-                        foreach (range(0, $this->arrayJawaban) as $key => $value) {
+                        foreach (range(0, $this->arrayJawaban - 1) as $key => $value) {
                             $storePenggiatKerjasama = DataMouPenggiat::create([
                                 'id_lapkerma' => $store->id,
                                 'pihak' => $value + 1,
@@ -710,9 +733,6 @@ class Mou extends Component
                                 ]);
                             }
                         }
-                        if($this->MouRequestId != null){
-                            DataMouBentukKegiatanKerjasama::where('id_mou', $this->MouRequestId)->delete();
-                        }
                         foreach ($this->arrayBentukKegiatan as $key => $value) {
                             $storeBentukKegiatanKerjasama = DataMouBentukKegiatanKerjasama::create([
                                 'id_mou' => $store->id,
@@ -726,18 +746,18 @@ class Mou extends Component
                             ]);
                         }
                         DB::commit();
-                        $this->emit('deleteMouRequest', $this->MouRequestId);
                         $this->emit('alerts', ['pesan' => 'Data Berhasil Ditambahkan', 'icon' => 'success']);
+                        Mail::to($this->email_pj_pihak[1])->send(new MoUAcceptedNotification($this->pj_pihak[1]));
                     } else {
-                        $this->emit('alertz', ['pesan' => 'Invalid Proses, Data Duplikat', 'icon' => 'error']);
+                        $this->emit('alerts', ['pesan' => 'Invalid Proses, Data Duplikat', 'icon' => 'error']);
                     }
                 } catch (ERROR $th) {
                     DB::rollback();
                     dd($th);
-                    $this->emit('alertz', ['pesan' => 'Invalid Proses, Gagal Ditambahkan', 'icon' => 'error']);
+                    $this->emit('alerts', ['pesan' => 'Invalid Proses, Gagal Ditambahkan', 'icon' => 'error']);
                 }
             } else {
-                $this->emit('alertz', ['pesan' => 'Tidak Ada File Pendukung, Data Gagal Ditambahkan', 'icon' => 'error']);
+                $this->emit('alerts', ['pesan' => 'Tidak Ada File Pendukung, Data Gagal Ditambahkan', 'icon' => 'error']);
             }
         }
     }
