@@ -268,15 +268,11 @@ class GuestMouInput extends Component
     public function submit()
     {
         // Validate the form data
-        $this->validate();
+       // $this->validate();
 
         $this->emit('formSubmitted');
 
-        // if ($this->type_collaboration === 2) {
-        //     $this->validate([
-        //         'region' => 'required|string|max:255',
-        //     ]);
-        // }
+       
 
         if ($this->uploadDocument) {
 
@@ -293,49 +289,7 @@ class GuestMouInput extends Component
         }
 
 
-        // $data = [
-        //     'nama_instansi' => $this->university_name,
-        //     'tipe_kerjasama' => $this->type_collaboration,
-        //     'negara' => $this->country_of_origin,
-        //     'tanggal_ttd' => $this->signing_date,
-        //     'alamat_pj_pihak' => $this->pic_address,
-        //     'durasi' => $this->duration_years,
-        //     'nama_pejabat_pihak' => $this->rep_name,
-        //     'jabatan_pejabat_pihak' => $this->rep_designation,
-        //     'pj_pihak' => $this->pic_name,
-        //     'jabatan_pj_pihak' => $this->pic_designation,
-        //     'email_pj_pihak' => $this->pic_email,
-        //     'hp_pj_pihak' => $this->pic_phone,
-        //     'region' => $this->region,
-        //     'alamat_pj_pihak_unhas' => $this->alamat_pj_pihak_unhas,
-        //     'nama_pejabat_pihak_unhas' => $this->nama_pejabat_pihak_unhas,
-        //     'jabatan_pejabat_pihak_unhas' => $this->jabatan_pejabat_pihak_unhas,
-        //     'pj_pihak_unhas' => $this->pj_pihak_unhas,
-        //     'jabatan_pj_pihak_unhas' => $this->jabatan_pj_pihak_unhas,
-        //     'email_pj_pihak_unhas' => $this->email_pj_pihak_unhas,
-        //     'hp_pj_pihak_unhas' => $this->hp_pj_pihak_unhas,
-        //     'bentuk_kegiatan' => $this->bentuk_kegiatan,
-        //     'mitra' => $this->mitra,
-        //     'ptqs' => $this->ptqs,
-        // ];
-
-        // dd($data);
-
-        // // Simpan data ke dalam model MouRequest
-        // $mouRequest = MouRequest::create($data);
-
-        // foreach ($this->arrayBentukKegiatan as $key => $value) {
-        //     $storeBentukKegiatanKerjasama = DataMouBentukKegiatanKerjasama::create([
-        //         'id_mou' => $mouRequest->id,
-        //         'nilai_kontrak' => $this->nilai_kontrak[$key] ?? null,
-        //         'volume_satuan' => $this->volume_satuan[$key] ?? null,
-        //         'volume_luaran' => $this->volume_luaran[$key] ?? null,
-        //         'keterangan' => $this->keterangan[$key] ?? null,
-        //         'id_ref_bentuk_kegiatan' => $value,
-        //         'id_ref_indikator_kinerja' => $this->arrayKinerja[$key] ?? null,
-        //         'id_ref_sasaran_kegiatan' => $this->arraySasaran[$key] ?? null,
-        //     ]);
-        // }
+       
 
         if ($this->uploadDocument) { // If the document is not uploaded, create a new TemplateProcessor instance with the .docx template
             $templateProcessor = new TemplateProcessor(storage_path('document/Template_MOU.docx')); // Adjust the path to your template
