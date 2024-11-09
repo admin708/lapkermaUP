@@ -16,7 +16,7 @@
                     <tr>
                         <th>
                             <a href="#" wire:click.prevent="sortBy('judul')">
-                                DAFTAR MoU
+                                UID
                                 @if ($sortBy === 'judul')
                                     <span class="text-muted">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
@@ -36,8 +36,8 @@
                 <tbody>
                     @foreach ($dataMoUs as $item)
                         <tr>
-                            <td>{{ $item->nama_instansi }} - {{ $item->tanggal_ttd }}</td>
-                            <td>{{ $item->nama_pejabat_pihak }}</td>
+                            <td>{{ $item->uuid }} - {{ $item->tanggal_ttd }}</td>
+                            <td>{{ $item->uploaded_by }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
