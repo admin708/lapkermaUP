@@ -39,6 +39,21 @@ class DaftarReqMoU extends Component
         $this->sortBy = $field;
     }
 
+    public function searchMoU($uid, $sender)
+    {
+        $dataMous = MouRequest::query()
+            ->when($uid, function ($query) use ($uid) {
+                return $query->where('data_mou_request.uuid', 'like', '%' . $uid . '%'); // Filter by searchProdi
+            })
+            ->when($sender, function ($query) use ($sender) {
+                return $query->where('data_mou_request.uploaded_by', 'like', '%' . $sender . '%');
+            })
+            ->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate(10);
+
+        return $dataMous;
+    }
+
     public function deleteMouRequest($id)
     {
         $mouRequest = MouRequest::find($id);
@@ -51,9 +66,7 @@ class DaftarReqMoU extends Component
 
     public function render()
     {
-        $dataMoUs = MouRequest::query()
-            ->orderBy($this->sortBy, $this->sortDirection)
-            ->paginate(10);
+        $dataMoUs = $this->searchMoU($this->cariNamaMoU, $this->cariPengirimMoU);
 
         return view('livewire.datatables.daftar-req-mo-u', [
             'dataMoUs' => $dataMoUs,
