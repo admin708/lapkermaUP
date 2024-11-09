@@ -17,6 +17,7 @@ use App\Models\StatusKerjasama;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 use App\Http\Livewire\Field;
+use App\Mail\MoUAcceptedNotification;
 use App\Models\MouRequest;
 use App\Models\MouRequestBentukKegiatanKerjasama;
 use App\Models\MouRequestDokumen;
@@ -26,6 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException as ERROR;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class Mou extends Component
@@ -745,6 +747,7 @@ class Mou extends Component
                         }
                         DB::commit();
                         $this->emit('alerts', ['pesan' => 'Data Berhasil Ditambahkan', 'icon' => 'success']);
+                        Mail::to($this->email_pj_pihak[1])->send(new MoUAcceptedNotification($this->pj_pihak[1]));
                     } else {
                         $this->emit('alerts', ['pesan' => 'Invalid Proses, Data Duplikat', 'icon' => 'error']);
                     }
