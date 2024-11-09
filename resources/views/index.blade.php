@@ -73,7 +73,7 @@
     <div class="top-bar-area address-two-lines bg-dark text-light">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 address-info">
+                <div class="col-md-4 address-info">
                     <div class="info box">
                         <ul>
                             @foreach (\App\Models\ContactInfo::where('status', 1)->get() as $item)
@@ -108,12 +108,50 @@
                             <i class="fas fa-file-alt" style="margin-right: 5px;"></i>Request MoU
                         </a>
                     </div>
+                    <div class="user-login text-right">
+                        <a class="btn btn-warning popup-with-form" data-toggle="modal" data-target="#tutorialModal">
+                            <i class="fas fa-info-circle "></i> Tutorial Request MoU
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- End Header Top -->
 
+   <!-- Tutorial Modal -->
+<div class="modal fade" id="tutorialModal" tabindex="-1" aria-labelledby="tutorialModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> 
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary text-center w-100" id="tutorialModalLabel">Cara Melakukan Request MoU</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 20px;"> 
+                <ol style="line-height: 1.6; padding: 20px;"> 
+                    <li>Masuk ke situs web Lapkerma.</li>
+                    <li>Pada halaman utama, klik tombol Request MoU.</li>
+                    <li>Jika Anda belum memiliki akun, silakan daftar terlebih dahulu.</li>
+                    <li>Setelah melakukan pendaftaran, halaman untuk memasukkan kode OTP yang dikirim melalui email yang terdaftar akan muncul. Masukkan kode OTP tersebut untuk verifikasi.</li>
+                    <li>Setelah beberapa saat, admin akan memverifikasi email Anda. Setelah verifikasi berhasil, Anda dapat login menggunakan email tersebut.</li>
+                    <li>Setelah berhasil masuk ke halaman utama, pilih input MoU, kemudian pada dropdown pilih MoU.</li>
+                    <li>Masukkan data Anda untuk melakukan permintaan MoU. Anda dapat mengunggah dokumen MoU yang sudah disiapkan sebelumnya. Jika belum, Anda bisa mencentang checkbox di pojok kiri atas untuk mengisi data MoU menggunakan template yang tersedia.</li>
+                    <li>Setelah mengisi semua kolom yang wajib diisi, tekan tombol Submit.</li>
+                    <li>Setelah menekan tombol Submit, akan muncul pop-up pemberitahuan bahwa permintaan MoU Anda sedang diproses. Mohon menunggu konfirmasi dari admin dalam waktu 5 hari kerja.</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Header
     ============================================= -->
     <header id="home">
