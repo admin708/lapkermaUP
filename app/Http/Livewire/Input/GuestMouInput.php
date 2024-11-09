@@ -322,46 +322,46 @@ class GuestMouInput extends Component
                 if ($store->wasRecentlyCreated) {
 
                     // Store the collaboration partners data
-                    // foreach (range(0, $this->arrayJawaban) as $key => $value) {
-                    //     $storePenggiatKerjasama = MouRequestPenggiat::create([
-                    //         'id_lapkerma' => $store->id,
-                    //         'pihak' => $value + 1,
-                    //         'status_pihak' => $this->status[$key],
-                    //         'nama_pihak' => $this->arrayNamaPenggiat[$key],
-                    //         'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
-                    //         'alamat_pihak' => $this->alamat_pihak[$key],
-                    //         'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
-                    //         'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
-                    //         'pj_pihak' => $this->pj_pihak[$key] ?? null,
-                    //         'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? null,
-                    //         'email_pj_pihak' => $this->email_pj_pihak[$key] ?? null,
-                    //         'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? null,
-                    //         'ptqs' => $this->ptqs[$key] ?? null,
-                    //         'badan_kemitraan' => $this->badanKemitraan[$key] ?? null,
-                    //         'uploaded_by' => auth()->user()->name,
-                    //     ]);
+                    foreach (range(0, $this->arrayJawaban) as $key => $value) {
+                        $storePenggiatKerjasama = MouRequestPenggiat::create([
+                            'id_lapkerma' => $store->id,
+                            'pihak' => $value + 1,
+                            'status_pihak' => $this->status[$key],
+                            'nama_pihak' => $this->arrayNamaPenggiat[$key],
+                            'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
+                            'alamat_pihak' => $this->alamat_pihak[$key],
+                            'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
+                            'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
+                            'pj_pihak' => $this->pj_pihak[$key] ?? null,
+                            'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? null,
+                            'email_pj_pihak' => $this->email_pj_pihak[$key] ?? null,
+                            'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? null,
+                            'ptqs' => $this->ptqs[$key] ?? null,
+                            'badan_kemitraan' => $this->badanKemitraan[$key] ?? null,
+                            'uploaded_by' => auth()->user()->name,
+                        ]);
 
-                    //     // Handle specific conditions for badan_kemitraan
-                    //     if (optional($this->badanKemitraan)[$key] == 99) {
-                    //         $storePenggiatKerjasama->update([
-                    //             'badan_kemitraan' => $this->lainnya[$key]
-                    //         ]);
-                    //     }
-                    // }
+                        // Handle specific conditions for badan_kemitraan
+                        if (optional($this->badanKemitraan)[$key] == 99) {
+                            $storePenggiatKerjasama->update([
+                                'badan_kemitraan' => $this->lainnya[$key]
+                            ]);
+                        }
+                    }
 
-                    // // Store the kegiatan data
-                    // foreach ($this->arrayBentukKegiatan as $key => $value) {
-                    //     $storeBentukKegiatanKerjasama = MouRequestBentukKegiatanKerjasama::create([
-                    //         'id_mou' => $store->id,
-                    //         'nilai_kontrak' => $this->nilai_kontrak[$key] ?? null,
-                    //         'volume_satuan' => $this->volume_satuan[$key] ?? null,
-                    //         'volume_luaran' => $this->volume_luaran[$key] ?? null,
-                    //         'keterangan' => $this->keterangan[$key] ?? null,
-                    //         'id_ref_bentuk_kegiatan' => $value,
-                    //         'id_ref_indikator_kinerja' => $this->arrayKinerja[$key] ?? null,
-                    //         'id_ref_sasaran_kegiatan' => $this->arraySasaran[$key] ?? null,
-                    //     ]);
-                    // }
+                    // Store the kegiatan data
+                    foreach ($this->arrayBentukKegiatan as $key => $value) {
+                        $storeBentukKegiatanKerjasama = MouRequestBentukKegiatanKerjasama::create([
+                            'id_mou' => $store->id,
+                            'nilai_kontrak' => $this->nilai_kontrak[$key] ?? null,
+                            'volume_satuan' => $this->volume_satuan[$key] ?? null,
+                            'volume_luaran' => $this->volume_luaran[$key] ?? null,
+                            'keterangan' => $this->keterangan[$key] ?? null,
+                            'id_ref_bentuk_kegiatan' => $value,
+                            'id_ref_indikator_kinerja' => $this->arrayKinerja[$key] ?? null,
+                            'id_ref_sasaran_kegiatan' => $this->arraySasaran[$key] ?? null,
+                        ]);
+                    }
 
 
 
@@ -389,7 +389,7 @@ class GuestMouInput extends Component
 
                         // Generate bullet points for the Scope placeholder
                         // Initialize the bullet XML for the Scope placeholder
-                        $bulletXml = '';
+                        // $bulletXml = '';
                         // foreach ($this->scopeList as $scopeItem) {
                         //     $bulletXml .= '<w:p><w:pPr><w:numPr><w:ilvl w:val="0"/><w:numId w:val="1"/></w:numPr></w:pPr><w:r><w:t>'
                         //         . htmlspecialchars(trim($scopeItem), ENT_QUOTES, 'UTF-8') . '</w:t></w:r></w:p>';
@@ -473,6 +473,8 @@ class GuestMouInput extends Component
                     DB::commit();
 
                     $this->emit('formSubmitted');
+                } else {
+                    $this->emit('formFailed');
                 }
             } catch (\Exception $th) {
                 DB::rollback();
