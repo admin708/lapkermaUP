@@ -160,7 +160,10 @@ class Controller extends BaseController
         return view('Pages.Table.iku6');
     }
 
-
+    public function kerjasama_tracker()
+    {
+        return view('Pages.kerjasama-tracke');
+    }
 
     // DaftarMoU
     public function DaftarReqMoU()

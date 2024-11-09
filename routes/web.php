@@ -82,6 +82,12 @@ Route::middleware(['auth', 'can:only-admin'])->group(function () {
     Route::get('Menu/DaftarUserReq', [\App\Http\Controllers\Controller::class, 'daftar_req_user'])->name('daftar-req-user');
 });
 
+//Kerjasama Tracker
+Route::middleware(['auth', 'can:only-admin'])->group(function () {
+    // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
+    Route::get('/tracking', [App\Http\Controllers\Controller::class, 'kerjasama_tracker'])->name('kerjasama_tracker');
+});
+
 
 
 Route::middleware(['auth', 'can:super-power'])->group(function () {

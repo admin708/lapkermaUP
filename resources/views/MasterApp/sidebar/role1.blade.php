@@ -169,7 +169,12 @@
                 </li>
             </ul>
         </li>
-
+        <li class="menu-item {{ request()->route()->getName() == 'kerjasama_tracker' ? 'active' : '' }} ">
+            <a class="menu-link" href="{{ route('kerjasama_tracker') }}">
+                <i class="menu-icon tf-icons bx bx-current-location"></i>
+                <span>Tracking</span>
+            </a>
+        </li>
 
 
         @php
