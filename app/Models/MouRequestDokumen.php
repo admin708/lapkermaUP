@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MouRequestDokumen extends Model
 {
+    protected $table = 'data_mou_request_dokumen';
+    protected $guarded = [];
     use HasFactory;
 }
