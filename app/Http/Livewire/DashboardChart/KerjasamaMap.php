@@ -15,7 +15,7 @@ class KerjasamaMap extends Component
 
     public function mount()
     {
-        $this->negaraName = 'Japan';
+        $this->negaraName = 'Indonesia';
         $this->mapVisibility = true;
         $this->fetchNegaraData();
     }

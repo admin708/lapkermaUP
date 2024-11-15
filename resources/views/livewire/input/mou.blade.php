@@ -381,6 +381,23 @@
                                     class="form-control form-control-sm @error('alamat_pihak.' . $value) is-invalid @enderror">
                             </div>
                             <div class="col-auto my-2">
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-5 my-2 ">
+                                        <label class="mr-sm-2">Koordinat Instansi</label>
+                                        <input required wire:model="koordinat_pihak.{{ $value }}"
+                                            type="text"
+                                            class="form-control form-control-sm @error('judul_kerjasama') is-invalid @enderror">
+                                    </div>
+
+                                    <div class="col-sm-12 col-lg-7 my-2">
+                                        <label class="mr-sm-2">Cek Koordinat</label>
+                                        <a href="https://www.google.com/maps?q={{ urlencode($nama_pihak[$value] ?? '') }}"
+                                            target="blank" class="form-control btn btn-sm btn-secondary">click</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-auto my-2">
                                 <label class="mr-sm-2 mt-2 "><strong>Penandatangan</strong></label>&nbsp;
                                 <i class="small text-danger">
                                     *Pejabat yang menandatangani dokumen

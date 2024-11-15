@@ -37,7 +37,7 @@ class Mou extends Component
     public $inputs = [0, 1, 2, 3, 4, 5, 6, 7, 8], $arrayJawaban = 1, $showLoadFiles, $idEdit, $findDokumen, $arrayNamaPenggiat, $upBy;
     public $fakultas = [], $statusKerjasama, $getSasaranKegiatan, $getIndikatorKinerja, $getBentukKegiatan, $bentukKegiatan;
 
-    public $nama_pihak = [], $status, $fakultas_pihak = [], $alamat_pihak = [];
+    public $nama_pihak = [], $status, $fakultas_pihak = [], $alamat_pihak = [], $koordinat_pihak = [];
     public $nama_pejabat_pihak = [], $jabatan_pejabat_pihak = [], $pj_pihak = [], $jabatan_pj_pihak = [];
     public $email_pj_pihak = [], $hp_pj_pihak = [], $files = [], $badanKemitraan = [], $lainnya = [], $ptqs = [];
     public $regionKerjasama, $jenisKerjasama, $nomorSistem, $nomorSistem2;
@@ -120,6 +120,7 @@ class Mou extends Component
             $this->jabatan_pj_pihak[$key] = $value->jabatan_pj_pihak;
             $this->email_pj_pihak[$key] = $value->email_pj_pihak;
             $this->hp_pj_pihak[$key] = $value->hp_pj_pihak;
+            $this->koordinat_pihak[$key] = $value->koordinat_pihak;
             $this->ptqs[$key] = $value->ptqs;
 
             if ($value->status_pihak == 3) {
@@ -185,6 +186,7 @@ class Mou extends Component
             $this->jabatan_pj_pihak[$key] = $value->jabatan_pj_pihak;
             $this->email_pj_pihak[$key] = $value->email_pj_pihak;
             $this->hp_pj_pihak[$key] = $value->hp_pj_pihak;
+            $this->koordinat_pihak[$key] = $value->koordinat_pihak;
             $this->ptqs[$key] = $value->ptqs;
 
             if ($value->status_pihak == 3) {
@@ -255,6 +257,7 @@ class Mou extends Component
                     'ptqs.' . $value => 'required',
                     'fakultas_pihak.' . $value => 'required',
                     'alamat_pihak.' . $value => 'required',
+                    'koordinat_pihak' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
                 ]);
             }
@@ -265,6 +268,7 @@ class Mou extends Component
                     'fakultas_pihak.' . $value => 'required',
                     //   'arrayProdi.'.$value => 'required',
                     'alamat_pihak.' . $value => 'required',
+                    'koordinat_pihak' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
                 ]);
             }
@@ -273,6 +277,7 @@ class Mou extends Component
                     'nama_pihak.' . $value => 'required',
                     'fakultas_pihak.' . $value => 'required',
                     'alamat_pihak.' . $value => 'required',
+                    'koordinat_pihak' . $value => 'required',
                     'nama_pejabat_pihak.' . $value => 'required',
                 ]);
             }
@@ -289,6 +294,7 @@ class Mou extends Component
                         'badanKemitraan.' . $value => 'required',
                         'alamat_pihak.' . $value => 'required',
                         'nama_pejabat_pihak.' . $value => 'required',
+                        'koordinat_pihak' . $value => 'required',
                     ]);
                 } else {
                     $this->validate([
@@ -296,6 +302,7 @@ class Mou extends Component
                         'badanKemitraan.' . $value => 'required',
                         'alamat_pihak.' . $value => 'required',
                         'nama_pejabat_pihak.' . $value => 'required',
+                        'koordinat_pihak' . $value => 'required',
                     ]);
                 }
             }
@@ -333,6 +340,7 @@ class Mou extends Component
                 case 'universitas hasanuddin':
                     $status = $this->status[$key];
                     $alamatPihak1 = $this->alamat_pihak[$key];
+                    $koordinatPihak1 = $this->koordinat_pihak[$key];
                     $namaPihak1 = 'Universitas Hasanuddin';
                     $namaPejabat1 = $this->nama_pejabat_pihak[$key];
                     $jabatanPejabat1 = $this->jabatan_pejabat_pihak[$key] ?? null;
@@ -412,6 +420,7 @@ class Mou extends Component
                         'nama_pihak' => $this->arrayNamaPenggiat[$key],
                         'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
                         'alamat_pihak' => $this->alamat_pihak[$key],
+                        'koordinat_pihak' => $this->koordinat_pihak[$key],
                         'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
                         'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
                         'pj_pihak' => $this->pj_pihak[$key],
@@ -522,8 +531,6 @@ class Mou extends Component
                 'status_kerjasama' => 'required',
                 'jangka_waktu' => 'required',
             ]);
-
-            dd("VALIDASI3");
         } else {
             $this->validate([
                 'tempat_pelaksanaan' => 'required',
@@ -553,6 +560,7 @@ class Mou extends Component
                     "ptqs.$key" => 'required',
                     "fakultas_pihak.$key" => 'required',
                     "alamat_pihak.$key" => 'required',
+                    "koordinat_pihak.$key" => 'required',
                     "nama_pejabat_pihak.$key" => 'required',
                 ]);
             } elseif ($this->status[$key] == 4) {
@@ -561,6 +569,7 @@ class Mou extends Component
                     "ptqs.$key" => 'required',
                     "fakultas_pihak.$key" => 'required',
                     "alamat_pihak.$key" => 'required',
+                    "koordinat_pihak.$key" => 'required',
                     "nama_pejabat_pihak.$key" => 'required',
                 ]);
             } elseif ($this->status[$key] == 2) {
@@ -568,6 +577,7 @@ class Mou extends Component
                     "nama_pihak.$key" => 'required',
                     "fakultas_pihak.$key" => 'required',
                     "alamat_pihak.$key" => 'required',
+                    "koordinat_pihak.$key" => 'required',
                     "nama_pejabat_pihak.$key" => 'required',
                 ]);
             } elseif ($this->status[$key] == 3) {
@@ -582,6 +592,7 @@ class Mou extends Component
                         "nama_pihak.$key" => 'required',
                         "badanKemitraan.$key" => 'required',
                         "alamat_pihak.$key" => 'required',
+                        "koordinat_pihak.$key" => 'required',
                         "nama_pejabat_pihak.$key" => 'required',
                     ]);
                 } else {
@@ -589,6 +600,7 @@ class Mou extends Component
                         "nama_pihak.$key" => 'required',
                         "badanKemitraan.$key" => 'required',
                         "alamat_pihak.$key" => 'required',
+                        "koordinat_pihak.$key" => 'required',
                         "nama_pejabat_pihak.$key" => 'required',
                     ]);
                 }
@@ -632,6 +644,7 @@ class Mou extends Component
                 case 'unhas':
                     $status = $this->status[$key];
                     $alamatPihak1 = $this->alamat_pihak[$key];
+                    $koordinatPihak1 = $this->koordinat_pihak[$key];
                     $namaPihak1 = 'Universitas Hasanuddin';
                     $namaPejabat1 = $this->nama_pejabat_pihak[$key];
                     $jabatanPejabat1 = $this->jabatan_pejabat_pihak[$key] ?? null;
@@ -645,6 +658,7 @@ class Mou extends Component
                 case 'universitas hasanuddin':
                     $status = $this->status[$key];
                     $alamatPihak1 = $this->alamat_pihak[$key];
+                    $koordinatPihak1 = $this->koordinat_pihak[$key];
                     $namaPihak1 = 'Universitas Hasanuddin';
                     $namaPejabat1 = $this->nama_pejabat_pihak[$key];
                     $jabatanPejabat1 = $this->jabatan_pejabat_pihak[$key] ?? null;
@@ -720,6 +734,7 @@ class Mou extends Component
                                 'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
                                 'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
                                 'pj_pihak' => $this->pj_pihak[$key] ?? null,
+                                'koordinat_pihak' => $this->koordinat_pihak[$key] ?? null,
                                 'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? null,
                                 'email_pj_pihak' => $this->email_pj_pihak[$key] ?? null,
                                 'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? null,
