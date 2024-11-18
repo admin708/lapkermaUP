@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\DashboardChart;
 
 use Livewire\Component;
-use App\Models\Negara;
+use App\Models\Instansi;
 
 class KerjasamaMap extends Component
 {
@@ -15,7 +15,7 @@ class KerjasamaMap extends Component
 
     public function mount()
     {
-        $this->negaraName = 'Indonesia';
+        $this->negaraName = 'Japan'; // Set default negara
         $this->mapVisibility = true;
         $this->fetchNegaraData();
     }
@@ -28,8 +28,14 @@ class KerjasamaMap extends Component
 
     public function fetchNegaraData()
     {
-        $negaraModel = new Negara();
-        $this->dataKerjaSamaNegara = $negaraModel->getNegaraWithInstansiByName($this->negaraName);
+        $name = $this->negaraName;
+
+        // Ambil data Instansi berdasarkan negara
+        $this->dataKerjaSamaNegara = Instansi::whereHas('getNegara', function ($query) use ($name) {
+            $query->where('name', strval($name));
+        })->get(['name', 'coordinates']); // Ambil nama dan koordinat instansi
+
+        // Emit data ke frontend
         $this->emit('dataKerjaSamaNegaraUpdate', $this->dataKerjaSamaNegara);
     }
 
@@ -38,7 +44,6 @@ class KerjasamaMap extends Component
         return view('livewire.dashboard-chart.kerjasama-map', [
             'negaraName' => $this->negaraName,
             'dataKerjaSamaNegara' => $this->dataKerjaSamaNegara,
-
         ]);
     }
 }
