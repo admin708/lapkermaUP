@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class JenisKerjasama extends Model
 {
+    
     use HasFactory;
+
+    
 }

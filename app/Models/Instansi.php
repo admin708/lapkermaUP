@@ -14,4 +14,6 @@ class Instansi extends Model
     public function getNegara(){
         return $this->belongsTo(Negara::class, "negara_id");
     }
+
+  
 }
