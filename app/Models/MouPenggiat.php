@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MouPenggiat extends Model
 {
+    protected $table = 'mou_penggiat';
+    protected $fillable = ['id', 'id_lapkerma', 'pihak', 'id_pihak', 'id_pj', 'id_pejabat', 'fakultas_pihak', 'prodi'];
+    public $timestamps = false;
     use HasFactory;
 }

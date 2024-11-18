@@ -18,8 +18,8 @@ class Negara extends Model
 
     public function getNegaraWithInstansiByName($countryName)
     {
-        return Instansi::whereHas('getNegara', function ($query) use ($countryName) {
-            $query->where('name',strval($countryName));
+        return Instansi::whereHas('negara', function ($query) use ($countryName) {
+            $query->where('name', strval($countryName));
         })->get();
     }
 }

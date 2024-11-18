@@ -357,10 +357,11 @@
                                                 data-bs-popper="static">
                                                 @forelse($instansi as $item)
                                                     <li><button
-                                                            wire:click="pushNamaInstansi({{ $key }},{{ $item->id }},'{{ $item->nama_instansi }}',{{ $item->status }})"
+                                                            wire:click="getAndSetPihakName({{ $key }}, {{ json_encode($item->name) }}, {{ json_encode($item->address) }}, {{ $item->status }}, {{ $item->negara_id }}, {{ $item->coordinates }}, {{ $item->ptqs }}, {{ $item->badan_kemitraan }})"
                                                             class="small dropdown-item"
-                                                            type="button">{{ strtoupper($item->nama_instansi) }}</button>
+                                                            type="button">{{ strtoupper($item->name) }}</button>
                                                     </li>
+
                                                 @empty
                                                     <li role="button" onclick="addInstansi()" class="p-2 small">
                                                         Instansi Belum tersedia, Klik untuk menambahkan</li>

@@ -10,8 +10,16 @@ class Instansi extends Model
 {
     use HasFactory;
     protected $table = "instansis";
+    protected $fillable = ['name', 'address', 'negara_id', 'coordinates', 'ptqs', 'status', 'badan_kemitraan'];
+    public $timestamps = false;
 
-    public function getNegara(){
+    public function negara()
+    {
         return $this->belongsTo(Negara::class, "negara_id");
+    }
+
+    public function getInstansis($instansiName)
+    {
+        return self::where('name', 'like', '%' . $instansiName . '%')->get();
     }
 }
