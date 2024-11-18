@@ -9,7 +9,6 @@ class Pejabat extends Model
 {
     protected $table = 'pejabat';
     use HasFactory;
-    protected $table = 'pejabat';
     protected $fillable = ['nama', 'jabatan'];
     public $timestamps = false;
 

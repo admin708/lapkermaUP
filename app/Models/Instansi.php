@@ -13,7 +13,7 @@ class Instansi extends Model
     protected $fillable = ['name', 'address', 'negara_id', 'coordinates', 'ptqs', 'status', 'badan_kemitraan'];
     public $timestamps = false;
 
-    public function negara()
+    public function getNegara()
     {
         return $this->belongsTo(Negara::class, "negara_id");
     }

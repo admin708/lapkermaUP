@@ -326,7 +326,7 @@
                         <div class="col-md-12">
                             <div class="card mb-4" style="display: {{ $value <= $arrayJawaban ? 'block' : 'none' }}">
                                 <h5 class="card-header text-primary"><i class="bx bx-link me-3"></i>Pihak
-                                    {{ $value + 1 }} {{ $value == 0 ? '(UNHAS)' : '(PARTNER)' }}
+                                    {{ $value + 1 }}
                                     @if ($arrayJawaban != 0 && $arrayJawaban == $value)
                                         <button type="button" wire:click="takeArray" class="btn-sm btn"
                                             style="float: right"><i
@@ -374,13 +374,41 @@
                                             </div>
 
                                             <div class="col-sm-12 col-lg-7 my-2">
-                                                <label class="mr-sm-2">Nama Instansi <i
-                                                        class="text-danger">*</i></label>
-                                                <input wire:model="nama_pihak.{{ $value }}" type="text"
-                                                    class="form-control form-control-sm @error('nama_pihak.' . $value) is-invalid @enderror">
-                                                @error('nama_pihak.' . $value)
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <label class="mr-sm-2">Instansi / Universitas <i
+                                                        class="small text-danger">*</i>
+                                                    @error('nama_pihak.' . $key)
+                                                        <i class="text-sm text-danger">* required</i>
+                                                    @enderror
+                                                </label>
+
+                                                <div wire:loading wire:target="nama_pihak.{{ $key }}"
+                                                    class="mx-1 spinner-border spinner-border-sm text-primary"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+
+                                                <div class="btn-group col-12">
+                                                    <div class="input-group input-group-sm" data-bs-display="static"
+                                                        aria-haspopup="true" aria-expanded="true">
+                                                        <input placeholder="Ketik Untuk Mencari"
+                                                            wire:model="nama_pihak.{{ $key }}"
+                                                            type="text" class="form-control form-control-sm">
+                                                    </div>
+
+                                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchInstansiList[$key]) && count($searchInstansiList[$key]) > 0 ? 'show' : '' }}"
+                                                        data-bs-popper="static">
+                                                        @foreach ($searchInstansiList[$key] ?? [] as $instansi)
+                                                            {{-- {{ dd($instansi) }} --}}
+                                                            <li>
+                                                                <button
+                                                                    wire:click="selectInstansi({{ $key }}, {{ $instansi['id'] }} ,'{{ $instansi['name'] }}', '{{ $instansi['address'] }}', {{ $instansi['negara_id'] }}, '{{ $instansi['coordinates'] }}', '{{ $instansi['ptqs'] }}', {{ $instansi['status'] }}, '{{ $instansi['badan_kemitraan'] }}')"
+                                                                    class="small dropdown-item"
+                                                                    type="button">{{ strtoupper($instansi['name']) }}
+                                                                </button>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
                                             </div>
 
                                             <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 1 ? 'd-block' : (optional($status)[$value] == 4 ? 'd-block' : '') }}"
@@ -467,28 +495,73 @@
                                         @enderror
                                     </div>
                                     <div class="col-auto my-2">
+                                        <label class="mr-sm-2">Negara Instansi</label>
+                                        <select wire:model="negara_pihak.{{ $value }}"
+                                            class="form-select form-select-sm"
+                                            @error('negara_pihak.' . $value) is-invalid @enderror>
+                                            <option></option>
+                                            @foreach ($negaraKerjasama as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-auto my-2">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-lg-5 my-2 ">
+                                                <label class="mr-sm-2">Koordinat Instansi</label>
+                                                <input required wire:model="koordinat_pihak.{{ $value }}"
+                                                    type="text"
+                                                    class="form-control form-control-sm @error('judul_kerjasama') is-invalid @enderror">
+                                            </div>
+
+                                            <div class="col-sm-12 col-lg-7 my-2">
+                                                <label class="mr-sm-2">Cek Koordinat</label>
+                                                <a href="https://www.google.com/maps?q={{ urlencode($nama_pihak[$value] ?? '') }}"
+                                                    target="blank"
+                                                    class="form-control btn btn-sm btn-secondary">click</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto my-2">
                                         <label class="mr-sm-2 mt-2 "><strong>Penandatangan</strong></label>&nbsp;
                                         <i class="small text-danger">
                                             *Pejabat yang menandatangani dokumen
                                         </i>
                                         <div class="row">
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Nama <i class="text-danger">*</i></label>
-                                                <input wire:model.defer="nama_pejabat_pihak.{{ $value }}"
-                                                    type="text"
-                                                    class="form-control form-control-sm @error('nama_pejabat_pihak.' . $value) is-invalid @enderror">
-                                                @error('nama_pejabat_pihak.{{ $value }}')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <label class="mr-sm-2">Nama</label>
+                                                <div wire:loading wire:target="nama_pejabat_pihak.{{ $key }}"
+                                                    class="mx-1 spinner-border spinner-border-sm text-primary"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <div class="btn-group col-12">
+                                                    <div class="input-group input-group-sm" data-bs-display="static"
+                                                        aria-haspopup="true" aria-expanded="true">
+                                                        <input placeholder="Ketik Untuk Mencari"
+                                                            wire:model="nama_pejabat_pihak.{{ $key }}"
+                                                            type="text" class="form-control form-control-sm">
+                                                    </div>
+
+                                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPejabatList[$key]) && count($searchPejabatList[$key]) > 0 ? 'show' : '' }}"
+                                                        data-bs-popper="static">
+                                                        @foreach ($searchPejabatList[$key] ?? [] as $pejabat)
+                                                            <li>
+                                                                <button
+                                                                    wire:click="updatePejabatPihak({{ $key }}, {{ $pejabat['id'] }} ,'{{ $pejabat['nama'] }}', '{{ $pejabat['jabatan'] }}')"
+                                                                    class="small dropdown-item"
+                                                                    type="button">{{ strtoupper($pejabat['nama']) }}
+                                                                </button>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="col-sm-12 col-lg-6">
 
-                                                <label class="mr-sm-2">Jabatan <i class="text-danger">*</i></label>
+                                                <label class="mr-sm-2">Jabatan</label>
                                                 <input wire:model.defer="jabatan_pejabat_pihak.{{ $value }}"
                                                     type="text" class="form-control form-control-sm">
-                                                @error('jabatan_pejabat_pihak.{{ $value }}')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -496,21 +569,38 @@
                                         <label class="mr-sm-2 mt-2 "><strong>Penanggung Jawab</strong> </label>
                                         <div class="row">
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Nama <i class="text-danger">*</i></label>
-                                                <input required wire:model.defer="pj_pihak.{{ $value }}"
-                                                    type="text"
-                                                    class="form-control form-control-sm @error('pj_pihak.' . $value) is-invalid @enderror">
-                                                @error('pj_pihak.{{ $value }}')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <label class="mr-sm-2">Nama</label>
+                                                <div wire:loading wire:target="pj_pihak.{{ $key }}"
+                                                    class="mx-1 spinner-border spinner-border-sm text-primary"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <div class="btn-group col-12">
+                                                    <div class="input-group input-group-sm" data-bs-display="static"
+                                                        aria-haspopup="true" aria-expanded="true">
+                                                        <input placeholder="Ketik Untuk Mencari"
+                                                            wire:model="pj_pihak.{{ $key }}" type="text"
+                                                            class="form-control form-control-sm">
+                                                    </div>
+
+                                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPenanggungJawab[$key]) && count($searchPenanggungJawab[$key]) > 0 ? 'show' : '' }}"
+                                                        data-bs-popper="static">
+                                                        @foreach ($searchPenanggungJawab[$key] ?? [] as $pj)
+                                                            <li>
+                                                                <button
+                                                                    wire:click="setPJData({{ $key }}, {{ $pj['id'] }} ,'{{ $pj['name'] }}', '{{ $pj['designation'] }}', '{{ $pj['email'] }}', '{{ $pj['phone_number'] }}')"
+                                                                    class="small dropdown-item"
+                                                                    type="button">{{ strtoupper($pj['name']) }}
+                                                                </button>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Jabatan <i class="text-danger">*</i></label>
+                                                <label class="mr-sm-2">Jabatan</label>
                                                 <input wire:model.defer="jabatan_pj_pihak.{{ $value }}"
                                                     type="text" class="form-control form-control-sm">
-                                                @error('jabatan_pj_pihak.{{ $value }}')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row">
@@ -531,7 +621,7 @@
                                                     class="form-control form-control-sm @error('hp_pj_pihak.' . $value) is-invalid @enderror">
                                                 @error('hp_pj_pihak.{{ $value }}')
                                                     <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror 
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -608,8 +698,8 @@
                                                     <span class="input-group-text">Rp.</span>
                                                     <input type="text"
                                                         wire:model.lazy="nilai_kontrak.{{ $key }}"
-                                                        class="form-control form-control-sm" id="{{ $key }}"
-                                                        placeholder="0">
+                                                        class="form-control form-control-sm"
+                                                        id="{{ $key }}" placeholder="0">
                                                 </div>
                                             </div>
                                         </div>
@@ -742,7 +832,16 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                This MoU request already exists
+                                {{-- This MoU request already exists --}}
+                                @if ($errors->any())
+                                    <ul class="text-danger">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>No errors found.</p>
+                                @endif
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>

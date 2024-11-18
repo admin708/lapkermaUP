@@ -58,8 +58,6 @@ class Mou extends Component
     public $tanggal_ttd, $tanggal_awal, $tanggal_berakhir, $status_kerjasama, $jangka_waktu;
     public $badanKemitraanOptions;
 
-    //Section MoU Request
-    public $MouRequestId;
     public $searchInstansiList = [], $searchPejabatList = [], $searchPenanggungJawab = [];
     public $idInstansi = [], $idPejabat = [], $idPJ = [];
 
@@ -530,17 +528,14 @@ class Mou extends Component
         $this->status[$key] = $status;
         $this->badanKemitraan[$key] = $badanKemitraan;
         $this->idInstansi[$key] = $id;
-
         $this->searchInstansiList[$key] = [];
     }
 
     public function updatedNamaPejabatPihak($value, $key)
     {
-        // dd($value);
         if (!empty($this->nama_pejabat_pihak[$key])) {
             $modelPejabat = new Pejabat();
             $result = $modelPejabat->getPejabat(($value));
-            // dd($result);
             $this->searchPejabatList[$key] = $result;
         } else {
             $this->searchPejabatList[$key] = [];
