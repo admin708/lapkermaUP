@@ -31,7 +31,7 @@ class GuestMouInput extends Component
     use WithFileUploads;
 
     // Kopian MoU;
-    public $inputs = [0, 1, 2, 3, 4, 5, 6, 7, 8], $arrayJawaban = 0, $showLoadFiles, $idEdit, $findDokumen, $arrayNamaPenggiat, $upBy;
+    public $inputs = [0, 1, 2, 3, 4, 5, 6, 7, 8], $arrayJawaban = 1, $showLoadFiles, $idEdit, $findDokumen, $arrayNamaPenggiat, $upBy;
     public $fakultas = [], $statusKerjasama, $getSasaranKegiatan, $getIndikatorKinerja, $getBentukKegiatan, $bentukKegiatan;
 
     public $nama_pihak = [], $status, $fakultas_pihak = [], $alamat_pihak = [], $koordinat_pihak = [], $negara_pihak = [];
@@ -517,6 +517,22 @@ class GuestMouInput extends Component
         $this->jenisKerjasamaField = 1;
         $this->updatedJenisKerjasamaField();
         $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
+
+
+        $instansiModel = new Instansi();
+        $instansi = $instansiModel->where('id', '=', 1164);
+
+        $pejabatModel = new Pejabat();
+        $pejabat = $pejabatModel->where('id', '=', 652);
+
+        $penanggugjawabModel = new PenanggungJawab();
+        $penanggungjawab = $penanggugjawabModel->where('id', '=', 496);
+
+        
+
+
+
+        
     }
 
     public function render()
