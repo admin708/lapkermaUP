@@ -41,13 +41,14 @@ class DaftarReqMoU extends Component
 
     public function searchMoU($uid, $sender)
     {
-        $dataMous = MouRequest::query()
+        $dataMous = DataMou::query()
             ->when($uid, function ($query) use ($uid) {
-                return $query->where('data_mou_request.uuid', 'like', '%' . $uid . '%'); // Filter by searchProdi
+                return $query->where('uuid', 'like', '%' . $uid . '%'); // Filter by searchProdi
             })
             ->when($sender, function ($query) use ($sender) {
-                return $query->where('data_mou_request.uploaded_by', 'like', '%' . $sender . '%');
+                return $query->where('uploaded_by', 'like', '%' . $sender . '%');
             })
+            ->where('level', '=', 0)
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 
@@ -56,7 +57,7 @@ class DaftarReqMoU extends Component
 
     public function deleteMouRequest($id)
     {
-        $mouRequest = MouRequest::find($id);
+        $mouRequest = DataMou::find($id);
 
         // Check if the request exists
         if ($mouRequest) {

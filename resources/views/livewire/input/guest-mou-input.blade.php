@@ -588,7 +588,7 @@
                                                         @foreach ($searchPenanggungJawab[$key] ?? [] as $pj)
                                                             <li>
                                                                 <button
-                                                                    wire:click="setPJData({{ $key }}, {{ $pj['id'] }} ,'{{ $pj['name'] }}', '{{ $pj['designation'] }}', '{{ $pj['email'] }}', '{{ $pj['phone_number'] }}')"
+                                                                    wire:click="setPJData({{ $key }}, {{ $pj['id'] }} ,'{{ $pj['name'] }}', '{{ $pj['designation'] }}', '{{ $pj['phone_number'] }}','{{ $pj['email'] }}')"
                                                                     class="small dropdown-item"
                                                                     type="button">{{ strtoupper($pj['name']) }}
                                                                 </button>
