@@ -45,11 +45,11 @@
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item text-primary small" role="button"
-                                            wire:click="showDetail({{ $item->id }})" data-bs-toggle="modal"
-                                            data-bs-target="#detailModal">
-                                            <i class="bx bx-show me-1"></i> View
-                                        </a>
+                                        @if ($item->level == 1)
+                                            <a class="dropdown-item text-primary small" role="button"
+                                                wire:click="getEdit({{ $item->id }})"><i
+                                                    class="bx bx-show me-1"></i> View</a>
+                                        @endif
                                         @if (auth()->user()->role_id == 1)
                                             <a class="dropdown-item text-danger small" role="button"
                                                 wire:click="deleteMouRequest({{ $item->id }})">

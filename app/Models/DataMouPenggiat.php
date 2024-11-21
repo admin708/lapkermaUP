@@ -17,28 +17,28 @@ class DataMouPenggiat extends Model
         return $this->belongsTo(DataMou::class, 'id_lapkerma');
     }
 
-    public static function getPihak($idMou,$pihak)
+    public static function getPihak($idMou, $pihak)
     {
         $data = self::when($idMou, function ($query) use ($idMou) {
-                        $query->where('id_lapkerma', $idMou);
-                    })
-                    ->when($pihak, function ($query) use ($pihak) {
-                        $query->where('pihak', $pihak);
-                    })
-                    ->get();
+            $query->where('id_lapkerma', $idMou);
+        })
+            ->when($pihak, function ($query) use ($pihak) {
+                $query->where('pihak', $pihak);
+            })
+            ->get();
         return $data;
     }
 
     public function getDataMou()
     {
-            return $this->hasOne(DataMou::class, 'id', 'id_lapkerma');
+        return $this->hasOne(DataMou::class, 'id', 'id_lapkerma');
     }
 
-    public static function countBadanKemitraan($kemitraan=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countBadanKemitraan($kemitraan = null, $year = null, $fakultas = null, $prodi = null)
     {
         $data = self::when($kemitraan, function ($query) use ($kemitraan) {
             $query->where('badan_kemitraan', $kemitraan);
-        })->whereHas('getDataMou', function ($query) use ($year,$fakultas,$prodi) {
+        })->whereHas('getDataMou', function ($query) use ($year, $fakultas, $prodi) {
             $query->when($year, function ($query) use ($year) {
                 $query->whereYear('tanggal_awal', $year);
             });
@@ -49,19 +49,19 @@ class DataMouPenggiat extends Model
                 $query->where('prodi', $prodi);
             });
         })
-        ->select('nama_pihak')
-        ->groupBy('nama_pihak')
-        ->get();
+            ->select('nama_pihak')
+            ->groupBy('nama_pihak')
+            ->get();
         // dd($data);
 
         return $data;
     }
 
-    public static function countPerguruanTinggi($pt=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countPerguruanTinggi($pt = null, $year = null, $fakultas = null, $prodi = null)
     {
         $data = self::when($pt, function ($query) use ($pt) {
             $query->whereIn('status_pihak', $pt);
-        })->whereHas('getDataMou', function ($query) use ($year,$fakultas,$prodi) {
+        })->whereHas('getDataMou', function ($query) use ($year, $fakultas, $prodi) {
             $query->when($year, function ($query) use ($year) {
                 $query->whereYear('tanggal_awal', $year);
             });
@@ -72,18 +72,18 @@ class DataMouPenggiat extends Model
                 $query->where('prodi', $prodi);
             });
         })
-        ->select('nama_pihak')
-        ->groupBy('nama_pihak')
-        ->get();
+            ->select('nama_pihak')
+            ->groupBy('nama_pihak')
+            ->get();
         // dd($data);
         return $data;
     }
 
-    public static function countPtqs($ptqs=null,$year=null,$fakultas=null,$prodi=null)
+    public static function countPtqs($ptqs = null, $year = null, $fakultas = null, $prodi = null)
     {
         $data = self::when($ptqs, function ($query) use ($ptqs) {
             $query->where('ptqs', $ptqs);
-        })->whereHas('getDataMou', function ($query) use ($year,$fakultas,$prodi) {
+        })->whereHas('getDataMou', function ($query) use ($year, $fakultas, $prodi) {
             $query->when($year, function ($query) use ($year) {
                 $query->whereYear('tanggal_awal', $year);
             });
@@ -94,10 +94,9 @@ class DataMouPenggiat extends Model
                 $query->where('prodi', $prodi);
             });
         })->select('nama_pihak')
-        ->groupBy('nama_pihak')
-        ->get();
+            ->groupBy('nama_pihak')
+            ->get();
         // dd($data);
         return $data;
     }
-
 }

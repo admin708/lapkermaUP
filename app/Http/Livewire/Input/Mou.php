@@ -402,7 +402,7 @@ class Mou extends Component
                     'level' => 1,
                     'nomor_dok_mitra' => $this->nomor_mitra,
                     'judul' => $this->judul_kerjasama,
-                    'fakultas_pihak' => $this->fakultas_pihak[$key],
+                    'fakultas_pihak' => $this->fakultas_pihak[$indexUnhas],
                     'deskripsi' => $this->deskripsi,
                     'nama_pihak' => $this->nama_pihak[$indexUnhas],
                     'alamat_pihak' => $this->alamat_pihak[$indexUnhas],
@@ -465,7 +465,7 @@ class Mou extends Component
                             'address' => $this->alamat_pihak[$value],
                             'negara_id' => $this->negara_pihak[$value],
                             'coordinates' => $this->koordinat_pihak[$value],
-                            'ptqs' => $this->ptqs[$value],
+                            'ptqs' => $this->ptqs[$value] ?? 0,
                             'status' => $this->status[$value],
                             'badan_kemitraan' => $this->badanKemitraan[$value]
                         ]
@@ -497,7 +497,7 @@ class Mou extends Component
                     //     'nama_pihak' => $this->arrayNamaPenggiat[$key],
                     //     'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
                     //     'alamat_pihak' => $this->alamat_pihak[$key],
-                    //     'koordinat_pihak' => $this->koordinat_pihak[$key],
+
                     //     'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
                     //     'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
                     //     'pj_pihak' => $this->pj_pihak[$key],
@@ -657,7 +657,6 @@ class Mou extends Component
         if ($this->nomorSistem == 1) {
             $this->nomor_unhas = 'mou-uh';
         }
-        dd("CHECK1");
 
         if ($this->jenisKerjasamaField == 2) {
             $this->validate([
@@ -674,7 +673,6 @@ class Mou extends Component
                 'status_kerjasama' => 'required',
                 'jangka_waktu' => 'required',
             ]);
-            dd("CHECK2");
         } else {
             $this->validate([
                 'tempat_pelaksanaan' => 'required',
@@ -689,8 +687,6 @@ class Mou extends Component
                 'status_kerjasama' => 'required',
                 'jangka_waktu' => 'required',
             ]);
-
-            dd("CHECK2->3");
         }
 
 
@@ -777,7 +773,6 @@ class Mou extends Component
 
         $this->arrayNamaPenggiat = [];
         $hitung = 0;
-        dd($hitung);
         foreach (array_keys($this->status) as $key => $value) {
 
             if ($this->nama_pihak[$key] == 'Universitas Hasanuddin') {
@@ -838,6 +833,7 @@ class Mou extends Component
                     $store = DataMou::firstOrCreate([
                         'nomor_dok_unhas' => $this->nomor_unhas,
                     ], [
+                        'uuid' => $uuid,
                         'tanggal_ttd' => $this->tanggal_ttd,
                         'jenis_kerjasama' => $this->jenisKerjasamaField,
                         'negara' => $this->negara,
@@ -850,7 +846,7 @@ class Mou extends Component
                         'level' => 1,
                         'nomor_dok_mitra' => $this->nomor_mitra,
                         'judul' => $this->judul_kerjasama,
-                        'fakultas_pihak' => $this->fakultas_pihak[$key],
+                        'fakultas_pihak' => $this->fakultas_pihak[$indexUnhas],
                         'deskripsi' => $this->deskripsi,
                         'nama_pihak' => $this->nama_pihak[$indexUnhas],
                         'alamat_pihak' => $this->alamat_pihak[$indexUnhas],
@@ -911,7 +907,7 @@ class Mou extends Component
                                     'address' => $this->alamat_pihak[$value],
                                     'negara_id' => $this->negara_pihak[$value],
                                     'coordinates' => $this->koordinat_pihak[$value],
-                                    'ptqs' => $this->ptqs[$value],
+                                    'ptqs' => $this->ptqs[$value] ?? 0,
                                     'status' => $this->status[$value],
                                     'badan_kemitraan' => $this->badanKemitraan[$value]
                                 ]
@@ -929,10 +925,32 @@ class Mou extends Component
                                     'pihak' => $this->nama_pihak[$value],
                                     'id_pj' => $storePJ->id,
                                     'id_pejabat' => $storePejabat->id,
-                                    'fakultas_pihak' => $this->fakultas_pihak[$value],
+                                    'fakultas_pihak' => $this->fakultas_pihak[$value] ?? '',
                                     'prodi' => '',
                                 ]
                             );
+                            $storePenggiatKerjasama = DataMouPenggiat::create([
+                                'id_lapkerma' => $store->id,
+                                'pihak' => $value + 1,
+                                'status_pihak' => $this->status[$key],
+                                'nama_pihak' => $this->arrayNamaPenggiat[$key],
+                                'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
+                                'alamat_pihak' => $this->alamat_pihak[$key],
+                                'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
+                                'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
+                                'pj_pihak' => $this->pj_pihak[$key],
+                                'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
+                                'email_pj_pihak' => $this->email_pj_pihak[$key] ?? '',
+                                'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? '',
+                                'ptqs' => $this->ptqs[$key] ?? null,
+                                'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
+                                'uploaded_by' => auth()->user()->name,
+                            ]);
+                            if (optional($this->badanKemitraan)[$key] == 99) {
+                                $storePenggiatKerjasama->update([
+                                    'badan_kemitraan' => $this->lainnya[$key]
+                                ]);
+                            }
                         }
                         foreach ($this->arrayBentukKegiatan as $key => $value) {
                             $storeBentukKegiatanKerjasama = DataMouBentukKegiatanKerjasama::create([
