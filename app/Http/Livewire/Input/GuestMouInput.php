@@ -32,7 +32,7 @@ class GuestMouInput extends Component
     use WithFileUploads;
 
     // Kopian MoU;
-    public $inputs = [0, 1, 2, 3, 4, 5, 6, 7, 8], $arrayJawaban = 1, $showLoadFiles, $idEdit, $findDokumen, $arrayNamaPenggiat, $upBy;
+    public $inputs = [0, 1, 2, 3, 4, 5, 6, 7, 8], $arrayJawaban = 1, $showLoadFiles, $idEdit, $findDokumen, $arrayNamaPenggiat = [], $upBy;
     public $fakultas = [], $statusKerjasama, $getSasaranKegiatan, $getIndikatorKinerja, $getBentukKegiatan, $bentukKegiatan;
 
     public $nama_pihak = [], $status, $fakultas_pihak = [], $alamat_pihak = [], $koordinat_pihak = [], $negara_pihak = [];
@@ -118,9 +118,21 @@ class GuestMouInput extends Component
         $this->alamat_pihak[$key] = $address;
         $this->negara_pihak[$key] = $negara_id;
         $this->koordinat_pihak[$key] = $coordinates;
-        $this->ptqs[$key] = $ptqs;
+        $this->ptqs[$key] = ($ptqs == '1' || $ptqs == '2') ? intval($ptqs) : null;
         $this->status[$key] = $status;
-        $this->badanKemitraan[$key] = $badanKemitraan;
+        if (is_numeric($badanKemitraan)) {
+            $intValue = (int) $badanKemitraan;
+            if ($intValue >= 0 && $intValue <= 13) { // Check if within range
+                $this->badanKemitraan[$key] = $intValue;
+            } else {
+                $this->badanKemitraan[$key] = 99;
+            }
+        } elseif ($badanKemitraan === null) { // Check for null explicitly
+            $this->badanKemitraan[$key] = null;
+        } else {
+            $this->badanKemitraan[$key] = 99;
+            $this->lainnya[$key] = $badanKemitraan; // Assign to 'lainnya' if not numeric or null
+        }
         $this->idInstansi[$key] = $id;
         $this->searchInstansiList[$key] = [];
     }
@@ -173,122 +185,125 @@ class GuestMouInput extends Component
         $this->reset('bentukKegiatan');
     }
 
-    public function validasiSave()
+    public function inputValidation()
     {
         if ($this->nomorSistem == 1) {
             $this->nomor_unhas = 'mou-uh';
         }
 
-        if ($this->uploadDocument) {
-            if (empty($this->scopeList)) {
-                $this->addError('newScopeItem', 'The scope list cannot be empty. Please add at least one item.');
-                return;
-            }
+
+        $this->validate([
+            'tempat_pelaksanaan' => 'required',
+            'judul_kerjasama' => 'required',
+            'deskripsi' => 'required',
+            'tanggal_ttd' => 'required',
+            'tanggal_awal' => 'required',
+            'tanggal_berakhir' => 'required',
+            'status_kerjasama' => 'required',
+            'jangka_waktu' => 'required',
+        ]);
+
+        if ($this->jenisKerjasamaField == '1') {
             $this->validate([
-                'logo' => 'required|image|mimes:png|max:2048',
-            ]);
-        } else {
-            $this->validate([
-                'files' => 'required'
+                'nomor_unhas' => 'required',
+                'nomor_mitra' => 'required',
             ]);
         }
 
-        if ($this->jenisKerjasamaField == 2) {
 
+        if ($this->jenisKerjasamaField == '2') {
             $this->validate([
                 'region' => 'required',
                 'negara' => 'required',
-                'tempat_pelaksanaan' => 'required',
-                'nomor_unhas' => 'required',
-                'judul_kerjasama' => 'required',
-                'deskripsi' => 'required',
-                'tanggal_ttd' => 'required',
-                'tanggal_awal' => 'required',
-                'tanggal_berakhir' => 'required',
-                'status_kerjasama' => 'required',
-                'jangka_waktu' => 'required',
             ]);
-        } else {
-
-            $this->validate([
-                'tempat_pelaksanaan' => 'required',
-                'nomor_unhas' => 'required',
-                'nomor_mitra' => 'required',
-                'judul_kerjasama' => 'required',
-                'deskripsi' => 'required',
-                'tanggal_ttd' => 'required',
-                'tanggal_awal' => 'required',
-                'tanggal_berakhir' => 'required',
-                'status_kerjasama' => 'required',
-                'jangka_waktu' => 'required',
-            ]);
+            if ($this->nomorSistem != 1) {
+                $this->validate([
+                    'nomor_unhas' => 'required',
+                ]);
+            }
         }
-
-        // validate penggiat kerjasama
-        foreach (range(0, $this->arrayJawaban) as $key => $value) {
-            // Common validation for status
+        if ($this->idEdit == null) {
+            if ($this->uploadDocument) {
+                $this->validate([
+                    'logo' => 'required',
+                    'scopeList' => 'required'
+                ]);
+            } else {
+                $this->validate([
+                    'files' => 'required'
+                ]);
+            }
+        }
+        foreach (range(0, $this->arrayJawaban) as $value) {
             $this->validate([
-                'status.' . $value => 'required',
+                "status.$value" => 'required',
             ]);
 
-            // Base validation rules common to all statuses
-            $baseRules = [
-                'nama_pihak.' . $value => 'required',
-                'alamat_pihak.' . $value => 'required',
-                'nama_pejabat_pihak.' . $value => 'required',
-                'email_pj_pihak.' . $value => 'required|email',
-                'pj_pihak.' . $value => 'required',
+            $commonRules = [
+                "nama_pihak.$value" => 'required',
+                "alamat_pihak.$value" => 'required',
+                "negara_pihak.$value" => 'required',
+                "koordinat_pihak.$value" => 'required',
+                "nama_pejabat_pihak.$value" => 'required',
+                "jabatan_pejabat_pihak.$value" => 'required',
+                "pj_pihak.$value" => 'required',
+                "jabatan_pj_pihak.$value" => 'required',
+                "email_pj_pihak.$value" => 'required',
+                "hp_pj_pihak.$value" => 'required',
             ];
-
-            // Additional rules based on status
             switch ($this->status[$value]) {
                 case 1:
-                    $additionalRules = [
-                        'ptqs.' . $value => 'required',
-                        'fakultas_pihak.' . $value => 'required',
-                    ];
+                    // Additional rules for status = 1
+                    $this->validate(array_merge($commonRules, [
+                        "ptqs.$value" => 'required',
+                        "fakultas_pihak.$value" => 'required',
+                    ]));
+
                     break;
 
                 case 2:
-                    $additionalRules = [
-                        'fakultas_pihak.' . $value => 'required',
-                    ];
+                    // Specific to status = 2
+                    $this->validate(array_merge($commonRules, [
+                        "fakultas_pihak.$value" => 'required',
+                    ]));
                     break;
 
                 case 3:
-                    $additionalRules = [
-                        'badanKemitraan.' . $value => 'required',
-                    ];
+                    // Additional rules for status = 3
+                    $rules = array_merge($commonRules, [
+                        "badanKemitraan.$value" => 'required',
+                    ]);
+
+                    $this->validate($rules);
+
+                    // Handle the special case for badanKemitraan = 99
                     if ($this->badanKemitraan[$value] == 99) {
-                        $additionalRules['lainnya.' . $value] = 'required';
+                        $rules["lainnya.$value"] = 'required';
                     }
+
+                    $this->validate($rules);
                     break;
 
                 case 4:
-                    $additionalRules = [
-                        'ptqs.' . $value => 'required',
-                        'fakultas_pihak.' . $value => 'required',
-                    ];
+                    // Additional rules for status = 4
+                    $this->validate(array_merge($commonRules, [
+                        "ptqs.$value" => 'required',
+                        "fakultas_pihak.$value" => 'required',
+                    ]));
                     break;
 
                 default:
-                    $additionalRules = [];
                     break;
             }
-
-            // Merge base rules with additional rules and validate
-            $this->validate(array_merge($baseRules, $additionalRules));
         }
-
-
-        // $this->validate([
-        //     'arrayBentukKegiatan' => 'required'
-        // ]);
+        $this->validate([
+            'arrayBentukKegiatan' => 'required'
+        ]);
     }
 
     public function save()
     {
-        $this->validasiSave();
+        $this->inputValidation();
         if ($this->getErrorBag()->isNotEmpty()) {
             $this->emit('formFailed', $this->getErrorBag()->all());
         }
@@ -298,6 +313,9 @@ class GuestMouInput extends Component
 
         if ($this->nomorSistem) {
             $this->nomor_unhas =  $uuid;
+        }
+        foreach (range(0, $this->arrayJawaban) as $key) {
+            $this->arrayNamaPenggiat[] = $this->nama_pihak[$key];
         }
 
         DB::beginTransaction();
@@ -395,7 +413,7 @@ class GuestMouInput extends Component
                             'pihak' => $this->nama_pihak[$value],
                             'id_pj' => $storePJ->id,
                             'id_pejabat' => $storePejabat->id,
-                            'fakultas_pihak' => $this->fakultas_pihak[$value],
+                            'fakultas_pihak' => $this->fakultas_pihak[$value] ?? null,
                             'prodi' => '',
                         ]
                     );
@@ -527,20 +545,20 @@ class GuestMouInput extends Component
         $this->nama_pihak[] = $instansi->name;
         $this->alamat_pihak[] = $instansi->address;
         $this->negara_pihak[] = $instansi->negara_id;
-        $this->ptqs[] = $instansi->ptqs;
+        $this->ptqs[] = 2;
         $this->badanKemitraan[] = $instansi->badan_kemitrann;
         $this->status[] = $instansi->status;
         $this->koordinat_pihak[] = $instansi->coordinates;
 
         $pejabatModel = new Pejabat();
-        $pejabat = $pejabatModel->where('id', '=', 652)->first();
-        $this->idPejabat[] = 652;
+        $pejabat = $pejabatModel->where('nama', '=', 'Prof. Dr. Ir. Jamaluddin Jompa, M.Sc.')->first();
+        $this->idPejabat[] = $pejabat->id;
         $this->nama_pejabat_pihak[] = $pejabat->nama;
         $this->jabatan_pejabat_pihak[] = $pejabat->jabatan;
 
         $penanggugjawabModel = new PenanggungJawab();
-        $penanggungjawab = $penanggugjawabModel->where('id', '=', 496)->first();
-        $this->idPJ[] = 496;
+        $penanggungjawab = $penanggugjawabModel->where('name', '=', 'Prof. Dr. Eng. Adi Maulana, S.T., M.Phil')->first();
+        $this->idPJ[] = $penanggungjawab->id;
         $this->pj_pihak[] = $penanggungjawab->name;
         $this->jabatan_pj_pihak[] = $penanggungjawab->designation;
         $this->email_pj_pihak[] = $penanggungjawab->email;

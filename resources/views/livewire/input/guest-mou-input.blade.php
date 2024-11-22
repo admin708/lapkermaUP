@@ -113,9 +113,10 @@
                                 @enderror
                             </div>
                             <div class="{{ $jenisKerjasamaField == 1 ? 'd-none' : '' }}">
-                                <label class="form-label">Negara <i class="small text-danger">*</i> </label>
-                                <select wire:model="negara" id="select2-negara" class="form-select form-select-sm">
-                                    <option></option>
+                                <label class="form-label">Negara <i class="small text-danger">*</i></label>
+                                <select wire:model="negara" id="select2-negara"
+                                    class="form-select form-select-sm @error('negara') is-invalid @enderror">
+                                    <option value=""></option>
                                     @foreach ($negaraKerjasama as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
@@ -124,12 +125,12 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
                             <div class="{{ $jenisKerjasamaField == 1 ? 'd-none' : '' }}">
                                 <label class="form-label">Region <i class="text-danger">*</i></label>
-                                <select wire:model="region" style="display: block"
-                                    class="form-select form-select-sm
-                        @error('region') is-invalid @enderror">
-                                    <option></option>
+                                <select wire:model="region"
+                                    class="form-select form-select-sm @error('region') is-invalid @enderror">
+                                    <option value=""></option>
                                     @foreach ($regionKerjasama as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama }}</option>
                                     @endforeach
@@ -138,6 +139,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
                             <div>
                                 <label class="form-label">Tempat Pelaksana <i class="text-danger">*</i></label>
                                 <input required wire:model.defer="tempat_pelaksanaan" type="text"
@@ -376,9 +378,6 @@
                                             <div class="col-sm-12 col-lg-7 my-2">
                                                 <label class="mr-sm-2">Instansi / Universitas <i
                                                         class="small text-danger">*</i>
-                                                    @error('nama_pihak.' . $key)
-                                                        <i class="text-sm text-danger">* required</i>
-                                                    @enderror
                                                 </label>
 
                                                 <div wire:loading wire:target="nama_pihak.{{ $key }}"
@@ -392,7 +391,11 @@
                                                         aria-haspopup="true" aria-expanded="true">
                                                         <input placeholder="Ketik Untuk Mencari"
                                                             wire:model="nama_pihak.{{ $key }}"
-                                                            type="text" class="form-control form-control-sm">
+                                                            type="text"
+                                                            class="form-control form-control-sm @error('nama_pihak.' . $value) is-invalid @enderror">
+                                                        @error('nama_pihak.' . $value)
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
 
                                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchInstansiList[$key]) && count($searchInstansiList[$key]) > 0 ? 'show' : '' }}"
@@ -413,7 +416,7 @@
 
                                             <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 1 ? 'd-block' : (optional($status)[$value] == 4 ? 'd-block' : '') }}"
                                                 style="display: none">
-                                                <label class="mr-sm-2">PTQS 100</label>
+                                                <label class="mr-sm-2">PTQS 100<i class="text-danger">*</i></label>
                                                 <select wire:model="ptqs.{{ $value }}"
                                                     class="@error('ptqs.' . $value) is-invalid @enderror form-select form-select-sm mr-sm-2">
                                                     <option value=""></option>
@@ -497,8 +500,7 @@
                                     <div class="col-auto my-2">
                                         <label class="mr-sm-2">Negara Instansi</label>
                                         <select wire:model="negara_pihak.{{ $value }}"
-                                            class="form-select form-select-sm"
-                                            @error('negara_pihak.' . $value) is-invalid @enderror>
+                                            class="form-control form-control-sm @error('negara_pihak.' . $value) is-invalid @enderror">
                                             <option></option>
                                             @foreach ($negaraKerjasama as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -511,7 +513,7 @@
                                                 <label class="mr-sm-2">Koordinat Instansi</label>
                                                 <input required wire:model="koordinat_pihak.{{ $value }}"
                                                     type="text"
-                                                    class="form-control form-control-sm @error('judul_kerjasama') is-invalid @enderror">
+                                                    class="form-control form-control-sm @error('koordinat_pihak.' . $value) is-invalid @enderror">
                                             </div>
 
                                             <div class="col-sm-12 col-lg-7 my-2">
@@ -529,7 +531,7 @@
                                         </i>
                                         <div class="row">
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Nama</label>
+                                                <label class="mr-sm-2">Nama<i class="text-danger">*</i></label>
                                                 <div wire:loading wire:target="nama_pejabat_pihak.{{ $key }}"
                                                     class="mx-1 spinner-border spinner-border-sm text-primary"
                                                     role="status">
@@ -540,7 +542,8 @@
                                                         aria-haspopup="true" aria-expanded="true">
                                                         <input placeholder="Ketik Untuk Mencari"
                                                             wire:model="nama_pejabat_pihak.{{ $key }}"
-                                                            type="text" class="form-control form-control-sm">
+                                                            type="text"
+                                                            class="form-control form-control-sm @error('nama_pejabat_pihak.' . $value) is-invalid @enderror">
                                                     </div>
 
                                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPejabatList[$key]) && count($searchPejabatList[$key]) > 0 ? 'show' : '' }}"
@@ -559,9 +562,10 @@
                                             </div>
                                             <div class="col-sm-12 col-lg-6">
 
-                                                <label class="mr-sm-2">Jabatan</label>
+                                                <label class="mr-sm-2">Jabatan<i class="text-danger">*</i></label>
                                                 <input wire:model.defer="jabatan_pejabat_pihak.{{ $value }}"
-                                                    type="text" class="form-control form-control-sm">
+                                                    type="text"
+                                                    class="form-control form-control-sm @error('jabatan_pejabat_pihak.' . $value) is-invalid @enderror">
                                             </div>
                                         </div>
                                     </div>
@@ -569,7 +573,7 @@
                                         <label class="mr-sm-2 mt-2 "><strong>Penanggung Jawab</strong> </label>
                                         <div class="row">
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Nama</label>
+                                                <label class="mr-sm-2">Nama<i class="text-danger">*</i></label>
                                                 <div wire:loading wire:target="pj_pihak.{{ $key }}"
                                                     class="mx-1 spinner-border spinner-border-sm text-primary"
                                                     role="status">
@@ -580,7 +584,10 @@
                                                         aria-haspopup="true" aria-expanded="true">
                                                         <input placeholder="Ketik Untuk Mencari"
                                                             wire:model="pj_pihak.{{ $key }}" type="text"
-                                                            class="form-control form-control-sm">
+                                                            class="form-control form-control-sm @error('pj_pihak.' . $value) is-invalid @enderror">
+                                                        @error('pj_pihak.{{ $value }}')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
 
                                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPenanggungJawab[$key]) && count($searchPenanggungJawab[$key]) > 0 ? 'show' : '' }}"
@@ -598,9 +605,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Jabatan</label>
+                                                <label class="mr-sm-2">Jabatan<i class="text-danger">*</i></label>
                                                 <input wire:model.defer="jabatan_pj_pihak.{{ $value }}"
-                                                    type="text" class="form-control form-control-sm">
+                                                    type="text"
+                                                    class="form-control form-control-sm @error('jabatan_pj_pihak.' . $value) is-invalid @enderror">
+                                                @error('jabatan_pj_pihak.{{ $value }}')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row">
@@ -809,13 +820,13 @@
                                 <h5 class="modal-title text-primary" id="submissionModalLabel">Submission Received
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                    onclick="reloadPage()"></button>
+                                    {{-- onclick="reloadPage()" --}}></button>
                             </div>
                             <div class="modal-body">
                                 Your MoU submission has been received and will be processed within 5 working days.
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" onclick="reloadPage()"
+                                <button type="button" class="btn btn-primary" {{-- onclick="reloadPage()" --}}
                                     data-bs-dismiss="modal">OK</button>
                             </div>
                         </div>

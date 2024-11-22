@@ -95,50 +95,16 @@ class Mou extends Component
     public function showEditData($id)
     {
         $this->idEdit = $id;
-        $findMe = DataMou::find($id);
-
-        // $this->uuid = $findMe->uuid;
-        $this->tanggal_ttd = $findMe->tanggal_ttd;
-        $this->jenisKerjasamaField = $findMe->tipe_kerjasama;
-        $this->negara = $findMe->negara;
-        $this->region = $findMe->region;
-        $this->tempat_pelaksanaan = $findMe->tempat_pelaksanaan;
-        $this->status_kerjasama = $findMe->status;
-        $this->tanggal_awal = $findMe->tanggal_awal;
-        $this->tanggal_berakhir = $findMe->tanggal_berakhir;
-        $this->jangka_waktu = $findMe->jangka_waktu;
-        $this->nomor_unhas = $findMe->nomor_dok_unhas;
-        $this->nomor_mitra = $findMe->nomor_dok_mitra;
-        $this->judul_kerjasama = $findMe->judul;
-        $this->deskripsi = $findMe->deskripsi;
-        $this->upBy = $findMe->uploaded_by;
-
+        $this->setDataMoU($id);
         $findMeTo = MouPenggiat::where('id_lapkerma', $id)->get();
         $this->arrayJawaban = $findMeTo->count('id');
         $this->inputs = [];
 
-
         foreach ($findMeTo as $key => $value) {
             array_push($this->inputs, $key);
-            $instansi = Instansi::where('id', '=', $findMeTo[$key]->id_pihak)->first();
-            $this->status[$key] = $instansi->status;
-            $this->nama_pihak[$key] = $instansi->name;
-            $this->alamat_pihak[$key] = $instansi->address;
-            $this->koordinat_pihak[$key] = $instansi->coordinates;
-            $this->fakultas_pihak[$key] = $findMeTo[$key]['fakultas_pihak'] ?? 1000;
-            $this->ptqs[$key] = $instansi->ptqs;
-            $this->badanKemitraan[$key] = $instansi->badan_kemitraan;
-            $this->negara_pihak[$key] = $instansi->negara_id;
-
-            $pejabat = Pejabat::where('id', '=', $findMeTo[$key]->id_pejabat)->first();
-            $this->nama_pejabat_pihak[$key] = $pejabat->nama;
-            $this->jabatan_pejabat_pihak[$key] = $pejabat->jabatan;
-
-            $pj = PenanggungJawab::where('id', '=', $findMeTo[$key]->id_pj)->first();
-            $this->pj_pihak[$key] = $pj->name;
-            $this->jabatan_pj_pihak[$key] = $pj->designation;
-            $this->email_pj_pihak[$key] = $pj->email;
-            $this->hp_pj_pihak[$key] = $pj->phone_number;
+            $this->setInstansi($findMeTo, $key);
+            $this->setPejabat($findMeTo, $key);
+            $this->setPJ($findMeTo, $key);
 
             if ($value->status_pihak == 3) {
                 if (is_int($value->badan_kemitraan)) {
@@ -164,15 +130,14 @@ class Mou extends Component
         }
     }
 
-    public function showGuestInputData($id)
+    public function setDataMoU($id)
     {
-
-        $this->idEdit = $id;
         $findMe = DataMou::find($id);
+
+        // $this->uuid = $findMe->uuid;
         $this->tanggal_ttd = $findMe->tanggal_ttd;
-        $this->jenisKerjasamaField = $findMe->jenis_kerjasama;
-        $negara = Negara::find($findMe->negara);
-        $this->negara = $negara ? $negara->name : '';
+        $this->jenisKerjasamaField = $findMe->tipe_kerjasama;
+        $this->negara = $findMe->negara;
         $this->region = $findMe->region;
         $this->tempat_pelaksanaan = $findMe->tempat_pelaksanaan;
         $this->status_kerjasama = $findMe->status;
@@ -184,152 +149,46 @@ class Mou extends Component
         $this->judul_kerjasama = $findMe->judul;
         $this->deskripsi = $findMe->deskripsi;
         $this->upBy = $findMe->uploaded_by;
+    }
 
-        $this->fakultas_pihak = [];
-
-        $findMeTo = MouPenggiat::where('id_lapkerma', $id)->get();
-        $this->arrayJawaban = $findMeTo->count('id');
-        $this->inputs = [];
-
-        foreach ($findMeTo as $key => $value) {
-            array_push($this->inputs, $key);
-            $instansi = Instansi::where('id', '=', $findMeTo[$key]->id_pihak)->first();
-            $this->status[$key] = $instansi->status;
-            $this->nama_pihak[$key] = $instansi->name;
-            $this->alamat_pihak[$key] = $instansi->address;
-            $this->koordinat_pihak[$key] = $instansi->coordinates;
+    public function setInstansi($findMeTo, $key)
+    {
+        $instansi = Instansi::where('id', '=', $findMeTo[$key]->id_pihak)->first();
+        if ($instansi) {
+            $this->status[$key] = $instansi->status ?? null;
+            $this->nama_pihak[$key] = $instansi->name ?? null;
+            $this->alamat_pihak[$key] = $instansi->address ?? null;
+            $this->koordinat_pihak[$key] = $instansi->coordinates ?? null;
             $this->fakultas_pihak[$key] = $findMeTo[$key]['fakultas_pihak'] ?? 1000;
-            $this->ptqs[$key] = $instansi->ptqs;
-            $this->badanKemitraan[$key] = $instansi->badan_kemitraan;
-            $this->negara_pihak[$key] = $instansi->negara_id;
-
-            $pejabat = Pejabat::where('id', '=', $findMeTo[$key]->id_pejabat)->first();
-            $this->nama_pejabat_pihak[$key] = $pejabat->nama;
-            $this->jabatan_pejabat_pihak[$key] = $pejabat->jabatan;
-
-            $pj = PenanggungJawab::where('id', '=', $findMeTo[$key]->id_pj)->first();
-            $this->pj_pihak[$key] = $pj->name;
-            $this->jabatan_pj_pihak[$key] = $pj->designation;
-            $this->email_pj_pihak[$key] = $pj->email;
-            $this->hp_pj_pihak[$key] = $pj->phone_number;
-
-            if ($value->status_pihak == 3) {
-                if (is_int($value->badan_kemitraan)) {
-                    $this->badanKemitraan[$key] = $value->badan_kemitraan;
-                } else {
-                    $this->badanKemitraan[$key] = 99;
-                    $this->lainnya[$key] = $value->badan_kemitraan;
-                }
-            }
-        }
-        $this->findDokumen = DataMouDokumen::where('kerjasama_id', $id)->get();
-
-        $findKegiatan = DataMouBentukKegiatanKerjasama::where('id_mou', $id)->get();
-        foreach ($findKegiatan as $key => $value) {
-            array_push($this->arrayBentukKegiatan, $value->id_ref_bentuk_kegiatan);
-            $this->nilai_kontrak[$key] = $value->nilai_kontrak;
-            $this->volume_satuan[$key] = $value->volume_satuan;
-            $this->volume_luaran[$key] = $value->volume_luaran;
-            $this->keterangan[$key] = $value->keterangan;
-            $this->arrayKinerja[$key] = $value->id_ref_indikator_kinerja;
-            $this->arraySasaran[$key] = $value->id_ref_sasaran_kegiatan;
+            $this->ptqs[$key] = $instansi->ptqs ?? 0;
+            $this->badanKemitraan[$key] = $instansi->badan_kemitraan ?? 1;
+            $this->negara_pihak[$key] = $instansi->negara_id ?? 103;
         }
     }
 
+    public function setPejabat($findMeTo, $key)
+    {
+        $pejabat = Pejabat::where('id', '=', $findMeTo[$key]->id_pejabat)->first();
+        if ($pejabat) {
+            $this->nama_pejabat_pihak[$key] = $pejabat->nama ?? '';
+            $this->jabatan_pejabat_pihak[$key] = $pejabat->jabatan ?? '';
+        }
+    }
+
+    public function setPJ($findMeTo, $key)
+    {
+        $pj = PenanggungJawab::where('id', '=', $findMeTo[$key]->id_pj)->first();
+        if ($pj) {
+            $this->pj_pihak[$key] = $pj->name;
+            $this->jabatan_pj_pihak[$key] = $pj->designation ?? '';
+            $this->email_pj_pihak[$key] = $pj->email ?? '';
+            $this->hp_pj_pihak[$key] = $pj->phone_number ?? '';
+        }
+    }
 
     public function saveEdit($id)
     {
-        if ($this->jenisKerjasamaField == 2) {
-            $this->validate([
-                'region' => 'required',
-                'negara' => 'required',
-                'tempat_pelaksanaan' => 'required',
-                'nomor_unhas' => 'required',
-                'judul_kerjasama' => 'required',
-                'deskripsi' => 'required',
-                'tanggal_ttd' => 'required',
-                'tanggal_awal' => 'required',
-                'tanggal_berakhir' => 'required',
-                'status_kerjasama' => 'required',
-                'jangka_waktu' => 'required',
-            ]);
-        } else {
-            $this->validate([
-                'tempat_pelaksanaan' => 'required',
-                'nomor_unhas' => 'required',
-                'nomor_mitra' => 'required',
-                'judul_kerjasama' => 'required',
-                'deskripsi' => 'required',
-                'tanggal_ttd' => 'required',
-                'tanggal_awal' => 'required',
-                'tanggal_berakhir' => 'required',
-                'status_kerjasama' => 'required',
-                'jangka_waktu' => 'required',
-            ]);
-        }
-
-        // validate penggiat kerjasama
-        foreach (range(0, $this->arrayJawaban - 1) as $value) {
-            // Validate the `status` field
-            $this->validate([
-                "status.$value" => 'required',
-            ]);
-
-            // Define common validation rules
-            $commonRules = [
-                "nama_pihak.$value" => 'required',
-                "alamat_pihak.$value" => 'required',
-                "koordinat_pihak.$value" => 'required',
-                "nama_pejabat_pihak.$value" => 'required',
-            ];
-
-            // Status-specific validation logic
-            switch ($this->status[$value]) {
-                case 1:
-                    // Additional rules for status = 1
-                    $this->validate(array_merge($commonRules, [
-                        "ptqs.$value" => 'required',
-                        "fakultas_pihak.$value" => 'required',
-                    ]));
-                    break;
-
-                case 2:
-                    // Specific to status = 2
-                    $this->validate($commonRules);
-                    break;
-
-                case 3:
-                    // Additional rules for status = 3
-                    $rules = array_merge($commonRules, [
-                        "badanKemitraan.$value" => 'required',
-                    ]);
-
-                    // Handle the special case for badanKemitraan = 99
-                    if ($this->badanKemitraan[$value] == 99) {
-                        $rules["lainnya.$value"] = 'required';
-                    }
-
-                    $this->validate($rules);
-                    break;
-
-                case 4:
-                    // Additional rules for status = 4
-                    $this->validate(array_merge($commonRules, [
-                        "ptqs.$value" => 'required',
-                        "fakultas_pihak.$value" => 'required',
-                    ]));
-                    break;
-
-                default:
-                    // Handle unexpected statuses if needed
-                    break;
-            }
-        }
-
-
-        $this->validate([
-            'arrayBentukKegiatan' => 'required'
-        ]);
+        $this->inputValidation();
 
 
         $this->arrayNamaPenggiat = [];
@@ -490,29 +349,28 @@ class Mou extends Component
                         ]
                     );
 
-                    // $storePenggiatKerjasama = DataMouPenggiat::create([
-                    //     'id_lapkerma' => $id,
-                    //     'pihak' => $value + 1,
-                    //     'status_pihak' => $this->status[$key],
-                    //     'nama_pihak' => $this->arrayNamaPenggiat[$key],
-                    //     'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
-                    //     'alamat_pihak' => $this->alamat_pihak[$key],
-
-                    //     'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
-                    //     'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
-                    //     'pj_pihak' => $this->pj_pihak[$key],
-                    //     'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
-                    //     'email_pj_pihak' => $this->email_pj_pihak[$key] ?? '',
-                    //     'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? '',
-                    //     'ptqs' => $this->ptqs[$key] ?? null,
-                    //     'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
-                    //     'uploaded_by' => auth()->user()->name,
-                    // ]);
-                    // if (optional($this->badanKemitraan)[$key] == 99) {
-                    //     $storePenggiatKerjasama->update([
-                    //         'badan_kemitraan' => $this->lainnya[$key]
-                    //     ]);
-                    // }
+                    $storePenggiatKerjasama = DataMouPenggiat::create([
+                        'id_lapkerma' => $id,
+                        'pihak' => $value + 1,
+                        'status_pihak' => $this->status[$key],
+                        'nama_pihak' => $this->arrayNamaPenggiat[$key],
+                        'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
+                        'alamat_pihak' => $this->alamat_pihak[$key],
+                        'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
+                        'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
+                        'pj_pihak' => $this->pj_pihak[$key],
+                        'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
+                        'email_pj_pihak' => $this->email_pj_pihak[$key] ?? '',
+                        'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? '',
+                        'ptqs' => $this->ptqs[$key] ?? null,
+                        'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
+                        'uploaded_by' => auth()->user()->name,
+                    ]);
+                    if (optional($this->badanKemitraan)[$key] == 99) {
+                        $storePenggiatKerjasama->update([
+                            'badan_kemitraan' => $this->lainnya[$key]
+                        ]);
+                    }
                 }
 
                 foreach ($this->arrayBentukKegiatan as $key => $value) {
@@ -596,7 +454,6 @@ class Mou extends Component
         $this->status[$key] = $status;
         $this->badanKemitraan[$key] = $badanKemitraan;
         $this->idInstansi[$key] = $id;
-
         $this->searchInstansiList[$key] = [];
     }
 
@@ -650,6 +507,92 @@ class Mou extends Component
             array_push($this->arrayBentukKegiatan, $this->bentukKegiatan);
         }
         $this->reset('bentukKegiatan');
+    }
+
+    public function inputValidation()
+    {
+        if ($this->nomorSistem == 1) {
+            $this->nomor_unhas = 'mou-uh';
+        }
+
+        $this->validate([
+            'tempat_pelaksanaan' => 'required',
+            'nomor_unhas' => 'required',
+            'judul_kerjasama' => 'required',
+            'deskripsi' => 'required',
+            'tanggal_ttd' => 'required',
+            'tanggal_awal' => 'required',
+            'tanggal_berakhir' => 'required',
+            'status_kerjasama' => 'required',
+            'jangka_waktu' => 'required',
+        ]);
+
+        if ($this->jenisKerjasamaField == 2) {
+            $this->validate([
+                'region' => 'required',
+                'negara' => 'required',
+            ]);
+        }
+        foreach (range(0, $this->arrayJawaban) as $value) {
+            $this->validate([
+                "status.$value" => 'required',
+            ]);
+
+            $commonRules = [
+                "nama_pihak.$value" => 'required',
+                "alamat_pihak.$value" => 'required',
+                "koordinat_pihak.$value" => 'required',
+                "nama_pejabat_pihak.$value" => 'required',
+                "jabatan_pejabat_pihak.$value" => 'required',
+                "pj_pihak.$value" => 'required',
+                "jabatan_pj_pihak.$value" => 'required',
+                "email_pj_pihak.$value" => 'required',
+                "hp_pj_pihak.$value" => 'required',
+            ];
+            switch ($this->status[$value]) {
+                case 1:
+                    // Additional rules for status = 1
+                    $this->validate(array_merge($commonRules, [
+                        "ptqs.$value" => 'required',
+                        "fakultas_pihak.$value" => 'required',
+                    ]));
+
+                    break;
+
+                case 2:
+                    // Specific to status = 2
+                    $this->validate($commonRules);
+                    break;
+
+                case 3:
+                    // Additional rules for status = 3
+                    $rules = array_merge($commonRules, [
+                        "badanKemitraan.$value" => 'required',
+                    ]);
+
+                    // Handle the special case for badanKemitraan = 99
+                    if ($this->badanKemitraan[$value] == 99) {
+                        $rules["lainnya.$value"] = 'required';
+                    }
+
+                    $this->validate($rules);
+                    break;
+
+                case 4:
+                    // Additional rules for status = 4
+                    $this->validate(array_merge($commonRules, [
+                        "ptqs.$value" => 'required',
+                        "fakultas_pihak.$value" => 'required',
+                    ]));
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        $this->validate([
+            'arrayBentukKegiatan' => 'required'
+        ]);
     }
 
     public function validasiSave()
@@ -762,7 +705,7 @@ class Mou extends Component
 
     public function save()
     {
-        $this->validasiSave();
+        $this->inputValidation();
         $uuid = DataMou::max('id');
         $uuid = str_pad($uuid + 1, 3, '0', STR_PAD_LEFT);
         $uuid = 'MoU-' . date('y') . $uuid;
@@ -773,6 +716,7 @@ class Mou extends Component
 
         $this->arrayNamaPenggiat = [];
         $hitung = 0;
+        $indexUnhas = 0;
         foreach (array_keys($this->status) as $key => $value) {
 
             if ($this->nama_pihak[$key] == 'Universitas Hasanuddin') {

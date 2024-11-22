@@ -47,7 +47,7 @@
                                     <div class="dropdown-menu">
                                         @if ($item->level == 1)
                                             <a class="dropdown-item text-primary small" role="button"
-                                                wire:click="getEdit({{ $item->id }})"><i
+                                                wire:click="getEditData({{ $item->id }})"><i
                                                     class="bx bx-show me-1"></i> View</a>
                                         @endif
                                         @if (auth()->user()->role_id == 1)
