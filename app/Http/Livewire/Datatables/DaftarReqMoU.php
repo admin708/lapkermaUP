@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Datatables;
 
 use Livewire\Component;
 use App\Models\DataMou;
+use App\Models\DataMouPenggiat;
+use App\Models\MouPenggiat;
 use App\Models\MouRequest;
 use Livewire\WithPagination;
 
@@ -59,7 +61,16 @@ class DaftarReqMoU extends Component
     {
         $mouRequest = DataMou::find($id);
 
-        // Check if the request exists
+        $DataMouPenggiat = DataMouPenggiat::where('id_lapkerma', '=', $id)->get();
+        foreach ($DataMouPenggiat as $data) {
+            $data->delete();
+        }
+
+        $MouPenggiat = MouPenggiat::where('id_lapkerma', '=', $id)->get();
+        foreach ($MouPenggiat as $data) {
+            $data->delete();
+        }
+
         if ($mouRequest) {
             $mouRequest->delete();
         }
@@ -77,8 +88,8 @@ class DaftarReqMoU extends Component
     public function showDetail($id)
     {
         $this->isEdit = true;
-        $this->showModalsEdit = true; // Menampilkan modal detail
-        $this->emit('guestInputData', $id);
+        $this->showModalsEdit = true;
+        $this->emit('getEditData', $id);
     }
 
     public function closeEdit()

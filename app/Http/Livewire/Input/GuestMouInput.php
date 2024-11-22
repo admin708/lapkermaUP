@@ -17,6 +17,7 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use App\Mail\DocumentMail;
 use App\Models\DataMou;
 use App\Models\DataMouBentukKegiatanKerjasama;
+use App\Models\DataMouPenggiat;
 use App\Models\Instansi;
 use App\Models\MouPenggiat;
 use Illuminate\Support\Facades\Storage;
@@ -417,6 +418,29 @@ class GuestMouInput extends Component
                             'prodi' => '',
                         ]
                     );
+
+                    $storePenggiatKerjasama = DataMouPenggiat::create([
+                        'id_lapkerma' => $store->id,
+                        'pihak' => $value + 1,
+                        'status_pihak' => $this->status[$key],
+                        'nama_pihak' => $this->arrayNamaPenggiat[$key],
+                        'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
+                        'alamat_pihak' => $this->alamat_pihak[$key],
+                        'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
+                        'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
+                        'pj_pihak' => $this->pj_pihak[$key],
+                        'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
+                        'email_pj_pihak' => $this->email_pj_pihak[$key] ?? '',
+                        'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? '',
+                        'ptqs' => $this->ptqs[$key] ?? null,
+                        'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
+                        'uploaded_by' => auth()->user()->name,
+                    ]);
+                    if (optional($this->badanKemitraan)[$key] == 99) {
+                        $storePenggiatKerjasama->update([
+                            'badan_kemitraan' => $this->lainnya[$key]
+                        ]);
+                    }
                 }
                 $code = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $random = substr(str_shuffle($code), 0, 3);

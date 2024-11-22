@@ -45,9 +45,9 @@
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        @if ($item->level == 1)
+                                        @if ($item->level == 0)
                                             <a class="dropdown-item text-primary small" role="button"
-                                                wire:click="getEditData({{ $item->id }})"><i
+                                                wire:click="showDetail({{ $item->id }})"><i
                                                     class="bx bx-show me-1"></i> View</a>
                                         @endif
                                         @if (auth()->user()->role_id == 1)
