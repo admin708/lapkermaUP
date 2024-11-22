@@ -4,9 +4,12 @@ namespace App\Http\Livewire\DashboardChart;
 
 use Livewire\Component;
 use App\Models\Instansi;
+use App\Models\Negara;
 
 class KerjasamaMap extends Component
 {
+
+
     public $negaraName;
     public $dataKerjaSamaNegara;
     public $mapVisibility;
@@ -15,10 +18,23 @@ class KerjasamaMap extends Component
 
     public function mount()
     {
-        $this->negaraName = 'Japan'; // Set default negara
         $this->mapVisibility = true;
-        $this->fetchNegaraData();
+        $this->fetchAllNegaraData(); // Memanggil fungsi untuk ambil data semua negara
     }
+
+    public function fetchAllNegaraData()
+    {
+        // Ambil data Instansi dari database tanpa filter negara
+        $this->dataKerjaSamaNegara = Instansi::all(['name', 'coordinates']); // Ambil nama dan koordinat instansi
+
+        return $this->dataKerjaSamaNegara;
+
+        // // Kirim data ke frontend
+        // $this->emit('dataKerjaSamaNegaraUpdate', $this->dataKerjaSamaNegara);
+    }
+
+
+
 
     public function setNegaraName($name)
     {
@@ -30,20 +46,21 @@ class KerjasamaMap extends Component
     {
         $name = $this->negaraName;
 
+        $idNegara = Negara::where('name', '=', $name)->first();
+        
         // Ambil data Instansi berdasarkan negara
-        $this->dataKerjaSamaNegara = Instansi::whereHas('getNegara', function ($query) use ($name) {
-            $query->where('name', strval($name));
-        })->get(['name', 'coordinates']); // Ambil nama dan koordinat instansi
-
+        $this->dataKerjaSamaNegara = Instansi::where('negara_id', '=', $idNegara->id)->get(['name', 'coordinates']);
+        
+        
         // Emit data ke frontend
         $this->emit('dataKerjaSamaNegaraUpdate', $this->dataKerjaSamaNegara);
     }
 
     public function render()
     {
-        return view('livewire.dashboard-chart.kerjasama-map', [
-            'negaraName' => $this->negaraName,
-            'dataKerjaSamaNegara' => $this->dataKerjaSamaNegara,
-        ]);
+        //$negaraData = $this->fetchAllNegaraData();
+        $negaraData = [];
+        return view('livewire.dashboard-chart.kerjasama-map', ['dataKerjaSamaNegaraUpdate' => $negaraData]);
     }
 }
+

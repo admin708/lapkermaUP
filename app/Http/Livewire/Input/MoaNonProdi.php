@@ -1,5 +1,3 @@
-
-
 <?php
 
 namespace App\Http\Livewire\Input;
@@ -38,10 +36,10 @@ use App\Models\PenggiatKerjasama;
 use App\Models\Sdgs;
 use App\Models\StatusKerjasama;
 use Illuminate\Database\QueryException as ERROR;
-use DB;
 use Hamcrest\Type\IsNumeric;
 use phpDocumentor\Reflection\Types\This;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class MoaNonProdi extends Component
 {

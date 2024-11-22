@@ -140,9 +140,6 @@ class IkuDatatables extends Component
         return $query;
     }
 
-
-
-
     public function render()
     {
         // $this->check();

@@ -181,6 +181,11 @@ class Controller extends BaseController
         return view('Pages.Table.iku-score');
     }
 
+    public function jumlahMitra()
+    {
+        return view('Pages.Table.jumlahMitra');
+    }
+
     public function kerjaSamaDalamNegeri()
     {
         return view('Pages.Table.kerjasamadalamnegeri');
