@@ -24,7 +24,7 @@ class DataMou extends Model
 
     public function getpenggiat()
     {
-        return $this->belongsTo(penggiat::class, 'penggiat_pihak');
+        return $this->belongsTo(DataMouPenggiat::class, 'penggiat_pihak');
     }
 
     public function getJenisKerjasama()

@@ -136,7 +136,7 @@ class Mou extends Component
 
         // $this->uuid = $findMe->uuid;
         $this->tanggal_ttd = $findMe->tanggal_ttd;
-        $this->jenisKerjasamaField = $findMe->tipe_kerjasama;
+        $this->jenisKerjasamaField = $findMe->jenis_kerjasama;
         $this->negara = $findMe->negara;
         $this->region = $findMe->region;
         $this->tempat_pelaksanaan = $findMe->tempat_pelaksanaan;
@@ -189,7 +189,6 @@ class Mou extends Component
     public function saveEdit($id)
     {
         $this->inputValidation();
-
 
         $this->arrayNamaPenggiat = [];
         $hitung = 0;
@@ -349,11 +348,12 @@ class Mou extends Component
                         ]
                     );
 
-                    $storePenggiatKerjasama = DataMouPenggiat::create([
+                    $storePenggiatKerjasama = DataMouPenggiat::updateOrCreate([
                         'id_lapkerma' => $id,
+                        'nama_pihak' => $this->arrayNamaPenggiat[$key],
+                    ], [
                         'pihak' => $value + 1,
                         'status_pihak' => $this->status[$key],
-                        'nama_pihak' => $this->arrayNamaPenggiat[$key],
                         'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
                         'alamat_pihak' => $this->alamat_pihak[$key],
                         'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
@@ -388,6 +388,7 @@ class Mou extends Component
                 DB::commit();
                 $this->emit('alerts', ['pesan' => 'Data Berhasil Diupdate', 'icon' => 'success']);
             } catch (ERROR $th) {
+                dd($th);
                 DB::rollback();
                 $this->emit('alerts', ['pesan' => 'Invalid Proses, Gagal Diupdate', 'icon' => 'error']);
             }
@@ -459,11 +460,9 @@ class Mou extends Component
 
     public function updatedNamaPejabatPihak($value, $key)
     {
-        // dd($value);
         if (!empty($this->nama_pejabat_pihak[$key])) {
             $modelPejabat = new Pejabat();
             $result = $modelPejabat->getPejabat(($value));
-            // dd($result);
             $this->searchPejabatList[$key] = $result;
         } else {
             $this->searchPejabatList[$key] = [];
@@ -517,7 +516,6 @@ class Mou extends Component
 
         $this->validate([
             'tempat_pelaksanaan' => 'required',
-            'nomor_unhas' => 'required',
             'judul_kerjasama' => 'required',
             'deskripsi' => 'required',
             'tanggal_ttd' => 'required',
@@ -527,13 +525,41 @@ class Mou extends Component
             'jangka_waktu' => 'required',
         ]);
 
-        if ($this->jenisKerjasamaField == 2) {
+        if ($this->jenisKerjasamaField == '1') {
+            $this->validate([
+                'nomor_unhas' => 'required',
+                'nomor_mitra' => 'required',
+            ]);
+        }
+
+
+        if ($this->jenisKerjasamaField == '2') {
             $this->validate([
                 'region' => 'required',
                 'negara' => 'required',
             ]);
+            if ($this->nomorSistem != 1) {
+                $this->validate([
+                    'nomor_unhas' => 'required',
+                ]);
+            }
         }
-        foreach (range(0, $this->arrayJawaban) as $value) {
+
+
+        if ($this->idEdit == null) {
+            if ($this->uploadDocument) {
+                $this->validate([
+                    'logo' => 'required',
+                    'scopeList' => 'required'
+                ]);
+            } else {
+                $this->validate([
+                    'files' => 'required'
+                ]);
+            }
+        }
+
+        foreach (range(0, $this->arrayJawaban - 1) as $value) {
             $this->validate([
                 "status.$value" => 'required',
             ]);
@@ -541,6 +567,7 @@ class Mou extends Component
             $commonRules = [
                 "nama_pihak.$value" => 'required',
                 "alamat_pihak.$value" => 'required',
+                "negara_pihak.$value" => 'required',
                 "koordinat_pihak.$value" => 'required',
                 "nama_pejabat_pihak.$value" => 'required',
                 "jabatan_pejabat_pihak.$value" => 'required',
@@ -549,6 +576,7 @@ class Mou extends Component
                 "email_pj_pihak.$value" => 'required',
                 "hp_pj_pihak.$value" => 'required',
             ];
+
             switch ($this->status[$value]) {
                 case 1:
                     // Additional rules for status = 1
@@ -561,7 +589,10 @@ class Mou extends Component
 
                 case 2:
                     // Specific to status = 2
-                    $this->validate($commonRules);
+                    $this->validate(array_merge($commonRules, [
+                        "fakultas_pihak.$value" => 'required',
+                    ]));
+
                     break;
 
                 case 3:
@@ -570,12 +601,15 @@ class Mou extends Component
                         "badanKemitraan.$value" => 'required',
                     ]);
 
+                    $this->validate($rules);
+
                     // Handle the special case for badanKemitraan = 99
                     if ($this->badanKemitraan[$value] == 99) {
                         $rules["lainnya.$value"] = 'required';
                     }
 
                     $this->validate($rules);
+
                     break;
 
                 case 4:
@@ -584,17 +618,18 @@ class Mou extends Component
                         "ptqs.$value" => 'required',
                         "fakultas_pihak.$value" => 'required',
                     ]));
+
                     break;
 
                 default:
                     break;
             }
         }
+
         $this->validate([
             'arrayBentukKegiatan' => 'required'
         ]);
     }
-
     public function validasiSave()
     {
         if ($this->nomorSistem == 1) {

@@ -193,12 +193,6 @@
                                 @enderror
                             @endif
                         </div>
-                        {{-- <div class="col-auto my-2">
-                    
-                </div> --}}
-                        {{-- <div class="card-body demo-vertical-spacing demo-only-element">
-                    
-                </div> --}}
                     </div>
                 </div>
 
@@ -514,6 +508,9 @@
                                                 <input required wire:model="koordinat_pihak.{{ $value }}"
                                                     type="text"
                                                     class="form-control form-control-sm @error('koordinat_pihak.' . $value) is-invalid @enderror">
+                                                @error('koordinat_pihak.' . $value)
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <div class="col-sm-12 col-lg-7 my-2">
@@ -544,6 +541,9 @@
                                                             wire:model="nama_pejabat_pihak.{{ $key }}"
                                                             type="text"
                                                             class="form-control form-control-sm @error('nama_pejabat_pihak.' . $value) is-invalid @enderror">
+                                                        @error('nama_pejabat_pihak.' . $value)
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
 
                                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPejabatList[$key]) && count($searchPejabatList[$key]) > 0 ? 'show' : '' }}"
@@ -566,6 +566,9 @@
                                                 <input wire:model.defer="jabatan_pejabat_pihak.{{ $value }}"
                                                     type="text"
                                                     class="form-control form-control-sm @error('jabatan_pejabat_pihak.' . $value) is-invalid @enderror">
+                                                @error('jabatan_pejabat_pihak.' . $value)
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>

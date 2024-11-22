@@ -297,9 +297,9 @@ class GuestMouInput extends Component
                     break;
             }
         }
-        $this->validate([
-            'arrayBentukKegiatan' => 'required'
-        ]);
+        // $this->validate([
+        //     'arrayBentukKegiatan' => 'required'
+        // ]);
     }
 
     public function save()
