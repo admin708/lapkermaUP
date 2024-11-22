@@ -33,7 +33,7 @@ class MoaDatatables extends Component
     public $getFakultas, $getProdi, $getPermohonan, $filess, $getStatus, $getJenis, $cariKerjasama;
     public $cariFakultas, $cariJudul, $cariProdi, $cariNegara, $cariMitra, $cariNamaProdi, $cariTingkat;
     public $cariTahun, $cariNomorDokumen, $cariStatus, $modeData, $sortData;
-    public $cek, $showModalsEdit = false, $idDelete, $showModalsEdit2 = false, $dataExel ;
+    public $cek, $showModalsEdit = false, $idDelete, $showModalsEdit2 = false, $dataExel;
 
     protected $listeners = ['yakinHapus' => 'hapus',];
 
@@ -53,11 +53,22 @@ class MoaDatatables extends Component
 
     public function rezet()
     {
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 99 ) {
-            $this->reset(['cariFakultas','cariJudul','cariTahun','cariNomorDokumen','cariStatus','cariKerjasama','cariProdi',
-                            'cariNegara','cariMitra','cariNamaProdi','cariTingkat']);
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 99) {
+            $this->reset([
+                'cariFakultas',
+                'cariJudul',
+                'cariTahun',
+                'cariNomorDokumen',
+                'cariStatus',
+                'cariKerjasama',
+                'cariProdi',
+                'cariNegara',
+                'cariMitra',
+                'cariNamaProdi',
+                'cariTingkat'
+            ]);
         } else {
-            $this->reset(['cariJudul','cariTahun','cariNomorDokumen','cariStatus','cariKerjasama','cariNamaProdi','cariNegara','cariMitra','cariTingkat']);
+            $this->reset(['cariJudul', 'cariTahun', 'cariNomorDokumen', 'cariStatus', 'cariKerjasama', 'cariNamaProdi', 'cariNegara', 'cariMitra', 'cariTingkat']);
         }
     }
 
@@ -66,11 +77,9 @@ class MoaDatatables extends Component
         $val = 3;
         if ($this->modeData) {
             return redirect()->route('nonprodi-moa-in', [$id, $val]);
-
         } else {
             return redirect()->route('moa-in', [$id, $val]);
         }
-        
     }
 
     public function download()
@@ -83,25 +92,23 @@ class MoaDatatables extends Component
         $this->getJenis = JenisKerjasama::get();
         $this->getStatus = StatusKerjasama::get();
         $this->getFakultas = Fakultas::get();
-        
+
         if (Route::currentRouteName() == 'nonprodi-moa') {
             $this->modeData = true;
         } else {
             $this->modeData = false;
         }
-        
+
         if (auth()->user()->role_id == 2) {
             $this->cariFakultas = auth()->user()->fakultas_id;
             $this->cariProdi = auth()->user()->prodi_id;
             $this->cariNamaProdi = auth()->user()->prodi->nama_resmi;
             $this->getProdi = Prodi::where('id_fakultas', auth()->user()->fakultas_id)->get();
-
-        }elseif(auth()->user()->role_id == 4){
+        } elseif (auth()->user()->role_id == 4) {
             $this->cariFakultas = auth()->user()->fakultas_id;
             $this->getProdi = Prodi::where('id_fakultas', auth()->user()->fakultas_id)->get();
-        }else{
-        $this->getProdi = Prodi::get();
-
+        } else {
+            $this->getProdi = Prodi::get();
         }
     }
 
@@ -109,40 +116,83 @@ class MoaDatatables extends Component
     {
         $data = [];
         if ($this->modeData) {
-            $this->dataExel = NonProdiDataMoa::searchBy($this->cariTahun,$this->cariFakultas,$this->cariNomorDokumen,
-                                                $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNamaProdi,
-                                                $this->cariNegara, $this->cariMitra, $this->cariProdi,$this->cariTingkat,$this->sortData)->get();
-        }else{
-            $this->dataExel = DataMoa::searchBy($this->cariTahun,$this->cariFakultas,$this->cariNomorDokumen,
-                                                $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNamaProdi,
-                                                $this->cariNegara, $this->cariMitra, $this->cariProdi,$this->cariTingkat,$this->sortData)->get();
+            $this->dataExel = NonProdiDataMoa::searchBy(
+                $this->cariTahun,
+                $this->cariFakultas,
+                $this->cariNomorDokumen,
+                $this->cariJudul,
+                $this->cariStatus,
+                $this->cariKerjasama,
+                $this->cariNamaProdi,
+                $this->cariNegara,
+                $this->cariMitra,
+                $this->cariProdi,
+                $this->cariTingkat,
+                $this->sortData
+            )->get();
+        } else {
+            $this->dataExel = DataMoa::searchBy(
+                $this->cariTahun,
+                $this->cariFakultas,
+                $this->cariNomorDokumen,
+                $this->cariJudul,
+                $this->cariStatus,
+                $this->cariKerjasama,
+                $this->cariNamaProdi,
+                $this->cariNegara,
+                $this->cariMitra,
+                $this->cariProdi,
+                $this->cariTingkat,
+                $this->sortData
+            )->get();
         }
-        
+
         if ($this->showModalsEdit == false) {
             if ($this->modeData) {
                 $data = [
-                    'DataMoa' => NonProdiDataMoa::searchBy($this->cariTahun,$this->cariFakultas,$this->cariNomorDokumen,
-                                                    $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNamaProdi,
-                                                    $this->cariNegara, $this->cariMitra,$this->cariProdi,$this->cariTingkat,$this->sortData)->paginate(10),
+                    'DataMoa' => NonProdiDataMoa::searchBy(
+                        $this->cariTahun,
+                        $this->cariFakultas,
+                        $this->cariNomorDokumen,
+                        $this->cariJudul,
+                        $this->cariStatus,
+                        $this->cariKerjasama,
+                        $this->cariNamaProdi,
+                        $this->cariNegara,
+                        $this->cariMitra,
+                        $this->cariProdi,
+                        $this->cariTingkat,
+                        $this->sortData
+                    )->paginate(10),
                     'getTahun' => NonProdiDataMoa::select('tanggal_ttd')
-                                        ->orderBy('id','asc')
-                                        ->pluck('tanggal_ttd')->groupBy(function($val) {
-                                        return Carbon::parse($val)->format('Y');
-                            })
+                        ->orderBy('id', 'asc')
+                        ->pluck('tanggal_ttd')->groupBy(function ($val) {
+                            return Carbon::parse($val)->format('Y');
+                        })
                 ];
             } else {
                 $data = [
-                    'DataMoa' => DataMoa::searchBy($this->cariTahun,$this->cariFakultas,$this->cariNomorDokumen,
-                                                    $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNamaProdi,
-                                                    $this->cariNegara, $this->cariMitra,$this->cariProdi,$this->cariTingkat,$this->sortData)->paginate(10),
+                    'DataMoa' => DataMoa::searchBy(
+                        $this->cariTahun,
+                        $this->cariFakultas,
+                        $this->cariNomorDokumen,
+                        $this->cariJudul,
+                        $this->cariStatus,
+                        $this->cariKerjasama,
+                        $this->cariNamaProdi,
+                        $this->cariNegara,
+                        $this->cariMitra,
+                        $this->cariProdi,
+                        $this->cariTingkat,
+                        $this->sortData
+                    )->paginate(10),
                     'getTahun' => DataMoa::select('tanggal_ttd')
-                                        ->orderBy('tanggal_ttd','asc')
-                                        ->pluck('tanggal_ttd')->groupBy(function($val) {
-                                        return Carbon::parse($val)->format('Y');
-                            })
+                        ->orderBy('tanggal_ttd', 'asc')
+                        ->pluck('tanggal_ttd')->groupBy(function ($val) {
+                            return Carbon::parse($val)->format('Y');
+                        })
                 ];
             }
-
         }
 
         return view('livewire.datatables.moa-datatables', $data);
@@ -156,10 +206,10 @@ class MoaDatatables extends Component
         // } else {
         // }
 
-        if (auth()->user()->role_id == 4){
+        if (auth()->user()->role_id == 4) {
             $this->cariFakultas = auth()->user()->fakultas_id;
             $this->getProdi = Prodi::where('id_fakultas', auth()->user()->fakultas_id)->get();
-        }elseif (auth()->user()->role_id == 1) {
+        } elseif (auth()->user()->role_id == 1) {
             $this->getProdi = Prodi::where('id_fakultas', $this->cariFakultas)->get();
         }
         $this->reset('cariNamaProdi');
@@ -167,7 +217,7 @@ class MoaDatatables extends Component
 
     public function updatedCariPenggiat()
     {
-        $this->resetPage();    
+        $this->resetPage();
     }
 
     public function updatedFiless()
@@ -181,14 +231,14 @@ class MoaDatatables extends Component
     {
         $this->showModalsEdit = true;
         $this->cek = $id;
-        $this->emit('getEditData',$id);
+        $this->emit('getEditData', $id);
     }
 
     public function getEdit2($id)
     {
         $this->showModalsEdit2 = true;
         $this->cek = $id;
-        $this->emit('getEditData2',$id);
+        $this->emit('getEditData2', $id);
     }
 
     public function closeEdit()
@@ -239,46 +289,44 @@ class MoaDatatables extends Component
     {
         if ($this->modeData) {
             $find = NonProdiDataMoa::find($this->idDelete);
-            $cek = NonProdiDataIa::where('dasar_dokumen',$find->uuid)->count('id');
+            $cek = NonProdiDataIa::where('dasar_dokumen', $find->uuid)->count('id');
             if ($cek != 0) {
-                $this->emit('alerts', ['pesan' => 'Data terkait dengan data lainnya', 'icon'=>'error'] );
+                $this->emit('alerts', ['pesan' => 'Data terkait dengan data lainnya', 'icon' => 'error']);
             } else {
-    
-                    $findMe = NonProdiDataMoaBentukKegiatanKerjasama::where('id_moa', $find->id);
-                    $findMeTo = NonProdiDataMoaDokumen::where('kerjasama_id', $find->id);
-                    $findMeLagi = NonProdiDataMoaPenggiat::where('id_lapkerma', $find->id);
-                    foreach ($findMeTo->get() as $key => $value) {
-                        $gambar = $value->url;
-                        File::delete('storage/DokumenMoA/'.$gambar);
-                    }
-                    $findMe->delete();
-                    $findMeTo->delete();
-                    $findMeLagi->delete();
-                    $find->delete();
-                    $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon'=>'success'] );
+
+                $findMe = NonProdiDataMoaBentukKegiatanKerjasama::where('id_moa', $find->id);
+                $findMeTo = NonProdiDataMoaDokumen::where('kerjasama_id', $find->id);
+                $findMeLagi = NonProdiDataMoaPenggiat::where('id_lapkerma', $find->id);
+                foreach ($findMeTo->get() as $key => $value) {
+                    $gambar = $value->url;
+                    File::delete('storage/DokumenMoA/' . $gambar);
+                }
+                $findMe->delete();
+                $findMeTo->delete();
+                $findMeLagi->delete();
+                $find->delete();
+                $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon' => 'success']);
             }
-        }else{
+        } else {
             $find = DataMoa::find($this->idDelete);
-            $cek = DataIa::where('dasar_dokumen',$find->uuid)->count('id');
+            $cek = DataIa::where('dasar_dokumen', $find->uuid)->count('id');
             if ($cek != 0) {
-                $this->emit('alerts', ['pesan' => 'Data terkait dengan data lainnya', 'icon'=>'error'] );
+                $this->emit('alerts', ['pesan' => 'Data terkait dengan data lainnya', 'icon' => 'error']);
             } else {
-    
-                    $findMe = DataMoaBentukKegiatanKerjasama::where('id_moa', $find->id);
-                    $findMeTo = DatamoaDokumen::where('kerjasama_id', $find->id);
-                    $findMeLagi = DataMoaPenggiat::where('id_lapkerma', $find->id);
-                    foreach ($findMeTo->get() as $key => $value) {
-                        $gambar = $value->url;
-                        File::delete('storage/DokumenMoA/'.$gambar);
-                    }
-                    $findMe->delete();
-                    $findMeTo->delete();
-                    $findMeLagi->delete();
-                    $find->delete();
-                    $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon'=>'success'] );
+
+                $findMe = DataMoaBentukKegiatanKerjasama::where('id_moa', $find->id);
+                $findMeTo = DatamoaDokumen::where('kerjasama_id', $find->id);
+                $findMeLagi = DataMoaPenggiat::where('id_lapkerma', $find->id);
+                foreach ($findMeTo->get() as $key => $value) {
+                    $gambar = $value->url;
+                    File::delete('storage/DokumenMoA/' . $gambar);
+                }
+                $findMe->delete();
+                $findMeTo->delete();
+                $findMeLagi->delete();
+                $find->delete();
+                $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon' => 'success']);
             }
         }
-
-        
     }
 }

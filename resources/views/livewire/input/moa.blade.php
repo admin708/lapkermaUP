@@ -335,6 +335,27 @@
                                         <div class="btn-group col-12">
                                             <div class="input-group input-group-sm" data-bs-display="static"
                                                 aria-haspopup="true" aria-expanded="true">
+                                                <input placeholder="Ketik Untuk Mencari"
+                                                    wire:model="nama_pihak.{{ $key }}" type="text"
+                                                    class="form-control form-control-sm">
+                                            </div>
+
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchInstansiList[$key]) && count($searchInstansiList[$key]) > 0 ? 'show' : '' }}"
+                                                data-bs-popper="static">
+                                                @foreach ($searchInstansiList[$key] ?? [] as $instansi)
+                                                    {{-- {{ dd($instansi) }} --}}
+                                                    <li>
+                                                        <button
+                                                            wire:click="selectInstansi({{ $key }}, {{ $instansi['id'] }} ,'{{ $instansi['name'] }}', '{{ $instansi['address'] }}', {{ $instansi['negara_id'] }}, '{{ $instansi['coordinates'] }}', '{{ $instansi['ptqs'] }}', {{ $instansi['status'] }}, '{{ $instansi['badan_kemitraan'] }}')"
+                                                            class="small dropdown-item"
+                                                            type="button">{{ strtoupper($instansi['name']) }}
+                                                        </button>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        {{-- <div class="input-group input-group-sm" data-bs-display="static"
+                                                aria-haspopup="true" aria-expanded="true">
                                                 <input placeholder="Ketik Untuk Mencari "
                                                     {{ optional($lockInstansi)[$value] == 1 ? 'disabled' : '' }}
                                                     wire:model="nama_pihak.{{ $key }}" type="text"
@@ -367,12 +388,12 @@
                                                         Instansi Belum tersedia, Klik untuk menambahkan</li>
                                                 @endforelse
                                             </ul>
-                                        </div>
+                                        </div> --}}
                                     </div>
 
                                     <div class="col-sm-12 col-lg-5 my-2">
                                         <label class="mr-sm-2">Status</label>
-                                        <select wire:model="status.{{ $value }}" disabled
+                                        <select wire:model="status.{{ $value }}"
                                             class="form-select form-select-sm mr-sm-2 ">
                                             <option></option>
                                             <option value="1">Perguruan Tinggi Negeri</option>
@@ -646,19 +667,65 @@
                                     class="form-control form-control-sm">
                             </div>
                             <div class="col-auto my-2">
+                                <label class="mr-sm-2">Negara Instansi</label>
+                                <select wire:model="negara_pihak.{{ $value }}"
+                                    class="form-select form-select-sm"
+                                    @error('negara_pihak.' . $value) is-invalid @enderror>
+                                    <option></option>
+                                    @foreach ($negaraKerjasama as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-auto my-2">
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-5 my-2 ">
+                                        <label class="mr-sm-2">Koordinat Instansi</label>
+                                        <input required wire:model="koordinat_pihak.{{ $value }}"
+                                            type="text"
+                                            class="form-control form-control-sm @error('judul_kerjasama') is-invalid @enderror">
+                                    </div>
+
+                                    <div class="col-sm-12 col-lg-7 my-2">
+                                        <label class="mr-sm-2">Cek Koordinat</label>
+                                        <a href="https://www.google.com/maps?q={{ urlencode($nama_pihak[$value] ?? '') }}"
+                                            target="blank" class="form-control btn btn-sm btn-secondary">click</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto my-2">
                                 <label class="mr-sm-2 mt-2 "><strong>Penandatangan</strong></label>&nbsp;
                                 <i class="small text-danger">
                                     *Pejabat yang menandatangani dokumen
                                 </i>
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-6">
-                                        <label class="mr-sm-2">Nama <i class="small text-danger">*</i>
-                                            @error('nama_pejabat_pihak.' . $value)
-                                                <i class="text-sm text-danger">* required</i>
-                                            @enderror
-                                        </label>
-                                        <input wire:model.defer="nama_pejabat_pihak.{{ $value }}"
-                                            type="text" class="form-control form-control-sm">
+                                        <label class="mr-sm-2">Nama</label>
+                                        <div wire:loading wire:target="nama_pejabat_pihak.{{ $key }}"
+                                            class="mx-1 spinner-border spinner-border-sm text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="btn-group col-12">
+                                            <div class="input-group input-group-sm" data-bs-display="static"
+                                                aria-haspopup="true" aria-expanded="true">
+                                                <input placeholder="Ketik Untuk Mencari"
+                                                    wire:model="nama_pejabat_pihak.{{ $key }}"
+                                                    type="text" class="form-control form-control-sm">
+                                            </div>
+
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPejabatList[$key]) && count($searchPejabatList[$key]) > 0 ? 'show' : '' }}"
+                                                data-bs-popper="static">
+                                                @foreach ($searchPejabatList[$key] ?? [] as $pejabat)
+                                                    <li>
+                                                        <button
+                                                            wire:click="updatePejabatPihak({{ $key }}, {{ $pejabat['id'] }} ,'{{ $pejabat['nama'] }}', '{{ $pejabat['jabatan'] }}')"
+                                                            class="small dropdown-item"
+                                                            type="button">{{ strtoupper($pejabat['nama']) }}
+                                                        </button>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="col-sm-12 col-lg-6">
 
@@ -672,39 +739,54 @@
                                 <label class="mr-sm-2 mt-2 "><strong>Penanggung Jawab</strong> </label>
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-6">
-                                        <label class="mr-sm-2">Nama
-                                            @error('pj_pihak.' . $value)
-                                                <i class="text-sm text-danger">* required</i>
-                                            @enderror
-                                        </label>
-                                        <input wire:model.defer="pj_pihak.{{ $value }}" type="text"
-                                            class="form-control form-control-sm">
+                                        <label class="mr-sm-2">Nama</label>
+                                        <div wire:loading wire:target="pj_pihak.{{ $key }}"
+                                            class="mx-1 spinner-border spinner-border-sm text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="btn-group col-12">
+                                            <div class="input-group input-group-sm" data-bs-display="static"
+                                                aria-haspopup="true" aria-expanded="true">
+                                                <input placeholder="Ketik Untuk Mencari"
+                                                    wire:model="pj_pihak.{{ $key }}" type="text"
+                                                    class="form-control form-control-sm">
+                                            </div>
+
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPenanggungJawab[$key]) && count($searchPenanggungJawab[$key]) > 0 ? 'show' : '' }}"
+                                                data-bs-popper="static">
+                                                @foreach ($searchPenanggungJawab[$key] ?? [] as $pj)
+                                                    <li>
+                                                        <button
+                                                            wire:click="setPJData({{ $key }}, {{ $pj['id'] }} ,'{{ $pj['name'] }}', '{{ $pj['designation'] }}', '{{ $pj['phone_number'] }}', '{{ $pj['email'] }}')"
+                                                            class="small dropdown-item"
+                                                            type="button">{{ strtoupper($pj['name']) }}
+                                                        </button>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="col-sm-12 col-lg-6">
                                         <label class="mr-sm-2">Jabatan</label>
-                                        <input wire:model.defer="jabatan_pj_pihak.{{ $value }}" type="text"
-                                            class="form-control form-control-sm">
+                                        <input wire:model.defer="jabatan_pj_pihak.{{ $value }}"
+                                            type="text" class="form-control form-control-sm">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-6">
-                                        <label class="mr-sm-2 mt-1">Email
-                                            @error('email_pj_pihak.' . $value)
-                                                <i class="text-sm text-danger">* required</i>
-                                            @enderror
-                                        </label>
+                                        <label class="mr-sm-2 mt-1">Email <i class="small text-danger">
+                                                @error('email_pj_pihak.' . $value)
+                                                    {{ $message }}
+                                                @enderror
+                                            </i></label>
                                         <input wire:model.defer="email_pj_pihak.{{ $value }}" type="email"
-                                            class="form-control form-control-sm">
+                                            class="form-control form-control-sm @error('email_pj_pihak.' . $value) is-invalid @enderror">
                                     </div>
                                     <div class="col-sm-12 col-lg-6">
-                                        <label class="mr-sm-2 mt-1">No. HP
-                                            @error('hp_pj_pihak.' . $value)
-                                                <i class="text-sm text-danger">* required</i>
-                                            @enderror
-                                        </label>
+                                        <label class="mr-sm-2 mt-1">No. HP</label>
                                         <input wire:model.defer="hp_pj_pihak.{{ $value }}" type="text"
                                             onkeypress="return /[0-9()+\-]/.test(event.key)"
-                                            class="form-control form-control-sm">
+                                            class="form-control form-control-sm @error('hp_pj_pihak.' . $value) is-invalid @enderror">
                                     </div>
                                 </div>
                             </div>

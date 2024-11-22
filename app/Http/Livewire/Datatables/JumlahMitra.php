@@ -96,11 +96,7 @@ class JumlahMitra extends Component
         ]);
     }
 
-    public function negara()
-{
-    return $this->belongsTo(Negara::class, 'negara_id');
-}
-
+    
 
     // Set parameter untuk Kerjasama ID
     public function setKerjasamaId($id, $text)

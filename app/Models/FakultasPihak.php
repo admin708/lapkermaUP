@@ -10,7 +10,5 @@ class FakultasPihak extends Model
     use HasFactory;
     protected $table = 'fakultas_pihak';
 
-    protected $guarded = [
-    ];
-
+    protected $guarded = [];
 }

@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Datatables;
 
 use Livewire\Component;
 use App\Models\DataMou;
+use App\Models\DataMouPenggiat;
+use App\Models\MouPenggiat;
 use App\Models\MouRequest;
 use Livewire\WithPagination;
 
@@ -41,13 +43,14 @@ class DaftarReqMoU extends Component
 
     public function searchMoU($uid, $sender)
     {
-        $dataMous = MouRequest::query()
+        $dataMous = DataMou::query()
             ->when($uid, function ($query) use ($uid) {
-                return $query->where('data_mou_request.uuid', 'like', '%' . $uid . '%'); // Filter by searchProdi
+                return $query->where('uuid', 'like', '%' . $uid . '%'); // Filter by searchProdi
             })
             ->when($sender, function ($query) use ($sender) {
-                return $query->where('data_mou_request.uploaded_by', 'like', '%' . $sender . '%');
+                return $query->where('uploaded_by', 'like', '%' . $sender . '%');
             })
+            ->where('level', '=', 0)
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 
@@ -56,9 +59,18 @@ class DaftarReqMoU extends Component
 
     public function deleteMouRequest($id)
     {
-        $mouRequest = MouRequest::find($id);
+        $mouRequest = DataMou::find($id);
 
-        // Check if the request exists
+        $DataMouPenggiat = DataMouPenggiat::where('id_lapkerma', '=', $id)->get();
+        foreach ($DataMouPenggiat as $data) {
+            $data->delete();
+        }
+
+        $MouPenggiat = MouPenggiat::where('id_lapkerma', '=', $id)->get();
+        foreach ($MouPenggiat as $data) {
+            $data->delete();
+        }
+
         if ($mouRequest) {
             $mouRequest->delete();
         }
@@ -76,8 +88,8 @@ class DaftarReqMoU extends Component
     public function showDetail($id)
     {
         $this->isEdit = true;
-        $this->showModalsEdit = true; // Menampilkan modal detail
-        $this->emit('guestInputData', $id);
+        $this->showModalsEdit = true;
+        $this->emit('getEditData', $id);
     }
 
     public function closeEdit()

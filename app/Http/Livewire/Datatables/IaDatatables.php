@@ -11,7 +11,6 @@ use App\Models\DataIa;
 use App\Models\DataIaBentukKegiatanKerjasama;
 use App\Models\DataIaDokumen;
 use App\Models\DataIaPenggiat;
-use File;
 
 use Livewire\WithPagination;
 use Carbon\Carbon;
@@ -21,6 +20,7 @@ use App\Models\NonProdiDataIaBentukKegiatanKerjasama;
 use App\Models\NonProdiDataIaDokumen;
 use App\Models\NonProdiDataIaPenggiat;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
 
 class IaDatatables extends Component
 {
@@ -30,7 +30,7 @@ class IaDatatables extends Component
     public $getFakultas, $getProdi, $getPermohonan, $filess, $getStatus, $getJenis, $cariKerjasama;
     public $cariFakultas, $cariJudul, $cariProdi, $cariNegara, $cariMitra, $cariNamaProdi, $cariTingkat, $modeData;
     public $cariTahun, $cariNomorDokumen, $cariStatus, $dataExel, $sortData;
-    public $cek, $showModalsEdit = false, $idDelete, $showModalsEdit2 = false ;
+    public $cek, $showModalsEdit = false, $idDelete, $showModalsEdit2 = false;
 
     protected $listeners = ['yakinHapus' => 'hapus',];
 
@@ -49,10 +49,10 @@ class IaDatatables extends Component
 
     public function rezet()
     {
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 99 ) {
-            $this->reset(['cariFakultas','cariJudul','cariTahun','cariNomorDokumen','cariStatus','cariKerjasama','cariNamaProdi','cariNegara','cariMitra','cariTingkat']);
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 99) {
+            $this->reset(['cariFakultas', 'cariJudul', 'cariTahun', 'cariNomorDokumen', 'cariStatus', 'cariKerjasama', 'cariNamaProdi', 'cariNegara', 'cariMitra', 'cariTingkat']);
         } else {
-            $this->reset(['cariJudul','cariTahun','cariNomorDokumen','cariStatus','cariKerjasama','cariNamaProdi','cariNegara','cariMitra','cariTingkat']);
+            $this->reset(['cariJudul', 'cariTahun', 'cariNomorDokumen', 'cariStatus', 'cariKerjasama', 'cariNamaProdi', 'cariNegara', 'cariMitra', 'cariTingkat']);
         }
     }
 
@@ -79,13 +79,11 @@ class IaDatatables extends Component
             $this->cariNamaProdi = auth()->user()->prodi->nama_resmi;
             $this->cariProdi = auth()->user()->prodi_id;
             $this->getProdi = Prodi::where('id_fakultas', auth()->user()->fakultas_id)->get();
-
-        }elseif(auth()->user()->role_id == 4){
+        } elseif (auth()->user()->role_id == 4) {
             $this->cariFakultas = auth()->user()->fakultas_id;
             $this->getProdi = Prodi::where('id_fakultas', auth()->user()->fakultas_id)->get();
-        }else{
-        $this->getProdi = Prodi::get();
-
+        } else {
+            $this->getProdi = Prodi::get();
         }
     }
 
@@ -93,37 +91,80 @@ class IaDatatables extends Component
     {
         $data = [];
         if ($this->modeData) {
-            $this->dataExel = NonProdiDataIa::searchBy($this->cariTahun,$this->cariFakultas,$this->cariNomorDokumen,
-                                                $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNamaProdi,
-                                                $this->cariNegara, $this->cariMitra, $this->cariProdi,$this->cariTingkat,$this->sortData)->get();
-        }else{
-            $this->dataExel = DataIa::searchBy($this->cariTahun,$this->cariFakultas,$this->cariNomorDokumen,
-                                                $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNamaProdi,
-                                                $this->cariNegara, $this->cariMitra, $this->cariProdi,$this->cariTingkat,$this->sortData)->get();
+            $this->dataExel = NonProdiDataIa::searchBy(
+                $this->cariTahun,
+                $this->cariFakultas,
+                $this->cariNomorDokumen,
+                $this->cariJudul,
+                $this->cariStatus,
+                $this->cariKerjasama,
+                $this->cariNamaProdi,
+                $this->cariNegara,
+                $this->cariMitra,
+                $this->cariProdi,
+                $this->cariTingkat,
+                $this->sortData
+            )->get();
+        } else {
+            $this->dataExel = DataIa::searchBy(
+                $this->cariTahun,
+                $this->cariFakultas,
+                $this->cariNomorDokumen,
+                $this->cariJudul,
+                $this->cariStatus,
+                $this->cariKerjasama,
+                $this->cariNamaProdi,
+                $this->cariNegara,
+                $this->cariMitra,
+                $this->cariProdi,
+                $this->cariTingkat,
+                $this->sortData
+            )->get();
         }
         if ($this->showModalsEdit == false) {
             if ($this->modeData) {
                 $data = [
-                    'DataIa' => NonProdiDataIa::searchBy($this->cariTahun,$this->cariFakultas,$this->cariNomorDokumen,
-                                                    $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNamaProdi,
-                                                    $this->cariNegara, $this->cariMitra,$this->cariProdi,$this->cariTingkat,$this->sortData)->paginate(10),
-                    'getTahun' => NonProdiDataIa::select('tanggal_ttd')->orderBy('tanggal_ttd','asc')
-                                        ->pluck('tanggal_ttd')->groupBy(function($val) {
-                                        return Carbon::parse($val)->format('Y');
-                            })
+                    'DataIa' => NonProdiDataIa::searchBy(
+                        $this->cariTahun,
+                        $this->cariFakultas,
+                        $this->cariNomorDokumen,
+                        $this->cariJudul,
+                        $this->cariStatus,
+                        $this->cariKerjasama,
+                        $this->cariNamaProdi,
+                        $this->cariNegara,
+                        $this->cariMitra,
+                        $this->cariProdi,
+                        $this->cariTingkat,
+                        $this->sortData
+                    )->paginate(10),
+                    'getTahun' => NonProdiDataIa::select('tanggal_ttd')->orderBy('tanggal_ttd', 'asc')
+                        ->pluck('tanggal_ttd')->groupBy(function ($val) {
+                            return Carbon::parse($val)->format('Y');
+                        })
                 ];
             } else {
                 $data = [
-                    'DataIa' => DataIa::searchBy($this->cariTahun,$this->cariFakultas,$this->cariNomorDokumen,
-                                                    $this->cariJudul, $this->cariStatus, $this->cariKerjasama, $this->cariNamaProdi,
-                                                    $this->cariNegara, $this->cariMitra,$this->cariProdi,$this->cariTingkat,$this->sortData)->paginate(10),
-                    'getTahun' => DataIa::select('tanggal_ttd')->orderBy('tanggal_ttd','asc')
-                                        ->pluck('tanggal_ttd')->groupBy(function($val) {
-                                        return Carbon::parse($val)->format('Y');
-                            })
+                    'DataIa' => DataIa::searchBy(
+                        $this->cariTahun,
+                        $this->cariFakultas,
+                        $this->cariNomorDokumen,
+                        $this->cariJudul,
+                        $this->cariStatus,
+                        $this->cariKerjasama,
+                        $this->cariNamaProdi,
+                        $this->cariNegara,
+                        $this->cariMitra,
+                        $this->cariProdi,
+                        $this->cariTingkat,
+                        $this->sortData
+                    )->paginate(10),
+                    'getTahun' => DataIa::select('tanggal_ttd')->orderBy('tanggal_ttd', 'asc')
+                        ->pluck('tanggal_ttd')->groupBy(function ($val) {
+                            return Carbon::parse($val)->format('Y');
+                        })
                 ];
             }
-            
         }
 
         return view('livewire.datatables.ia-datatables', $data);
@@ -133,14 +174,14 @@ class IaDatatables extends Component
     {
         $this->showModalsEdit = true;
         $this->cek = $id;
-        $this->emit('getEditData',$id);
+        $this->emit('getEditData', $id);
     }
 
     public function getEdit2($id)
     {
         $this->showModalsEdit2 = true;
         $this->cek = $id;
-        $this->emit('getEditData2',$id);
+        $this->emit('getEditData2', $id);
     }
 
     public function closeEdit()
@@ -151,10 +192,10 @@ class IaDatatables extends Component
 
     public function updatedCariFakultas()
     {
-        if (auth()->user()->role_id == 4){
+        if (auth()->user()->role_id == 4) {
             $this->cariFakultas = auth()->user()->fakultas_id;
             $this->getProdi = Prodi::where('id_fakultas', auth()->user()->fakultas_id)->get();
-        }elseif (auth()->user()->role_id == 1) {
+        } elseif (auth()->user()->role_id == 1) {
             $this->getProdi = Prodi::where('id_fakultas', $this->cariFakultas)->get();
         }
         $this->reset('cariNamaProdi');
@@ -190,13 +231,13 @@ class IaDatatables extends Component
 
     public function updatedCariPenggiat()
     {
-        $this->resetPage();    
+        $this->resetPage();
     }
 
     public function updateMe()
     {
         $this->showModalsEdit = false;
-        $this->goEdit = false;
+        // $this->goEdit = false;
         $this->emit('updateInovasi');
     }
 
@@ -210,38 +251,36 @@ class IaDatatables extends Component
     {
         if ($this->modeData) {
             $find = NonProdiDataIa::find($this->idDelete);
-            
-    
-                    $findMe = NonProdiDataIaBentukKegiatanKerjasama::where('id_ia', $find->id);
-                    $findMeTo = NonProdiDataIaDokumen::where('kerjasama_id', $find->id);
-                    $findMeLagi = NonProdiDataIaPenggiat::where('id_lapkerma', $find->id);
-                    foreach ($findMeTo->get() as $key => $value) {
-                        $gambar = $value->url;
-                        File::delete('storage/DokumenIA/'.$gambar);
-                    }
-                    $findMe->delete();
-                    $findMeTo->delete();
-                    $findMeLagi->delete();
-                    $find->delete();
-                    $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon'=>'success'] );
-        }else{
-            $find = DataIa::find($this->idDelete);
-           
-    
-                    $findMe = DataIaBentukKegiatanKerjasama::where('id_ia', $find->id);
-                    $findMeTo = DataIaDokumen::where('kerjasama_id', $find->id);
-                    $findMeLagi = DataIaPenggiat::where('id_lapkerma', $find->id);
-                    foreach ($findMeTo->get() as $key => $value) {
-                        $gambar = $value->url;
-                        File::delete('storage/DokumenIA/'.$gambar);
-                    }
-                    $findMe->delete();
-                    $findMeTo->delete();
-                    $findMeLagi->delete();
-                    $find->delete();
-                    $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon'=>'success'] );
-        }
 
-        
+
+            $findMe = NonProdiDataIaBentukKegiatanKerjasama::where('id_ia', $find->id);
+            $findMeTo = NonProdiDataIaDokumen::where('kerjasama_id', $find->id);
+            $findMeLagi = NonProdiDataIaPenggiat::where('id_lapkerma', $find->id);
+            foreach ($findMeTo->get() as $key => $value) {
+                $gambar = $value->url;
+                File::delete('storage/DokumenIA/' . $gambar);
+            }
+            $findMe->delete();
+            $findMeTo->delete();
+            $findMeLagi->delete();
+            $find->delete();
+            $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon' => 'success']);
+        } else {
+            $find = DataIa::find($this->idDelete);
+
+
+            $findMe = DataIaBentukKegiatanKerjasama::where('id_ia', $find->id);
+            $findMeTo = DataIaDokumen::where('kerjasama_id', $find->id);
+            $findMeLagi = DataIaPenggiat::where('id_lapkerma', $find->id);
+            foreach ($findMeTo->get() as $key => $value) {
+                $gambar = $value->url;
+                File::delete('storage/DokumenIA/' . $gambar);
+            }
+            $findMe->delete();
+            $findMeTo->delete();
+            $findMeLagi->delete();
+            $find->delete();
+            $this->emit('alerts', ['pesan' => 'Data Berhasil Dihapus', 'icon' => 'success']);
+        }
     }
 }
