@@ -67,7 +67,7 @@ class GuestMouInput extends Component
     {
         if ($this->jenisKerjasamaField == 1) {
             $this->region = 1;
-            $this->negara = 103;
+            $this->negara = 'Indonesia';
         } else {
             $this->reset('region', 'negara');
         }

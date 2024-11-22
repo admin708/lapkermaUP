@@ -118,7 +118,7 @@
                                     class="form-select form-select-sm @error('negara') is-invalid @enderror">
                                     <option value=""></option>
                                     @foreach ($negaraKerjasama as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('negara')
