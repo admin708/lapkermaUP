@@ -74,6 +74,12 @@ Route::middleware(['auth', 'can:only-admin'])->group(function () {
     Route::get('/ikuScores', [App\Http\Controllers\Controller::class, 'ikuScores'])->name('ikuScores');
 });
 
+//Menampilkan Jumlah mitra
+Route::middleware(['auth', 'can:only-admin'])->group(function () {
+    // Route yang hanya bisa diakses oleh pengguna dengan role ID 1
+    Route::get('/jumlahMitra', [App\Http\Controllers\Controller::class, 'jumlahMitra'])->name('jumlahMitra');
+});
+
 
 // Route untuk DaftarReqMoU
 Route::middleware(['auth', 'can:only-admin'])->group(function () {

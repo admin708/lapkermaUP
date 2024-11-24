@@ -134,6 +134,11 @@
                         <div data-i18n="Without navbar">Total</div>
                     </a>
                 </li>
+                <li class="menu-item {{ request()->route()->getName() == 'jumlahMitra' ? 'active' : '' }}">
+                    <a class="menu-link" href="{{ route('jumlahMitra') }}">
+                        <div data-i18n="Without navbar">Jumlah Mitra</div>
+                    </a>
+                </li>
                 {{-- <li class="menu-item {{ request()->route()->getName() == 'ikuScores' ? 'active' : '' }}">
                     <a class="menu-link" href="{{ route('ikuScores') }}">
                         <div data-i18n="Without navbar">Scores</div>

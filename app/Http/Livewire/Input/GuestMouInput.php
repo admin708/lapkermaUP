@@ -365,7 +365,6 @@ class GuestMouInput extends Component
             }
 
             if ($store->wasRecentlyCreated) {
-                foreach (range(0, $this->arrayJawaban) as $key => $value) {
 
                     $storePJ = PenanggungJawab::updateOrCreate(
                         [
@@ -446,28 +445,34 @@ class GuestMouInput extends Component
                 $random = substr(str_shuffle($code), 0, 3);
                 if ($this->uploadDocument) {
                     $templateProcessor = new TemplateProcessor(storage_path('document/Template_MOU.docx'));
-
+            
+                    // Isi template MOU dengan data pihak 1
                     $templateProcessor->setValue('University_Name', $this->nama_pihak[0]);
                     $templateProcessor->setValue('Country_Of_Origin', Negara::find($this->negara)->name ?? 'Unknown Country');
                     $templateProcessor->setValue('Signing_Date', date('d/m/Y', strtotime($this->tanggal_ttd)));
                     $templateProcessor->setValue('Duration_Years', $this->jangka_waktu);
-
+            
+                    // PIC Pihak 1
                     $templateProcessor->setValue('PIC_Name', $this->pj_pihak[0]);
                     $templateProcessor->setValue('PIC_Designation', $this->jabatan_pj_pihak[0]);
                     $templateProcessor->setValue('PIC_Address', $this->alamat_pihak[0]);
                     $templateProcessor->setValue('PIC_Email', $this->email_pj_pihak[0]);
                     $templateProcessor->setValue('PIC_Phone', $this->hp_pj_pihak[0]);
+            
+                    // Pejabat Pihak 1
                     $templateProcessor->setValue('Rep_Name', $this->nama_pejabat_pihak[0]);
                     $templateProcessor->setValue('Rep_Designation', $this->jabatan_pejabat_pihak[0]);
+            
+                    // Scope Kerjasama
                     $templateProcessor->setValue('Scope', '• ' . implode("\n• ", $this->scopeList));
-
+            
                     if (isset($this->logo)) {
                         $logoFilePath = $this->logo->store('public/logos');
                         $logoPath = storage_path('app/' . $logoFilePath);
                         if (file_exists($logoPath)) {
                             $validImageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
                             $extension = pathinfo($logoPath, PATHINFO_EXTENSION);
-
+            
                             if (in_array(strtolower($extension), $validImageExtensions)) {
                                 $templateProcessor->setImageValue(
                                     'Logo',
@@ -478,53 +483,31 @@ class GuestMouInput extends Component
                                         'ratio' => true, // Maintain aspect ratio
                                     ]
                                 );
-                            } else {
-                                throw new \Exception("Unsupported image format: " . $extension);
                             }
-                        } else {
-                            // Log or throw an error if the image file doesn't exist
-                            throw new \Exception("Image file not found at path: " . $logoPath);
                         }
-                        // Optionally delete the logo file from storage after use
+                        // Hapus logo setelah digunakan
                         Storage::delete($logoFilePath);
                     }
-
-
-
-                    // Define the name and path for the generated document
-                    $namaDokumen = 'MoU_' . $uuid . '_' . $random . '.docx';
+            
+                    // Simpan dokumen
+                    $namaDokumen = 'MoU_' . $uuid . '_' . substr(str_shuffle('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 3) . '.docx';
                     $outputFile = storage_path('app/public/DokumenMoU/' . $namaDokumen);
-
-                    // Save the modified template as a new file
+            
                     $templateProcessor->saveAs($outputFile);
-
+            
                     $store->dokumenMoU()->firstOrCreate([
                         'url' => $namaDokumen,
                         'kerjasama_id' => $store->id
                     ]);
-
+            
                     Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
-                } else {
-                    foreach ($this->files as $file) {
-                        $random = substr(str_shuffle($code), 0, 3);
-                        $namaDokumen = 'MoU' . $uuid . $random . '.' . $file->extension();
-
-                        $file->storeAs('public/DokumenMoU', $namaDokumen);
-
-                        $store->dokumenMoU()->firstOrCreate([
-                            'url' => $namaDokumen,
-                            'kerjasama_id' => $store->id
-                        ]);
-
-                        $outputFile = storage_path('app/public/DokumenMoU/' . $namaDokumen);
-                        Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
-                    }
                 }
-
+            
                 DB::commit();
-
+            
                 $this->emit('formSubmitted');
             }
+            
         } catch (\Exception $th) {
             DB::rollback();
             dd($th);
@@ -549,18 +532,19 @@ class GuestMouInput extends Component
     }
 
     public function mount()
-    {
-        $this->getIndikatorKinerja = LapkermaRefIndikatorKinerja::get();
-        $this->getSasaranKegiatan = LapkermaRefSasaranKegiatan::get();
-        $this->getBentukKegiatan = LapkermaRefBentukKegiatan::get();
-        $this->statusKerjasama = StatusKerjasama::get();
-        $this->fakultas = Fakultas::get();
-        $this->jenisKerjasama = JenisKerjasama::get();
-        $this->regionKerjasama = Region::get();
-        $this->negaraKerjasama = Negara::get();
-        $this->jenisKerjasamaField = 1;
-        $this->updatedJenisKerjasamaField();
-        $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
+{
+    // Ambil data dari database
+    $this->getIndikatorKinerja = LapkermaRefIndikatorKinerja::get();
+    $this->getSasaranKegiatan = LapkermaRefSasaranKegiatan::get();
+    $this->getBentukKegiatan = LapkermaRefBentukKegiatan::get();
+    $this->statusKerjasama = StatusKerjasama::get();
+    $this->fakultas = Fakultas::get();
+    $this->jenisKerjasama = JenisKerjasama::get();
+    $this->regionKerjasama = Region::get();
+    $this->negaraKerjasama = Negara::get();
+    $this->jenisKerjasamaField = 1;
+    $this->updatedJenisKerjasamaField();
+    $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
 
 
         $instansiModel = new Instansi();
