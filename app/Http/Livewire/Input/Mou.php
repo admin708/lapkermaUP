@@ -523,6 +523,8 @@ class Mou extends Component
             'tanggal_berakhir' => 'required',
             'status_kerjasama' => 'required',
             'jangka_waktu' => 'required',
+
+            'files' => 'required'
         ]);
 
         if ($this->jenisKerjasamaField == '1') {
@@ -545,21 +547,7 @@ class Mou extends Component
             }
         }
 
-
-        if ($this->idEdit == null) {
-            if ($this->uploadDocument) {
-                $this->validate([
-                    'logo' => 'required',
-                    'scopeList' => 'required'
-                ]);
-            } else {
-                $this->validate([
-                    'files' => 'required'
-                ]);
-            }
-        }
-
-        foreach (range(0, $this->arrayJawaban - 1) as $value) {
+        foreach (range(0, $this->arrayJawaban) as $value) {
             $this->validate([
                 "status.$value" => 'required',
             ]);
@@ -886,7 +874,7 @@ class Mou extends Component
                                     'address' => $this->alamat_pihak[$value],
                                     'negara_id' => $this->negara_pihak[$value],
                                     'coordinates' => $this->koordinat_pihak[$value],
-                                    'ptqs' => $this->ptqs[$value] ?? 0,
+                                    'ptqs' => $this->ptqs[$value] ?? null,
                                     'status' => $this->status[$value],
                                     'badan_kemitraan' => $this->badanKemitraan[$value]
                                 ]

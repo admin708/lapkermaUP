@@ -483,8 +483,8 @@
                                     <div class="col-auto my-2">
                                         <label class="mr-sm-2">Negara Instansi</label>
                                         <select wire:model="negara_pihak.{{ $value }}"
-                                            class="form-select form-select-sm"
-                                            @error('negara_pihak.' . $value) is-invalid @enderror>
+                                            class="form-select form-select-sm
+                                            @error('negara_pihak.' . $value) is-invalid @enderror">
                                             <option></option>
                                             @foreach ($negaraKerjasama as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -497,7 +497,7 @@
                                                 <label class="mr-sm-2">Koordinat Instansi</label>
                                                 <input required wire:model="koordinat_pihak.{{ $value }}"
                                                     type="text"
-                                                    class="form-control form-control-sm @error('judul_kerjasama') is-invalid @enderror">
+                                                    class="form-control form-control-sm @error('jkoordinat_pihak') is-invalid @enderror">
                                                 @error('koordinat_pihak.' . $value)
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror

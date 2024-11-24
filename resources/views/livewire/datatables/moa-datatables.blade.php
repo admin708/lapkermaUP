@@ -104,101 +104,106 @@
                     <tbody>
                         @foreach ($DataMoa as $item)
                             <tr style="font-size: 11px">
+                                <!-- Conditional Background Color -->
                                 <td style="background-color: {{ $item->laporan ? '' : '#95092c26' }}">
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
-                                        <div class="dropdown-menu" style="">
-                                            {{-- @if ($item->level == 1)
-                    <a class="dropdown-item text-primary" role="button" href="{{ route('edit-data',['MoA',$item->id]) }}"><i
-                      class="bx bx-show me-1"></i> View</a>
-                    @else
-                    <a class="dropdown-item text-primary" role="button" wire:click="getEdit2({{ $item->id }})"><i
-                      class="bx bx-show me-1"></i> View</a>
-                    @endif --}}
-
+                                        <div class="dropdown-menu">
+                                            <!-- Conditional Links Based on $modeData -->
                                             @if ($modeData)
-                                                <a class="dropdown-item text-primary" role="button"
-                                                    href="{{ route('edit-data', ['MoA', $item->id, 'np']) }}"><i
-                                                        class="bx bx-show me-1"></i> View</a>
+                                                <a class="dropdown-item text-primary"
+                                                    href="{{ route('edit-data', ['MoA', $item->id, 'np']) }}">
+                                                    <i class="bx bx-show me-1"></i> View
+                                                </a>
                                             @else
-                                                <a class="dropdown-item text-primary" role="button"
-                                                    href="{{ route('edit-data', ['MoA', $item->id]) }}"><i
-                                                        class="bx bx-show me-1"></i> View</a>
+                                                <a class="dropdown-item text-primary"
+                                                    href="{{ route('edit-data', ['MoA', $item->id]) }}">
+                                                    <i class="bx bx-show me-1"></i> View
+                                                </a>
                                             @endif
+
+                                            <!-- "Buat Ia" Link for Non-Admin Users -->
                                             @if (auth()->user()->role_id != 1)
-                                                <a class="dropdown-item text-primary small" role="button"
-                                                    wire:click="toInput('{{ $item->uuid }}')"><i
-                                                        class="bx bx-file me-1"></i>
-                                                    Buat Ia</a>
+                                                <a class="dropdown-item text-primary small"
+                                                    wire:click="toInput('{{ $item->uuid }}')">
+                                                    <i class="bx bx-file me-1"></i> Buat Ia
+                                                </a>
                                             @endif
-                                            <a href="{{ route('laporan', ['MOA', $item->id]) }}"
-                                                class="dropdown-item text-primary small" role="button"><i
-                                                    class="bx bx-news me-1"></i>
-                                                Laporan</a>
+
+                                            <!-- Laporan Link -->
+                                            <a class="dropdown-item text-primary small"
+                                                href="{{ route('laporan', ['MOA', $item->id]) }}">
+                                                <i class="bx bx-news me-1"></i> Laporan
+                                            </a>
+
+                                            <!-- Delete Option for Specific Roles -->
                                             @if (auth()->user()->role_id == 5)
                                                 @if (App\Models\NonProdiDataMoa::where('nomor_dok_unhas', $item->nomor_dok_unhas)->count('id') == 1)
-                                                    <a class="dropdown-item text-danger small" role="button"
-                                                        wire:click="delete({{ $item->id }})"><i
-                                                            class="bx bx-trash me-1"></i>
-                                                        Delete</a>
+                                                    <a class="dropdown-item text-danger small"
+                                                        wire:click="delete({{ $item->id }})">
+                                                        <i class="bx bx-trash me-1"></i> Delete
+                                                    </a>
                                                 @endif
                                             @else
                                                 @if (App\Models\DataMoa::where('nomor_dok_unhas', $item->nomor_dok_unhas)->count('id') == 1)
-                                                    <a class="dropdown-item text-danger small" role="button"
-                                                        wire:click="delete({{ $item->id }})"><i
-                                                            class="bx bx-trash me-1"></i>
-                                                        Delete</a>
+                                                    <a class="dropdown-item text-danger small"
+                                                        wire:click="delete({{ $item->id }})">
+                                                        <i class="bx bx-trash me-1"></i> Delete
+                                                    </a>
                                                 @endif
                                             @endif
-
                                         </div>
                                     </div>
                                 </td>
+
+                                <!-- Other Table Data -->
                                 <td>
                                     <i class="fab fa-angular fa-lg text-danger"></i>
                                     <strong>{{ $item->tanggal_ttd }}</strong>
                                 </td>
                                 <td>{{ $item->nomor_dok_unhas }}</td>
-                                <td>{{ $item->tingkat == 1 ? 'Nasional' : ($item->tingkat == 2 ? 'Provensi/Regional' : ($item->tingkat == 3 ? 'Lokal/Kabupaten' : ($item->tingkat == 4 ? 'Internasional' : ''))) }}
+                                <td>
+                                    {{ $item->tingkat == 1
+                                        ? 'Nasional'
+                                        : ($item->tingkat == 2
+                                            ? 'Provensi/Regional'
+                                            : ($item->tingkat == 3
+                                                ? 'Lokal/Kabupaten'
+                                                : ($item->tingkat == 4
+                                                    ? 'Internasional'
+                                                    : ''))) }}
                                 </td>
                                 <td class="text-wrap" style="font-size: 11px">
                                     @php
-                                        $shows = strtoupper(str_replace(str_split('[]"'), '', $item->penggiat));
-                                        $shows = strtoupper(str_replace(',', ' / ', $shows));
+                                        $shows = strtoupper(str_replace(str_split('[]"'), '', $item->penggiat ?? ''));
+                                        $shows = str_replace(',', ' / ', $shows);
                                     @endphp
                                     {{ substr($shows, 0, 70) }}
                                 </td>
                                 <td>
-                                    @if ($item->getFakultas == null)
-                                        {{ dd($item) }}
-                                    @endif
-                                    {{ $item->getFakultas->nama_fakultas }}
+                                    {{ $item->getFakultas->nama_fakultas ?? 'Fakultas not available' }}
                                 </td>
-                                {{-- @if (auth()->user()->role_id != 5) --}}
                                 <td class="text-wrap" style="font-size: 11px">
                                     @php
-                                        $show = strtoupper(str_replace(str_split('[]"'), '', $item->nama_prodi));
-                                        $show = strtoupper(str_replace(',', ' / ', $show));
+                                        $show = strtoupper(str_replace(str_split('[]"'), '', $item->nama_prodi ?? ''));
+                                        $show = str_replace(',', ' / ', $show);
                                     @endphp
                                     {{ $show }}
-                                    {{-- -----------------------
-                {{ $item->nama_prodi }} --}}
                                 </td>
-                                {{-- @endif --}}
                                 <td>{{ $item->negara }}</td>
                                 <td>{{ $item->getJenisKerjasama->nama }}</td>
                                 <td class="text-wrap" style="font-size: 11px">
-                                    {{ substr($item->judul, 0, 33) }}
+                                    {{ substr($item->judul ?? '', 0, 33) }}
                                 </td>
                                 <td>
                                     {{ $item->getStatusKerjasama->nama }}
                                 </td>
-
                             </tr>
                         @endforeach
+
                     </tbody>
                 </table>
                 <div class="my-3">

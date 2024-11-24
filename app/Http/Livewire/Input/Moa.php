@@ -34,6 +34,7 @@ use App\Models\Pejabat;
 use App\Models\PenanggungJawab;
 use App\Models\ReferensiSumberDanaLapkerma;
 use App\Models\PenggiatKerjasama;
+use App\Models\ReferensiBadanKemitraan;
 use App\Models\Sdgs;
 use App\Models\StatusKerjasama;
 use Illuminate\Database\QueryException as ERROR;
@@ -63,7 +64,7 @@ class Moa extends Component
     public $jenisKerjasama, $negaraKerjasama, $regionKerjasama, $kegiatanKerjasama, $statusKerjasama, $dasarDokKerjasama2;
     public $stat1, $stat2, $stat3, $stat4, $stat5, $stat6, $stat7, $stat8, $searchProdiMitra, $fakultas, $prodiMitra = [], $prodiAll, $dasarDokKerjasama, $sumberDana;
 
-    public $searchInstansiList = [], $searchPejabatList = [], $searchPenanggungJawab = [];
+    public $searchInstansiList = [], $searchPejabatList = [], $searchPenanggungJawab = [], $searchBadanKemitraan;
     public $idInstansi = [], $idPejabat = [], $idPJ = [];
 
     public $getBentukKegiatan, $getIndikatorKinerja, $getSasaranKegiatan, $jenisDokKerjasama, $getProdiMitras, $getSdgs, $sdgs;
@@ -192,6 +193,16 @@ class Moa extends Component
         $this->badanKemitraan[$key] = $badanKemitraan;
         $this->idInstansi[$key] = $id;
 
+        if (auth()->user()->role_id != 1) {
+            if ($id == 1) {
+                $this->fakultas_pihak[$key] = auth()->user()->fakultas_id;
+                if (auth()->user()->role_id != 4) {
+                    $this->prodiPihak[$key] = [auth()->user()->prodi_id];
+                    $this->arrayNamaProdi[$key] = [auth()->user()->prodi->nama_resmi];
+                }
+            }
+        }
+
         $this->searchInstansiList[$key] = [];
     }
 
@@ -256,6 +267,7 @@ class Moa extends Component
         $this->getIndikatorKinerja = LapkermaRefIndikatorKinerja::get();
         $this->getSasaranKegiatan = LapkermaRefSasaranKegiatan::get();
         $this->sumberDana = ReferensiSumberDanaLapkerma::get();
+        $this->searchBadanKemitraan = ReferensiBadanKemitraan::get();
         $this->jenisKerjasama = JenisKerjasama::get();
         $this->regionKerjasama = Region::get();
         $this->negaraKerjasama = Negara::get();
@@ -484,46 +496,52 @@ class Moa extends Component
     public function validasiSave()
     {
 
+        $this->validate([
+            'tempat_pelaksanaan' => 'required',
+            'jenis_dokumen_kerjasama' => 'required',
+            'nomor_unhas' => 'required|min:5',
+            'judul_kerjasama' => 'required',
+            'deskripsi' => 'required',
+            'tanggal_ttd' => 'date|required',
+            'tanggal_awal' => 'date|required',
+            'tanggal_berakhir' => 'date|required',
+            'status_kerjasama' => 'required',
+            'jangka_waktu' => 'required',
+        ]);
+
+        if ($this->jenis_dokumen_kerjasama == 2) {
+            $this->validate([
+                'dasar_dokumen_kerjasama' => 'required'
+            ]);
+        }
         if ($this->jenisKerjasamaField == 2) {
             $this->validate([
                 'region' => 'required',
                 'negara' => 'required',
-                'tempat_pelaksanaan' => 'required',
                 'files' => 'required',
-                'jenis_dokumen_kerjasama' => 'required',
-                'nomor_unhas' => 'required|min:5',
-                'judul_kerjasama' => 'required',
-                'deskripsi' => 'required',
-                'tanggal_ttd' => 'date|required',
-                'tanggal_awal' => 'date|required',
-                'tanggal_berakhir' => 'date|required',
-                'status_kerjasama' => 'required',
-                'jangka_waktu' => 'required',
             ]);
         } else {
             $this->validate([
-                'tempat_pelaksanaan' => 'required',
-                //   'files' => 'required',
-                'jenis_dokumen_kerjasama' => 'required',
                 'tingkat' => 'required',
-                'nomor_unhas' => 'required|min:5',
                 'nomor_mitra' => 'required',
-                'judul_kerjasama' => 'required',
-                'deskripsi' => 'required',
-                'tanggal_ttd' => 'required',
-                'tanggal_awal' => 'required',
-                'tanggal_berakhir' => 'required',
-                'status_kerjasama' => 'required',
-                'jangka_waktu' => 'required',
             ]);
         }
-        // validate penggiat kerjasama
         foreach ($this->inputs as $key => $value) {
+            $this->validate([
+                "status.$value" => 'required',
+            ]);
 
             $this->validate([
-                'nama_pihak.' . $key => 'required',
-                'koordinat_pihak.' . $key => 'required',
-                'negara_pihak.' . $key => 'required',
+                "nama_pihak.$value" => 'required',
+                "alamat_pihak.$value" => 'required',
+                "negara_pihak.$value" => 'required',
+                "koordinat_pihak.$value" => 'required',
+                "nama_pejabat_pihak.$value" => 'required',
+                "jabatan_pejabat_pihak.$value" => 'required',
+                "pj_pihak.$value" => 'required',
+                "jabatan_pj_pihak.$value" => 'required',
+                "email_pj_pihak.$value" => 'required',
+                "hp_pj_pihak.$value" => 'required',
             ]);
 
             if ($this->status[$value] == 3) {
@@ -533,36 +551,22 @@ class Moa extends Component
                 if ($this->badanKemitraan[$value] == 99) {
                     $this->validate([
                         'lainnya.' . $value => 'required',
-                        'badanKemitraan.' . $value => 'required',
-                        'alamat_pihak.' . $value => 'required',
-                        'nama_pejabat_pihak.' . $value => 'required',
-
-                    ]);
-                } else {
-                    $this->validate([
-                        'badanKemitraan.' . $value => 'required',
-                        'alamat_pihak.' . $value => 'required',
-                        'nama_pejabat_pihak.' . $value => 'required',
-
                     ]);
                 }
             } elseif ($this->status[$value] == 2) {
                 $this->validate([
                     'fakultas_pihak.' . $value => 'required',
                     'prodiPihak.' . $value => 'required',
-                    'alamat_pihak.' . $value => 'required',
-                    'nama_pejabat_pihak.' . $value => 'required',
                 ]);
             } else {
                 $this->validate([
                     'ptqs.' . $value => 'required',
                     'fakultas_pihak.' . $value => 'required',
                     'prodiPihak.' . $value => 'required',
-                    'alamat_pihak.' . $value => 'required',
-                    'nama_pejabat_pihak.' . $value => 'required',
                 ]);
             }
         }
+
 
         $this->validate([
             'arrayBentukKegiatan' => 'required'
@@ -661,6 +665,8 @@ class Moa extends Component
                                 'kerjasama_id' => $store->id
                             ]);
                         }
+
+
                         foreach ($this->inputs as $key => $value) {
                             $storePenggiatKerjasama = DataMoaPenggiat::create([
                                 'id_lapkerma' => $store->id,
@@ -675,7 +681,7 @@ class Moa extends Component
                                 'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? null,
                                 'email_pj_pihak' => $this->email_pj_pihak[$key] ?? null,
                                 'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? null,
-                                'ptqs' => ($this->ptqs[$key] == '\N') ? 0 : $this->ptqs[$key],
+                                'ptqs' => ($this->ptqs[$key] == '') ? null : $this->ptqs[$key],
                                 'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
                                 'uploaded_by' => auth()->user()->name,
                                 'prodi' => json_encode(optional($this->prodiPihak)[$key]) ?? null
@@ -733,7 +739,7 @@ class Moa extends Component
                                     'pihak' => $this->nama_pihak[$value],
                                     'id_pj' => $storePJ->id,
                                     'id_pejabat' => $storePejabat->id,
-                                    'fakultas_pihak' => $this->fakultas_pihak[$value],
+                                    'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
                                     'prodi' => json_encode(optional($this->prodiPihak)[$key]) ?? null,
                                 ]
                             );
@@ -867,7 +873,7 @@ class Moa extends Component
                                     'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
                                     'email_pj_pihak' => $this->email_pj_pihak[$key] ?? null,
                                     'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? null,
-                                    'ptqs' => ($this->ptqs[$key] == '\N') ? 0 : $this->ptqs[$key],
+                                    'ptqs' => ($this->ptqs[$key] == '') ? null : $this->ptqs[$key],
                                     'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
                                     'uploaded_by' => auth()->user()->name,
                                     'prodi' => json_encode($this->prodiPihak[$key] ?? null)
@@ -1106,7 +1112,7 @@ class Moa extends Component
                                 ]);
                             }
 
-                            $storePenggiatKerjasama2 = MoaPenggiat::create(
+                            $storePenggiatKerjasama2 = IaPenggiat::create(
                                 [
                                     'id_lapkerma' => $store->id,
                                     'id_pihak' => $storeInstansi->id,
@@ -1171,6 +1177,7 @@ class Moa extends Component
                 $hitung++;
             }
         }
+
         // membuat kode sistem dokumen
         $uuid = DataIa::max('id');
         $uuid = str_pad($uuid + 1, 3, '0', STR_PAD_LEFT);
@@ -1297,7 +1304,7 @@ class Moa extends Component
                                     ]);
                                 }
 
-                                $storePenggiatKerjasama2 = MoaPenggiat::create(
+                                $storePenggiatKerjasama2 = IaPenggiat::create(
                                     [
                                         'id_lapkerma' => $store->id,
                                         'id_pihak' => $storeInstansi->id,

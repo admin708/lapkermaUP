@@ -66,6 +66,9 @@
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
                             @endforeach
                         </select>
+                        @error('jenisKerjasamaField')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="{{ $jenisKerjasamaField == 2 ? 'd-none' : '' }}">
                         <label class="form-label">Tingkat <i class="small text-danger">*</i> </label>
@@ -79,12 +82,17 @@
                     </div>
                     <div class="{{ $jenisKerjasamaField == 1 ? 'd-none' : '' }}">
                         <label class="form-label">Negara <i class="small text-danger">*</i> </label>
-                        <select wire:model="negara" id="select2-negara" class="form-select form-select-sm">
+                        <select wire:model="negara" id="select2-negara"
+                            class="form-select form-select-sm 
+                            @error('negara') is-invalid @enderror">
                             <option></option>
                             @foreach ($negaraKerjasama as $item)
                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
+                        @error('negara')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="{{ $jenisKerjasamaField == 1 ? 'd-none' : '' }}">
                         <label class="form-label">Region <i class="small text-danger">*</i></label>
@@ -96,11 +104,17 @@
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
                             @endforeach
                         </select>
+                        @error('region')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div>
                         <label class="form-label">Tempat Pelaksana <i class="small text-danger">*</i></label>
                         <input required wire:model.defer="tempat_pelaksanaan" type="text"
                             class="form-control form-control-sm @error('tempat_pelaksanaan') is-invalid @enderror">
+                        @error('tempat_pelaksanaan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <div class="card-body demo-vertical-spacing demo-only-element">
@@ -162,6 +176,9 @@
                                     @endif
                                 @endforeach
                             </select>
+                            @error('jenis_dokumen_kerjasama')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                     </div>
                     <div class="{{ $jenis_dokumen_kerjasama == 2 ? 'd-block' : 'd-none' }}">
                         <div>
@@ -169,7 +186,8 @@
                                     class="small text-danger">*</i></label>
                             <div>
                                 <select wire:model="dasar_dokumen_kerjasama" style="width: 100%"
-                                    class="form-select form-select-sm" id="select2-dropdown">
+                                    class="form-select form-select-sm @error('dasar_dokumen_kerjasama') is-invalid @enderror"
+                                    id="select2-dropdown">
                                     <option selected></option>
                                     <optgroup label="MoU">
                                         @foreach ($dasarDokKerjasama->sortBy('nomor_dok_unhas') as $item)
@@ -181,6 +199,9 @@
                                     </optgroup>
                                 </select>
                             </div>
+                            @error('dasar_dokumen_kerjasama')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="{{ $jenis_dokumen_kerjasama == 3 ? 'd-block' : 'd-none' }}">
@@ -189,7 +210,8 @@
                                     class="small text-danger">*</i></label>
                             <div>
                                 <select wire:model="dasar_dokumen_kerjasama" style="width: 100%"
-                                    class="form-select form-select-sm" id="select2-dropdowns">
+                                    class="form-select form-select-sm @error('dasar_dokumen_kerjasama') is-invalid @enderror"
+                                    id="select2-dropdowns">
                                     <option selected></option>
                                     <optgroup label="MoU">
                                         @foreach ($dasarDokKerjasama->sortBy('nomor_dok_unhas') as $item)
@@ -207,22 +229,34 @@
                                     </optgroup>
                                 </select>
                             </div>
+                            @error('dasar_dokumen_kerjasama')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-auto my-2">
                         <label class="form-label">Nomor Dok. Unhas <i class="small text-danger">*</i></label>
                         <input required wire:model.defer="nomor_unhas" type="text"
                             class="form-control form-control-sm @error('nomor_unhas') is-invalid @enderror">
+                        @error('nomor_unhas')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="{{ $jenisKerjasamaField == 2 ? 'd-none' : '' }}">
                         <label class="form-label">Nomor Dok. Mitra <i class="small text-danger">*</i></label>
                         <input required wire:model.defer="nomor_mitra" type="text"
                             class="form-control form-control-sm @error('nomor_mitra') is-invalid @enderror">
+                        @error('nomor_mitra')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div>
                         <label class="form-label">Judul Kerjasama <i class="small text-danger">*</i></label>
                         <input required wire:model.defer="judul_kerjasama" type="text"
                             class="form-control form-control-sm @error('judul_kerjasama') is-invalid @enderror">
+                        @error('judul_kerjasama')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div>
                         <label class="form-label">Deskripsi <i class="small text-danger">*</i><label>
@@ -232,6 +266,9 @@
                             </label>
                             <textarea required wire:model.defer="deskripsi"
                                 class="form-control form-control-sm @error('deskripsi') is-invalid @enderror" cols="30" rows="5"></textarea>
+                            @error('deskripsi')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                     </div>
 
                     <div>
@@ -267,16 +304,25 @@
                         <label class="form-label">Tanggal TTD <i class="small text-danger">*</i></label>
                         <input required wire:model.defer="tanggal_ttd" type="date"
                             class="form-control form-control-sm @error('tanggal_ttd') is-invalid @enderror">
+                        @error('tanggal_ttd')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-auto my-2">
                         <label class="form-label">Tanggal Awal <i class="small text-danger">*</i></label>
                         <input required wire:model.defer="tanggal_awal" type="date"
                             class="form-control form-control-sm @error('tanggal_awal') is-invalid @enderror">
+                        @error('tanggal_awal')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-auto my-2">
                         <label class="form-label">Tanggal Berakhir <i class="small text-danger">*</i></label>
                         <input required wire:model.defer="tanggal_berakhir" type="date"
                             class="form-control form-control-sm @error('tanggal_berakhir') is-invalid @enderror">
+                        @error('tanggal_berakhir')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-auto my-2">
                         <label class="form-label">Status <i class="small text-danger">*</i></label>
@@ -287,13 +333,20 @@
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
                             @endforeach
                         </select>
+                        @error('status_kerjasama')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-auto my-2">
                         <label class="form-label">Jangka Waktu <i class="small">(Tahun)</i> <i
                                 class="small text-danger">*</i></label>
                         <input required wire:model.defer="jangka_waktu" type="number"
                             class="form-control form-control-sm @error('jangka_waktu') is-invalid @enderror">
+                        @error('jangka_waktu')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+
                 </div>
             </div>
         </div>
@@ -324,9 +377,6 @@
                                     <div class="col-sm-12 col-lg-7 my-2">
                                         <label class="mr-sm-2">Instansi / Universitas <i
                                                 class="small text-danger">*</i>
-                                            @error('nama_pihak.' . $value)
-                                                <i class="text-sm text-danger">* required</i>
-                                            @enderror
                                         </label>
                                         <div wire:loading wire:target="nama_pihak.{{ $value }}"
                                             class="mx-1 spinner-border spinner-border-sm text-primary" role="status">
@@ -337,7 +387,10 @@
                                                 aria-haspopup="true" aria-expanded="true">
                                                 <input placeholder="Ketik Untuk Mencari"
                                                     wire:model="nama_pihak.{{ $key }}" type="text"
-                                                    class="form-control form-control-sm">
+                                                    class="form-control form-control-sm @error('nama_pihak.' . $value) is-invalid @enderror">
+                                                @error('nama_pihak.' . $value)
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchInstansiList[$key]) && count($searchInstansiList[$key]) > 0 ? 'show' : '' }}"
@@ -393,8 +446,11 @@
 
                                     <div class="col-sm-12 col-lg-5 my-2">
                                         <label class="mr-sm-2">Status</label>
+                                        @error('status.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                         <select wire:model="status.{{ $value }}"
-                                            class="form-select form-select-sm mr-sm-2 ">
+                                            class="form-select form-select-sm mr-sm-2 @error('status.' . $value) is-invalid @enderror">
                                             <option></option>
                                             <option value="1">Perguruan Tinggi Negeri</option>
                                             <option value="2">Perguruan Tinggi Swasta</option>
@@ -405,17 +461,18 @@
                                     <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 1 ? 'd-block' : (optional($status)[$value] == 4 ? 'd-block' : '') }}"
                                         style="display: none">
                                         <label class="mr-sm-2">PTQS <i class="small text-danger">*</i>
-                                            @error('ptqs.' . $value)
-                                                <i class="text-sm text-danger">* required</i>
-                                            @enderror
                                         </label>
                                         <select wire:model="ptqs.{{ $value }}"
-                                            class="form-select form-select-sm mr-sm-2">
+                                            class="form-select form-select-sm mr-sm-2 @error('ptqs.' . $value) is-invalid @enderror">
                                             <option value=""></option>
                                             <option value="0">Tidak</option>
                                             <option value="1">PTQS 100</option>
                                             <option value="2">PTQS 200</option>
                                         </select>
+
+                                        @error('ptqs.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div class="col-sm-12 col-lg-7 my-2 {{ optional($status)[$value] == 1 ? 'd-block' : (optional($status)[$value] == 4 ? 'd-block' : '') }}"
@@ -430,13 +487,14 @@
                                         <select wire:model="badanKemitraan.{{ $value }}"
                                             class="form-select form-select-sm mr-sm-2 @error('badanKemitraan.' . $value) is-invalid @enderror">
                                             <option value=""></option>
-                                            <option value="1">Perusahaan Nasional</option>
-                                            <option value="2">Perusahaan Multinasional</option>
-                                            <option value="3">Institusi Pemerintahan (kementrian)</option>
-                                            <option value="4">Pemerintah Daerah (Provinsi/Kabupaten)</option>
-                                            <option value="5">BUMN / BUMD</option>
-                                            <option value="99">Lainnya</option>
+                                            @foreach ($searchBadanKemitraan as $badanKemitraan)
+                                                <option value="{{ $badanKemitraan->id }}">{{ $badanKemitraan->nama }}
+                                                </option>
+                                            @endforeach
                                         </select>
+                                        @error('badanKemitraan.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div class="col-12 my-2 {{ optional($status)[$value] == 3 ? (optional($badanKemitraan)[$value] == 99 ? 'd-block' : '') : '' }}"
@@ -444,19 +502,27 @@
                                         <input wire:model="lainnya.{{ $value }}" type="text"
                                             placeholder="sebutkan"
                                             class="form-control form-control-sm @error('lainnya.' . $value) is-invalid @enderror">
+                                        @error('lainnya.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             @if (optional($arrayMitra)[$key] == 1)
                                 <label class="mr-sm-2">Fakultas <i class="small text-danger">*</i></label>
                                 <select wire:model="fakultas_pihak.{{ $value }}"
-                                    class="form-select form-select-sm mr-sm-2"
+                                    class="form-select form-select-sm mr-sm-2 @error('fakultas_pihak.{{ $value }}')
+                                        is-invalid
+                                    @enderror"
                                     {{ auth()->user()->role_id != 1 ? 'disabled' : '' }}>
                                     <option></option>
                                     @foreach ($fakultas as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama_fakultas }}</option>
                                     @endforeach
                                 </select>
+                                @error('fakultas_pihak.{{ $value }}')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                                 <div class="col-auto my-2">
                                     <div
                                         class="
@@ -472,6 +538,9 @@
                                                 <i class="text-sm text-danger">* required</i>
                                             @enderror
                                         </label>
+                                        @error('prodiPihak.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
 
                                         <div class="row col-12">
                                             @php
@@ -522,7 +591,8 @@
                                                                 wire:click="unsetFakultas({{ $key }},{{ $item->id }})"
                                                                 class=" small input-group-text
                                                         {{ $item->id == auth()->user()->prodi_id ? 'd-none' : '' }}">X</span>
-                                                            <input type="text" class="form-control form-control-sm"
+                                                            <input type="text"
+                                                                class="form-control form-control-sm @error('searchProdiMitra.' . $value) is-invalid @enderror"
                                                                 disabled placeholder="{{ $item->nama_resmi }}">
                                                         </div>
                                                     @endforeach
@@ -582,10 +652,13 @@
                                                     </li>
                                                 @empty
                                                     <li role="button" onclick="addFakultas()" class="p-2 small">
-                                                        Fakultas Belum tersedia, Klik untuk menambahkan</li>
+                                                        {{-- {{-- Fakultas Belum tersedia, Klik untuk menambahkan</li> --}}
                                                 @endforelse
                                             </ul>
                                         </div>
+                                        @error('fakultas_pihak.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
 
                                     </div>
                                 </div>
@@ -659,23 +732,27 @@
 
                             <div class="col-auto my-2">
                                 <label class="mr-sm-2">Alamat Instansi <i class="small text-danger">*</i>
-                                    @error('alamat_pihak.' . $value)
-                                        <i class="text-sm text-danger">* required</i>
-                                    @enderror
                                 </label>
                                 <input wire:model.defer="alamat_pihak.{{ $value }}" type="text"
-                                    class="form-control form-control-sm">
+                                    class="form-control form-control-sm @error('alamat_pihak.' . $value) is-invalid @enderror">
+                                @error('alamat_pihak.' . $value)
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
                             </div>
                             <div class="col-auto my-2">
                                 <label class="mr-sm-2">Negara Instansi</label>
                                 <select wire:model="negara_pihak.{{ $value }}"
-                                    class="form-select form-select-sm"
-                                    @error('negara_pihak.' . $value) is-invalid @enderror>
+                                    class="form-select form-select-sm
+                                    @error('negara_pihak.' . $value) is-invalid @enderror">
                                     <option></option>
                                     @foreach ($negaraKerjasama as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('negara_pihak.' . $value)
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-auto my-2">
                                 <div class="row">
@@ -683,7 +760,11 @@
                                         <label class="mr-sm-2">Koordinat Instansi</label>
                                         <input required wire:model="koordinat_pihak.{{ $value }}"
                                             type="text"
-                                            class="form-control form-control-sm @error('judul_kerjasama') is-invalid @enderror">
+                                            class="form-control form-control-sm @error('koordinat_pihak.{{ $value }}') is-invalid @enderror">
+
+                                        @error('koordinat_pihak.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div class="col-sm-12 col-lg-7 my-2">
@@ -706,12 +787,17 @@
                                             <span class="visually-hidden">Loading...</span>
                                         </div>
                                         <div class="btn-group col-12">
-                                            <div class="input-group input-group-sm" data-bs-display="static"
-                                                aria-haspopup="true" aria-expanded="true">
+                                            <div class="input-group input-group-sm @error('nama_pejabat_pihak.' . $value) is-invalid @enderror"
+                                                data-bs-display="static" aria-haspopup="true" aria-expanded="true">
                                                 <input placeholder="Ketik Untuk Mencari"
                                                     wire:model="nama_pejabat_pihak.{{ $key }}"
-                                                    type="text" class="form-control form-control-sm">
+                                                    type="text"
+                                                    class="form-control form-control-sm @error('nama_pejabat_pihak.' . $value) is-invalid @enderror">
+                                                @error('nama_pejabat_pihak.{{ $value }}')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
+
 
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPejabatList[$key]) && count($searchPejabatList[$key]) > 0 ? 'show' : '' }}"
                                                 data-bs-popper="static">
@@ -731,7 +817,11 @@
 
                                         <label class="mr-sm-2">Jabatan</label>
                                         <input wire:model.defer="jabatan_pejabat_pihak.{{ $value }}"
-                                            type="text" class="form-control form-control-sm">
+                                            type="text"
+                                            class="form-control form-control-sm @error('jabatan_pejabat_pihak.' . $value) is-invalid @enderror">
+                                        @error('jabatan_pejabat_pihak.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -749,7 +839,10 @@
                                                 aria-haspopup="true" aria-expanded="true">
                                                 <input placeholder="Ketik Untuk Mencari"
                                                     wire:model="pj_pihak.{{ $key }}" type="text"
-                                                    class="form-control form-control-sm">
+                                                    class="form-control form-control-sm @error('pj_pihak.' . $value) is-invalid @enderror">
+                                                @error('pj_pihak.{{ $value }}')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start {{ isset($searchPenanggungJawab[$key]) && count($searchPenanggungJawab[$key]) > 0 ? 'show' : '' }}"
@@ -769,24 +862,31 @@
                                     <div class="col-sm-12 col-lg-6">
                                         <label class="mr-sm-2">Jabatan</label>
                                         <input wire:model.defer="jabatan_pj_pihak.{{ $value }}"
-                                            type="text" class="form-control form-control-sm">
+                                            type="text"
+                                            class="form-control form-control-sm @error('jabatan_pj_pihak.' . $value) is-invalid @enderror">
+                                        @error('jabatan_pj_pihak.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-6">
                                         <label class="mr-sm-2 mt-1">Email <i class="small text-danger">
-                                                @error('email_pj_pihak.' . $value)
-                                                    {{ $message }}
-                                                @enderror
                                             </i></label>
                                         <input wire:model.defer="email_pj_pihak.{{ $value }}" type="email"
                                             class="form-control form-control-sm @error('email_pj_pihak.' . $value) is-invalid @enderror">
+                                        @error('email_pj_pihak.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-sm-12 col-lg-6">
                                         <label class="mr-sm-2 mt-1">No. HP</label>
                                         <input wire:model.defer="hp_pj_pihak.{{ $value }}" type="text"
                                             onkeypress="return /[0-9()+\-]/.test(event.key)"
                                             class="form-control form-control-sm @error('hp_pj_pihak.' . $value) is-invalid @enderror">
+                                        @error('hp_pj_pihak.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

@@ -366,148 +366,146 @@ class GuestMouInput extends Component
 
             if ($store->wasRecentlyCreated) {
 
-                    $storePJ = PenanggungJawab::updateOrCreate(
-                        [
-                            'name' => $this->pj_pihak[$value],
-                        ],
-                        [
-                            'designation' => $this->jabatan_pj_pihak[$value],
-                            'email' => $this->email_pj_pihak[$value],
-                            'phone_number' => $this->hp_pj_pihak[$value]
-                        ]
-                    );
+                $storePJ = PenanggungJawab::updateOrCreate(
+                    [
+                        'name' => $this->pj_pihak[$value],
+                    ],
+                    [
+                        'designation' => $this->jabatan_pj_pihak[$value],
+                        'email' => $this->email_pj_pihak[$value],
+                        'phone_number' => $this->hp_pj_pihak[$value]
+                    ]
+                );
 
-                    $storePejabat = Pejabat::updateOrCreate(
-                        [
-                            'nama' => $this->nama_pejabat_pihak[$value],
-                        ],
-                        [
-                            'jabatan' => $this->jabatan_pejabat_pihak[$value]
-                        ]
+                $storePejabat = Pejabat::updateOrCreate(
+                    [
+                        'nama' => $this->nama_pejabat_pihak[$value],
+                    ],
+                    [
+                        'jabatan' => $this->jabatan_pejabat_pihak[$value]
+                    ]
 
-                    );
+                );
 
-                    $storeInstansi = Instansi::updateOrCreate(
-                        [
-                            'name' => $this->nama_pihak[$value],
-                        ],
-                        [
-                            'address' => $this->alamat_pihak[$value],
-                            'negara_id' => $this->negara_pihak[$value],
-                            'coordinates' => $this->koordinat_pihak[$value] ?? '',
-                            'ptqs' => $this->ptqs[$value] ?? 0,
-                            'status' => $this->status[$value] ?? 0,
-                            'badan_kemitraan' => $this->badanKemitraan[$value] ?? '',
-                        ]
-                    );
-                    if (optional($this->badanKemitraan)[$value] == 99) {
-                        $storeInstansi->update([
-                            'badan_kemitraan' => $this->lainnya[$value]
-                        ]);
-                    }
+                $storeInstansi = Instansi::updateOrCreate(
+                    [
+                        'name' => $this->nama_pihak[$value],
+                    ],
+                    [
+                        'address' => $this->alamat_pihak[$value],
+                        'negara_id' => $this->negara_pihak[$value],
+                        'coordinates' => $this->koordinat_pihak[$value] ?? '',
+                        'ptqs' => $this->ptqs[$value] ?? 0,
+                        'status' => $this->status[$value] ?? 0,
+                        'badan_kemitraan' => $this->badanKemitraan[$value] ?? '',
+                    ]
+                );
+                if (optional($this->badanKemitraan)[$value] == 99) {
+                    $storeInstansi->update([
+                        'badan_kemitraan' => $this->lainnya[$value]
+                    ]);
+                }
 
-                    $storePenggiatKerjasama2 = MouPenggiat::create(
-                        [
-                            'id_lapkerma' => $store->id,
-                            'id_pihak' => $storeInstansi->id,
-                            'pihak' => $this->nama_pihak[$value],
-                            'id_pj' => $storePJ->id,
-                            'id_pejabat' => $storePejabat->id,
-                            'fakultas_pihak' => $this->fakultas_pihak[$value] ?? null,
-                            'prodi' => '',
-                        ]
-                    );
-
-                    $storePenggiatKerjasama = DataMouPenggiat::create([
+                $storePenggiatKerjasama2 = MouPenggiat::create(
+                    [
                         'id_lapkerma' => $store->id,
-                        'pihak' => $value + 1,
-                        'status_pihak' => $this->status[$key],
-                        'nama_pihak' => $this->arrayNamaPenggiat[$key],
-                        'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
-                        'alamat_pihak' => $this->alamat_pihak[$key],
-                        'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
-                        'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
-                        'pj_pihak' => $this->pj_pihak[$key],
-                        'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
-                        'email_pj_pihak' => $this->email_pj_pihak[$key] ?? '',
-                        'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? '',
-                        'ptqs' => $this->ptqs[$key] ?? null,
-                        'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
-                        'uploaded_by' => auth()->user()->name,
+                        'id_pihak' => $storeInstansi->id,
+                        'pihak' => $this->nama_pihak[$value],
+                        'id_pj' => $storePJ->id,
+                        'id_pejabat' => $storePejabat->id,
+                        'fakultas_pihak' => $this->fakultas_pihak[$value] ?? null,
+                        'prodi' => '',
+                    ]
+                );
+
+                $storePenggiatKerjasama = DataMouPenggiat::create([
+                    'id_lapkerma' => $store->id,
+                    'pihak' => $value + 1,
+                    'status_pihak' => $this->status[$key],
+                    'nama_pihak' => $this->arrayNamaPenggiat[$key],
+                    'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
+                    'alamat_pihak' => $this->alamat_pihak[$key],
+                    'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
+                    'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
+                    'pj_pihak' => $this->pj_pihak[$key],
+                    'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
+                    'email_pj_pihak' => $this->email_pj_pihak[$key] ?? '',
+                    'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? '',
+                    'ptqs' => $this->ptqs[$key] ?? null,
+                    'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
+                    'uploaded_by' => auth()->user()->name,
+                ]);
+                if (optional($this->badanKemitraan)[$key] == 99) {
+                    $storePenggiatKerjasama->update([
+                        'badan_kemitraan' => $this->lainnya[$key]
                     ]);
-                    if (optional($this->badanKemitraan)[$key] == 99) {
-                        $storePenggiatKerjasama->update([
-                            'badan_kemitraan' => $this->lainnya[$key]
-                        ]);
-                    }
                 }
-                $code = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $random = substr(str_shuffle($code), 0, 3);
-                if ($this->uploadDocument) {
-                    $templateProcessor = new TemplateProcessor(storage_path('document/Template_MOU.docx'));
-            
-                    // Isi template MOU dengan data pihak 1
-                    $templateProcessor->setValue('University_Name', $this->nama_pihak[0]);
-                    $templateProcessor->setValue('Country_Of_Origin', Negara::find($this->negara)->name ?? 'Unknown Country');
-                    $templateProcessor->setValue('Signing_Date', date('d/m/Y', strtotime($this->tanggal_ttd)));
-                    $templateProcessor->setValue('Duration_Years', $this->jangka_waktu);
-            
-                    // PIC Pihak 1
-                    $templateProcessor->setValue('PIC_Name', $this->pj_pihak[0]);
-                    $templateProcessor->setValue('PIC_Designation', $this->jabatan_pj_pihak[0]);
-                    $templateProcessor->setValue('PIC_Address', $this->alamat_pihak[0]);
-                    $templateProcessor->setValue('PIC_Email', $this->email_pj_pihak[0]);
-                    $templateProcessor->setValue('PIC_Phone', $this->hp_pj_pihak[0]);
-            
-                    // Pejabat Pihak 1
-                    $templateProcessor->setValue('Rep_Name', $this->nama_pejabat_pihak[0]);
-                    $templateProcessor->setValue('Rep_Designation', $this->jabatan_pejabat_pihak[0]);
-            
-                    // Scope Kerjasama
-                    $templateProcessor->setValue('Scope', '• ' . implode("\n• ", $this->scopeList));
-            
-                    if (isset($this->logo)) {
-                        $logoFilePath = $this->logo->store('public/logos');
-                        $logoPath = storage_path('app/' . $logoFilePath);
-                        if (file_exists($logoPath)) {
-                            $validImageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-                            $extension = pathinfo($logoPath, PATHINFO_EXTENSION);
-            
-                            if (in_array(strtolower($extension), $validImageExtensions)) {
-                                $templateProcessor->setImageValue(
-                                    'Logo',
-                                    [
-                                        'path' => $logoPath,
-                                        'width' => 100, // Adjust width to fit template needs
-                                        'height' => 100, // Adjust height as needed
-                                        'ratio' => true, // Maintain aspect ratio
-                                    ]
-                                );
-                            }
-                        }
-                        // Hapus logo setelah digunakan
-                        Storage::delete($logoFilePath);
-                    }
-            
-                    // Simpan dokumen
-                    $namaDokumen = 'MoU_' . $uuid . '_' . substr(str_shuffle('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 3) . '.docx';
-                    $outputFile = storage_path('app/public/DokumenMoU/' . $namaDokumen);
-            
-                    $templateProcessor->saveAs($outputFile);
-            
-                    $store->dokumenMoU()->firstOrCreate([
-                        'url' => $namaDokumen,
-                        'kerjasama_id' => $store->id
-                    ]);
-            
-                    Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
-                }
-            
-                DB::commit();
-            
-                $this->emit('formSubmitted');
             }
-            
+            $code = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $random = substr(str_shuffle($code), 0, 3);
+            if ($this->uploadDocument) {
+                $templateProcessor = new TemplateProcessor(storage_path('document/Template_MOU.docx'));
+
+                // Isi template MOU dengan data pihak 1
+                $templateProcessor->setValue('University_Name', $this->nama_pihak[0]);
+                $templateProcessor->setValue('Country_Of_Origin', Negara::find($this->negara)->name ?? 'Unknown Country');
+                $templateProcessor->setValue('Signing_Date', date('d/m/Y', strtotime($this->tanggal_ttd)));
+                $templateProcessor->setValue('Duration_Years', $this->jangka_waktu);
+
+                // PIC Pihak 1
+                $templateProcessor->setValue('PIC_Name', $this->pj_pihak[0]);
+                $templateProcessor->setValue('PIC_Designation', $this->jabatan_pj_pihak[0]);
+                $templateProcessor->setValue('PIC_Address', $this->alamat_pihak[0]);
+                $templateProcessor->setValue('PIC_Email', $this->email_pj_pihak[0]);
+                $templateProcessor->setValue('PIC_Phone', $this->hp_pj_pihak[0]);
+
+                // Pejabat Pihak 1
+                $templateProcessor->setValue('Rep_Name', $this->nama_pejabat_pihak[0]);
+                $templateProcessor->setValue('Rep_Designation', $this->jabatan_pejabat_pihak[0]);
+
+                // Scope Kerjasama
+                $templateProcessor->setValue('Scope', '• ' . implode("\n• ", $this->scopeList));
+
+                if (isset($this->logo)) {
+                    $logoFilePath = $this->logo->store('public/logos');
+                    $logoPath = storage_path('app/' . $logoFilePath);
+                    if (file_exists($logoPath)) {
+                        $validImageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+                        $extension = pathinfo($logoPath, PATHINFO_EXTENSION);
+
+                        if (in_array(strtolower($extension), $validImageExtensions)) {
+                            $templateProcessor->setImageValue(
+                                'Logo',
+                                [
+                                    'path' => $logoPath,
+                                    'width' => 100, // Adjust width to fit template needs
+                                    'height' => 100, // Adjust height as needed
+                                    'ratio' => true, // Maintain aspect ratio
+                                ]
+                            );
+                        }
+                    }
+                    // Hapus logo setelah digunakan
+                    Storage::delete($logoFilePath);
+                }
+
+                // Simpan dokumen
+                $namaDokumen = 'MoU_' . $uuid . '_' . substr(str_shuffle('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 3) . '.docx';
+                $outputFile = storage_path('app/public/DokumenMoU/' . $namaDokumen);
+
+                $templateProcessor->saveAs($outputFile);
+
+                $store->dokumenMoU()->firstOrCreate([
+                    'url' => $namaDokumen,
+                    'kerjasama_id' => $store->id
+                ]);
+
+                Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
+            }
+
+            DB::commit();
+
+            $this->emit('formSubmitted');
         } catch (\Exception $th) {
             DB::rollback();
             dd($th);
@@ -532,19 +530,19 @@ class GuestMouInput extends Component
     }
 
     public function mount()
-{
-    // Ambil data dari database
-    $this->getIndikatorKinerja = LapkermaRefIndikatorKinerja::get();
-    $this->getSasaranKegiatan = LapkermaRefSasaranKegiatan::get();
-    $this->getBentukKegiatan = LapkermaRefBentukKegiatan::get();
-    $this->statusKerjasama = StatusKerjasama::get();
-    $this->fakultas = Fakultas::get();
-    $this->jenisKerjasama = JenisKerjasama::get();
-    $this->regionKerjasama = Region::get();
-    $this->negaraKerjasama = Negara::get();
-    $this->jenisKerjasamaField = 1;
-    $this->updatedJenisKerjasamaField();
-    $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
+    {
+        // Ambil data dari database
+        $this->getIndikatorKinerja = LapkermaRefIndikatorKinerja::get();
+        $this->getSasaranKegiatan = LapkermaRefSasaranKegiatan::get();
+        $this->getBentukKegiatan = LapkermaRefBentukKegiatan::get();
+        $this->statusKerjasama = StatusKerjasama::get();
+        $this->fakultas = Fakultas::get();
+        $this->jenisKerjasama = JenisKerjasama::get();
+        $this->regionKerjasama = Region::get();
+        $this->negaraKerjasama = Negara::get();
+        $this->jenisKerjasamaField = 1;
+        $this->updatedJenisKerjasamaField();
+        $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
 
 
         $instansiModel = new Instansi();
