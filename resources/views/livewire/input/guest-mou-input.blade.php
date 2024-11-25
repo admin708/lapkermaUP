@@ -93,10 +93,12 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="card mb-1">
-                        <h5 class="card-header text-primary"><i class="bx bx-link me-3"></i>Jenis Kerjasama</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-link me-3"></i>Jenis Kerjasama /
+                            Cooperation Type</h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <div class="col-auto my-2">
-                                <label class="form-label">Pilih Jenis Kerjasama <i class="text-danger">*</i></label>
+                                <label class="form-label">Pilih Jenis Kerjasama / Select Partnership Type <i
+                                        class="text-danger">*</i></label>
                                 <div wire:loading wire:target="jenisKerjasamaField"
                                     class="mx-1 spinner-border spinner-border-sm text-primary" role="status">
                                     <span class="visually-hidden">Loading...</span>
@@ -141,7 +143,8 @@
                             </div>
 
                             <div>
-                                <label class="form-label">Tempat Pelaksana <i class="text-danger">*</i></label>
+                                <label class="form-label">Tempat Pelaksana / Location of Cooperation<i
+                                        class="text-danger">*</i></label>
                                 <input required wire:model.defer="tempat_pelaksanaan" type="text"
                                     class="form-control form-control-sm @error('tempat_pelaksanaan') is-invalid @enderror">
                                 @error('tempat_pelaksanaan')
@@ -199,10 +202,12 @@
                 <!-- Merged -->
                 <div class="col-md-4">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-file me-3"></i>Jenis Dokumen Kerjasama</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-file me-3"></i>Jenis Dokumen Kerjasama /
+                            Types of Cooperation Documents</h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <div class="col-auto my-2">
-                                <label class="form-label">Nomor Dok. Unhas <i class="text-danger">*</i></label>
+                                <label class="form-label">Nomor Dok. Unhas / Unhas Document Number<i
+                                        class="text-danger">*</i></label>
                                 <input wire:model.defer="nomor_unhas" type="text"
                                     class="form-control form-control-sm 
                             {{ $nomorSistem == 1 ? 'd-none' : 'd-block' }}
@@ -215,7 +220,8 @@
                                     <input class="form-check-input" type="checkbox" wire:model="nomorSistem">
                                     <label class="form-check-label">
                                         <i class="small"> <i class="text-danger">*</i>gunakan nomor sistem jika nomor
-                                            dokumen tidak ada</i>
+                                            dokumen tidak ada / use system number if document number is not
+                                            available</i>
                                     </label>
                                     @error('nomorSistem')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -223,7 +229,8 @@
                                 </div>
                             </div>
                             <div class="{{ $jenisKerjasamaField == 2 ? 'd-none' : '' }}">
-                                <label class="form-label">Nomor Dok. Mitra <i class="text-danger">*</i></label>
+                                <label class="form-label">Nomor Dok. Mitra / Partner Document Number<i
+                                        class="text-danger">*</i></label>
                                 <input required wire:model.defer="nomor_mitra" type="text"
                                     class="form-control form-control-sm 
                             @error('nomor_mitra') is-invalid @enderror">
@@ -232,7 +239,8 @@
                                 @enderror
                             </div>
                             <div>
-                                <label class="form-label">Judul Kerjasama <i class="text-danger">*</i></label>
+                                <label class="form-label">Judul Kerjasama / Partnership Title<i
+                                        class="text-danger">*</i></label>
                                 <input required wire:model.defer="judul_kerjasama" type="text"
                                     class="form-control form-control-sm @error('judul_kerjasama') is-invalid @enderror">
                                 @error('judul_kerjasama')
@@ -240,9 +248,11 @@
                                 @enderror
                             </div>
                             <div>
-                                <label class="form-label">Deskripsi <i class="text-danger">*</i><label>
+                                <label class="form-label">Deskripsi / Partnership Description <i
+                                        class="text-danger">*</i><label>
                                         <i class="small text-danger">
-                                            Ringkasan singkat terkait cakupan atau kegiatan kerja
+                                            Ringkasan singkat terkait cakupan atau kegiatan kerja /
+                                            Short summary of the scope and activity of partnership
                                         </i>
                                     </label>
                                     <textarea required wire:model.defer="deskripsi"
@@ -258,10 +268,12 @@
                 <!-- Sizing -->
                 <div class="col-md-4">
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-calendar me-3"></i>Masa Berlaku</h5>
+                        <h5 class="card-header text-primary"><i class="bx bx-calendar me-3"></i>Masa Berlaku /
+                            Validity Period</h5>
                         <div class="card-body demo-vertical-spacing demo-only-element">
                             <div class="col-auto my-2">
-                                <label class="form-label">Tanggal TTD <i class="text-danger">*</i></label>
+                                <label class="form-label">Tanggal TTD / Signing Date<i
+                                        class="text-danger">*</i></label>
                                 <input required wire:model.defer="tanggal_ttd" type="date"
                                     class="form-control form-control-sm @error('tanggal_ttd') is-invalid @enderror">
                                 @error('tanggal_ttd')
@@ -269,7 +281,8 @@
                                 @enderror
                             </div>
                             <div class="col-auto my-2">
-                                <label class="form-label">Tanggal Awal <i class="text-danger">*</i></label>
+                                <label class="form-label">Tanggal Awal / Start Date<i
+                                        class="text-danger">*</i></label>
                                 <input required wire:model.defer="tanggal_awal" type="date"
                                     class="form-control form-control-sm @error('tanggal_awal') is-invalid @enderror">
                                 @error('tanggal_awal')
@@ -277,7 +290,8 @@
                                 @enderror
                             </div>
                             <div class="col-auto my-2">
-                                <label class="form-label">Tanggal Berakhir <i class="text-danger">*</i></label>
+                                <label class="form-label">Tanggal Berakhir / End Date<i
+                                        class="text-danger">*</i></label>
                                 <input required wire:model.defer="tanggal_berakhir" type="date"
                                     class="form-control form-control-sm @error('tanggal_berakhir') is-invalid @enderror">
                                 @error('tanggal_berakhir')
@@ -298,11 +312,11 @@
                                 @enderror
                             </div>
                             <div class="col-auto my-2">
-                                <label class="form-label">Jangka Waktu <i class="small">(Tahun)</i> <i
-                                        class="text-danger">*</i></label>
+                                <label class="form-label">Jangka Waktu / Time Period<i class="small">(Tahun /
+                                        Year)</i> <i class="text-danger">*</i></label>
                                 <select required wire:model.defer="jangka_waktu"
                                     class="form-control form-control-sm @error('jangka_waktu') is-invalid @enderror">
-                                    <option value="">Pilih Jangka Waktu</option>
+                                    <option value="">Pilih Jangka Waktu / Choose the period</option>
                                     @foreach (range(1, 5) as $year)
                                         <option value="{{ $year }}">{{ $year }} Tahun</option>
                                     @endforeach
@@ -336,7 +350,8 @@
                                 </h5>
                                 <div class="card-body mt-0">
                                     <div class="col-auto my-2">
-                                        <label class="mr-sm-2 mt-2 "><strong>Penggiat Kerjasama</strong> </label>
+                                        <label class="mr-sm-2 mt-2 "><strong>Penggiat Kerjasama / Partner Data</strong>
+                                        </label>
                                         <div class="row">
                                             <div class="col-sm-12 col-lg-5 my-2">
                                                 <label class="mr-sm-2">Status <i class="text-danger">*</i></label>
@@ -359,10 +374,13 @@
                                                 <select wire:model="status.{{ $value }}"
                                                     class="form-select form-select-sm mr-sm-2 @error('status.' . $value) is-invalid @enderror">
                                                     <option></option>
-                                                    <option value="1">Perguruan Tinggi Negeri</option>
-                                                    <option value="2">Perguruan Tinggi Swasta</option>
-                                                    <option value="4">Perguruan Tinggi Luar Negeri</option>
-                                                    <option value="3">Mitra</option>
+                                                    <option value="1">Perguruan Tinggi Negeri / Public University
+                                                    </option>
+                                                    <option value="2">Perguruan Tinggi Swasta / Private University
+                                                    </option>
+                                                    <option value="4">Perguruan Tinggi Luar Negeri / Overseas
+                                                        University</option>
+                                                    <option value="3">Mitra / Partner</option>
                                                 </select>
                                                 @error('status.' . $value)
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -370,8 +388,8 @@
                                             </div>
 
                                             <div class="col-sm-12 col-lg-7 my-2">
-                                                <label class="mr-sm-2">Instansi / Universitas <i
-                                                        class="small text-danger">*</i>
+                                                <label class="mr-sm-2">Instansi / Universitas (Institute /
+                                                    University)<i class="small text-danger">*</i>
                                                 </label>
 
                                                 <div wire:loading wire:target="nama_pihak.{{ $key }}"
@@ -383,7 +401,7 @@
                                                 <div class="btn-group col-12">
                                                     <div class="input-group input-group-sm" data-bs-display="static"
                                                         aria-haspopup="true" aria-expanded="true">
-                                                        <input placeholder="Ketik Untuk Mencari"
+                                                        <input placeholder="Ketik Untuk Mencari / Type to search"
                                                             wire:model="nama_pihak.{{ $key }}"
                                                             type="text"
                                                             class="form-control form-control-sm @error('nama_pihak.' . $value) is-invalid @enderror">
@@ -414,8 +432,8 @@
                                                 <select wire:model="ptqs.{{ $value }}"
                                                     class="@error('ptqs.' . $value) is-invalid @enderror form-select form-select-sm mr-sm-2">
                                                     <option value=""></option>
-                                                    <option value="1">Ya</option>
-                                                    <option value="2">Tidak</option>
+                                                    <option value="1">Ya / Yes</option>
+                                                    <option value="2">Tidak / No</option>
                                                 </select>
                                                 @error('ptqs.' . $value)
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -424,7 +442,7 @@
 
                                             <div class="col-sm-12 col-lg-7 my-2 {{ optional($status)[$value] == 1 ? 'd-block' : (optional($status)[$value] == 4 ? 'd-block' : '') }}"
                                                 style="display: none">
-                                                <label class="mr-sm-2">Cek Ranking</label>
+                                                <label class="mr-sm-2">Cek Ranking / Ranking Check</label>
                                                 <a href="https://www.topuniversities.com/subject-rankings/2022"
                                                     target="blank"
                                                     class="form-control btn btn-sm btn-secondary">click</a>
@@ -449,7 +467,7 @@
                                             <div class="col-12 my-2 {{ optional($status)[$value] == 3 ? (optional($badanKemitraan)[$value] == 99 ? 'd-block' : '') : '' }}"
                                                 style="display: none">
                                                 <input wire:model="lainnya.{{ $value }}" type="text"
-                                                    placeholder="sebutkan"
+                                                    placeholder="sebutkan / type it here"
                                                     class="form-control form-control-sm @error('lainnya.' . $value) is-invalid @enderror">
                                                 @error('lainnya.{{ $value }}')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -467,7 +485,7 @@
                                         @default
                                     @endswitch
                                 ">
-                                            <label class="mr-sm-2">Universitas/Fakultas <i
+                                            <label class="mr-sm-2">Universitas/Fakultas (University / Faculty)<i
                                                     class="text-danger">*</i></label>
                                             <select wire:model="fakultas_pihak.{{ $value }}"
                                                 class="form-select form-select-sm mr-sm-2 @error('fakultas_pihak.' . $value) is-invalid @enderror"
@@ -484,7 +502,8 @@
                                         </div>
                                     </div>
                                     <div class="col-auto my-2">
-                                        <label class="mr-sm-2">Alamat Instansi <i class="text-danger">*</i></label>
+                                        <label class="mr-sm-2">Alamat Instansi / Institute Address<i
+                                                class="text-danger">*</i></label>
                                         <input wire:model.defer="alamat_pihak.{{ $value }}" type="text"
                                             class="form-control form-control-sm @error('alamat_pihak.' . $value) is-invalid @enderror">
                                         @error('alamat_pihak.' . $value)
@@ -492,7 +511,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-auto my-2">
-                                        <label class="mr-sm-2">Negara Instansi</label>
+                                        <label class="mr-sm-2">Negara Instansi / Institute Country</label>
                                         <select wire:model="negara_pihak.{{ $value }}"
                                             class="form-control form-control-sm @error('negara_pihak.' . $value) is-invalid @enderror">
                                             <option></option>
@@ -502,33 +521,29 @@
                                         </select>
                                     </div>
                                     <div class="col-auto my-2">
-                                        <div class="row">
-                                            <div class="col-sm-12 col-lg-5 my-2 ">
-                                                <label class="mr-sm-2">Koordinat Instansi</label>
-                                                <input required wire:model="koordinat_pihak.{{ $value }}"
-                                                    type="text"
-                                                    class="form-control form-control-sm @error('koordinat_pihak.' . $value) is-invalid @enderror">
-                                                @error('koordinat_pihak.' . $value)
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-
-                                            <div class="col-sm-12 col-lg-7 my-2">
-                                                <label class="mr-sm-2">Cek Koordinat</label>
-                                                <a href="https://www.google.com/maps?q={{ urlencode($nama_pihak[$value] ?? '') }}"
-                                                    target="blank"
-                                                    class="form-control btn btn-sm btn-secondary">click</a>
-                                            </div>
-                                        </div>
+                                        <label class="mr-sm-2">Cek Koordinat / Coordinates Check</label>
+                                        <a href="https://www.google.com/maps?q={{ urlencode($nama_pihak[$value] ?? '') }}"
+                                            target="blank" class="form-control btn btn-sm btn-secondary">click</a>
                                     </div>
                                     <div class="col-auto my-2">
-                                        <label class="mr-sm-2 mt-2 "><strong>Penandatangan</strong></label>&nbsp;
+                                        <label class="mr-sm-2">Koordinat Instansi / Institute
+                                            Coordinates</label>
+                                        <input required wire:model="koordinat_pihak.{{ $value }}"
+                                            type="text"
+                                            class="form-control form-control-sm @error('koordinat_pihak.' . $value) is-invalid @enderror">
+                                        @error('koordinat_pihak.' . $value)
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-auto my-2">
+                                        <label class="mr-sm-2 mt-2 "><strong>Penandatangan /
+                                                Signator</strong></label>&nbsp;
                                         <i class="small text-danger">
-                                            *Pejabat yang menandatangani dokumen
+                                            *Pejabat yang menandatangani dokumen (Official that signed the document)
                                         </i>
                                         <div class="row">
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Nama<i class="text-danger">*</i></label>
+                                                <label class="mr-sm-2">Nama / Name<i class="text-danger">*</i></label>
                                                 <div wire:loading wire:target="nama_pejabat_pihak.{{ $key }}"
                                                     class="mx-1 spinner-border spinner-border-sm text-primary"
                                                     role="status">
@@ -562,7 +577,8 @@
                                             </div>
                                             <div class="col-sm-12 col-lg-6">
 
-                                                <label class="mr-sm-2">Jabatan<i class="text-danger">*</i></label>
+                                                <label class="mr-sm-2">Jabatan / Designation<i
+                                                        class="text-danger">*</i></label>
                                                 <input wire:model.defer="jabatan_pejabat_pihak.{{ $value }}"
                                                     type="text"
                                                     class="form-control form-control-sm @error('jabatan_pejabat_pihak.' . $value) is-invalid @enderror">
@@ -573,10 +589,11 @@
                                         </div>
                                     </div>
                                     <div class="col-auto my-2">
-                                        <label class="mr-sm-2 mt-2 "><strong>Penanggung Jawab</strong> </label>
+                                        <label class="mr-sm-2 mt-2 "><strong>Penanggung Jawab / Person In
+                                                Charge</strong> </label>
                                         <div class="row">
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Nama<i class="text-danger">*</i></label>
+                                                <label class="mr-sm-2">Nama / Name<i class="text-danger">*</i></label>
                                                 <div wire:loading wire:target="pj_pihak.{{ $key }}"
                                                     class="mx-1 spinner-border spinner-border-sm text-primary"
                                                     role="status">
@@ -585,7 +602,7 @@
                                                 <div class="btn-group col-12">
                                                     <div class="input-group input-group-sm" data-bs-display="static"
                                                         aria-haspopup="true" aria-expanded="true">
-                                                        <input placeholder="Ketik Untuk Mencari"
+                                                        <input placeholder="Ketik Untuk Mencari / Type here to search"
                                                             wire:model="pj_pihak.{{ $key }}" type="text"
                                                             class="form-control form-control-sm @error('pj_pihak.' . $value) is-invalid @enderror">
                                                         @error('pj_pihak.{{ $value }}')
@@ -608,7 +625,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2">Jabatan<i class="text-danger">*</i></label>
+                                                <label class="mr-sm-2">Jabatan / Designation<i
+                                                        class="text-danger">*</i></label>
                                                 <input wire:model.defer="jabatan_pj_pihak.{{ $value }}"
                                                     type="text"
                                                     class="form-control form-control-sm @error('jabatan_pj_pihak.' . $value) is-invalid @enderror">
@@ -628,7 +646,7 @@
                                                 @enderror
                                             </div>
                                             <div class="col-sm-12 col-lg-6">
-                                                <label class="mr-sm-2 mt-1">No. HP <i
+                                                <label class="mr-sm-2 mt-1">No. HP / Phone Number<i
                                                         class="text-danger">*</i></label>
                                                 <input wire:model.defer="hp_pj_pihak.{{ $value }}"
                                                     type="text" onkeypress="return /[0-9()+\-]/.test(event.key)"
@@ -668,7 +686,7 @@
                         </div>
                     @endif
                     <div class="card mb-4">
-                        <h5 class="card-header text-primary"><i class="bx bx-unite me-3"></i>Bentuk Kegiatan
+                        <h5 class="card-header text-primary"><i class="bx bx-unite me-3"></i>Form of Activity
                             <div wire:loading wire:target="bentukKegiatan"
                                 class="mx-1 spinner-border spinner-border-sm text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -678,7 +696,7 @@
                             <div class="col-auto my-2">
                                 <select wire:model="bentukKegiatan"
                                     class="form-select form-select-sm mr-sm-2 @error('arrayBentukKegiatan') is-invalid @enderror">
-                                    <option value="0">Pilih Bentuk Kegiatan</option>
+                                    <option value="0">Pilih Bentuk Kegiatan / Choose Form of Activity</option>
                                     @foreach ($getBentukKegiatan as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama }}</option>
                                     @endforeach
@@ -703,9 +721,9 @@
                                             <div class="col-sm-12">
                                                 <label
                                                     class="@error('nilai_kontrak.' . $key) text-danger @enderror">Nilai
-                                                    kontrak</label>
+                                                    kontrak / Contract Value</label>
                                                 <div class="text-muted small m-b-xs mb-1">Nominal nilai kontrak
-                                                    proposal</div>
+                                                    proposal / Contract Value Nominal Value</div>
                                             </div>
                                             <div class="col-sm-12">
                                                 <div class="input-group input-group-merge">
@@ -718,7 +736,7 @@
                                             </div>
                                         </div>
                                         <div class="col-auto my-1">
-                                            <div class="col-sm-12"><label>Luaran</label></div>
+                                            <div class="col-sm-12"><label>Contribution</label></div>
                                             <div class="col-sm-12">
                                                 <div class="input-group input-group-merge">
                                                     <span
@@ -738,7 +756,7 @@
                                                 <label
                                                     class="@error('keterangan.' . $key) text-danger @enderror">Keterangan</label>
                                                 <div class="text-muted small m-b-xs mb-1">Ringkasan luaran dari
-                                                    kegiatan</div>
+                                                    kegiatan / Summary of Activity's Contribution</div>
                                             </div>
                                             <div class="col-sm-12">
                                                 <textarea wire:model.lazy="keterangan.{{ $key }}" rows="3" class="form-control form-control-sm"></textarea>
@@ -791,7 +809,8 @@
                                     });
                                 </script>
                             @empty
-                                <label class="my-2 text-warning">Belum Memilih Bentuk Kegiatan</label>
+                                <label class="my-2 text-warning">Belum Memilih Bentuk Kegiatan / Haven't chosen the
+                                    activity forms</label>
                             @endforelse
                         </div>
                     </div>

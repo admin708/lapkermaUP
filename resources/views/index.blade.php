@@ -110,7 +110,7 @@
                     </div>
                     <div class="user-login text-right">
                         <a class="btn btn-warning popup-with-form" data-toggle="modal" data-target="#tutorialModal">
-                            <i class="fas fa-info-circle "></i> Tutorial Request MoU
+                            <i class="fas fa-info-circle "></i> How To Request MoU
                         </a>
                     </div>
                 </div>
@@ -119,39 +119,47 @@
     </div>
     <!-- End Header Top -->
 
-   <!-- Tutorial Modal -->
-<div class="modal fade" id="tutorialModal" tabindex="-1" aria-labelledby="tutorialModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> 
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-primary text-center w-100" id="tutorialModalLabel">Cara Melakukan Request MoU</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="padding: 20px;"> 
-                <ol style="line-height: 1.6; padding: 20px;"> 
-                    <li>Masuk ke situs web Lapkerma.</li>
-                    <li>Pada halaman utama, klik tombol Request MoU.</li>
-                    <li>Jika Anda belum memiliki akun, silakan daftar terlebih dahulu.</li>
-                    <li>Setelah melakukan pendaftaran, halaman untuk memasukkan kode OTP yang dikirim melalui email yang terdaftar akan muncul. Masukkan kode OTP tersebut untuk verifikasi.</li>
-                    <li>Setelah beberapa saat, admin akan memverifikasi email Anda. Setelah verifikasi berhasil, Anda dapat login menggunakan email tersebut.</li>
-                    <li>Setelah berhasil masuk ke halaman utama, pilih input MoU, kemudian pada dropdown pilih MoU.</li>
-                    <li>Masukkan data Anda untuk melakukan permintaan MoU. Anda dapat mengunggah dokumen MoU yang sudah disiapkan sebelumnya. Jika belum, Anda bisa mencentang checkbox di pojok kiri atas untuk mengisi data MoU menggunakan template yang tersedia.</li>
-                    <li>Setelah mengisi semua kolom yang wajib diisi, tekan tombol Submit.</li>
-                    <li>Setelah menekan tombol Submit, akan muncul pop-up pemberitahuan bahwa permintaan MoU Anda sedang diproses. Mohon menunggu konfirmasi dari admin dalam waktu 5 hari kerja.</li>
-                </ol>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+    <!-- Tutorial Modal -->
+    <div class="modal fade" id="tutorialModal" tabindex="-1" aria-labelledby="tutorialModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary text-center w-100" id="tutorialModalLabel">Cara Melakukan
+                        Request MoU</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 20px;">
+                    <ol style="line-height: 1.6; padding: 20px;">
+                        <li>Log in to the Lapkerma website.</li>
+                        <li>On the main page, click the Request MoU button.</li>
+                        <li>If you do not have an account, please register first.</li>
+                        <li>After registering, a page to enter the OTP code sent via the registered email will appear.
+                            Enter the OTP code for verification.</li>
+                        <li>After contacting, the admin will verify your email. After successful verification,
+                            you can log in using that email.</li>
+                        <li>After successfully entering the main page, select the Input tab, then select MoU in the
+                            dropdown.
+                        </li>
+                        <li>Enter your data to request an MoU. You can upload the MoU document that has been prepared
+                            previously. If not, you can check the checkbox in the upper left corner
+                            to fill in the MoU data using the available template.</li>
+                        <li>After filling in all the required columns, press the Submit button.</li>
+                        <li>After pressing the Submit button, a pop-up notification will appear that your MoU request
+                            is being processed. Please wait for confirmation from the admin within 5 working days.</li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Include Bootstrap JS and jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Header
     ============================================= -->
     <header id="home">

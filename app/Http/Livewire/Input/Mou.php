@@ -189,7 +189,6 @@ class Mou extends Component
     public function saveEdit($id)
     {
         $this->inputValidation();
-
         $this->arrayNamaPenggiat = [];
         $hitung = 0;
         $indexUnhas = 0;
@@ -527,12 +526,15 @@ class Mou extends Component
             'files' => 'required'
         ]);
 
+
+
         if ($this->jenisKerjasamaField == '1') {
             $this->validate([
                 'nomor_unhas' => 'required',
                 'nomor_mitra' => 'required',
             ]);
         }
+
 
 
         if ($this->jenisKerjasamaField == '2') {
@@ -547,7 +549,7 @@ class Mou extends Component
             }
         }
 
-        foreach (range(0, $this->arrayJawaban) as $value) {
+        foreach (range(0, $this->arrayJawaban - 1) as $value) {
             $this->validate([
                 "status.$value" => 'required',
             ]);
@@ -580,7 +582,6 @@ class Mou extends Component
                     $this->validate(array_merge($commonRules, [
                         "fakultas_pihak.$value" => 'required',
                     ]));
-
                     break;
 
                 case 3:
@@ -606,7 +607,6 @@ class Mou extends Component
                         "ptqs.$value" => 'required',
                         "fakultas_pihak.$value" => 'required',
                     ]));
-
                     break;
 
                 default:

@@ -365,80 +365,81 @@ class GuestMouInput extends Component
             }
 
             if ($store->wasRecentlyCreated) {
+                foreach (range(0, $this->arrayJawaban) as $key) {
+                    $storePJ = PenanggungJawab::updateOrCreate(
+                        [
+                            'name' => $this->pj_pihak[$key],
+                        ],
+                        [
+                            'designation' => $this->jabatan_pj_pihak[$key],
+                            'email' => $this->email_pj_pihak[$key],
+                            'phone_number' => $this->hp_pj_pihak[$key]
+                        ]
+                    );
 
-                $storePJ = PenanggungJawab::updateOrCreate(
-                    [
-                        'name' => $this->pj_pihak[$value],
-                    ],
-                    [
-                        'designation' => $this->jabatan_pj_pihak[$value],
-                        'email' => $this->email_pj_pihak[$value],
-                        'phone_number' => $this->hp_pj_pihak[$value]
-                    ]
-                );
+                    $storePejabat = Pejabat::updateOrCreate(
+                        [
+                            'nama' => $this->nama_pejabat_pihak[$key],
+                        ],
+                        [
+                            'jabatan' => $this->jabatan_pejabat_pihak[$key]
+                        ]
 
-                $storePejabat = Pejabat::updateOrCreate(
-                    [
-                        'nama' => $this->nama_pejabat_pihak[$value],
-                    ],
-                    [
-                        'jabatan' => $this->jabatan_pejabat_pihak[$value]
-                    ]
+                    );
 
-                );
+                    $storeInstansi = Instansi::updateOrCreate(
+                        [
+                            'name' => $this->nama_pihak[$key],
+                        ],
+                        [
+                            'address' => $this->alamat_pihak[$key],
+                            'negara_id' => $this->negara_pihak[$key],
+                            'coordinates' => $this->koordinat_pihak[$key] ?? '',
+                            'ptqs' => $this->ptqs[$key] ?? 0,
+                            'status' => $this->status[$key] ?? 0,
+                            'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
+                        ]
+                    );
+                    if (optional($this->badanKemitraan)[$key] == 99) {
+                        $storeInstansi->update([
+                            'badan_kemitraan' => $this->lainnya[$key]
+                        ]);
+                    }
 
-                $storeInstansi = Instansi::updateOrCreate(
-                    [
-                        'name' => $this->nama_pihak[$value],
-                    ],
-                    [
-                        'address' => $this->alamat_pihak[$value],
-                        'negara_id' => $this->negara_pihak[$value],
-                        'coordinates' => $this->koordinat_pihak[$value] ?? '',
-                        'ptqs' => $this->ptqs[$value] ?? 0,
-                        'status' => $this->status[$value] ?? 0,
-                        'badan_kemitraan' => $this->badanKemitraan[$value] ?? '',
-                    ]
-                );
-                if (optional($this->badanKemitraan)[$value] == 99) {
-                    $storeInstansi->update([
-                        'badan_kemitraan' => $this->lainnya[$value]
-                    ]);
-                }
+                    $storePenggiatKerjasama2 = MouPenggiat::create(
+                        [
+                            'id_lapkerma' => $store->id,
+                            'id_pihak' => $storeInstansi->id,
+                            'pihak' => $this->nama_pihak[$key],
+                            'id_pj' => $storePJ->id,
+                            'id_pejabat' => $storePejabat->id,
+                            'fakultas_pihak' => $this->fakultas_pihak[$key] ?? null,
+                            'prodi' => '',
+                        ]
+                    );
 
-                $storePenggiatKerjasama2 = MouPenggiat::create(
-                    [
+                    $storePenggiatKerjasama = DataMouPenggiat::create([
                         'id_lapkerma' => $store->id,
-                        'id_pihak' => $storeInstansi->id,
-                        'pihak' => $this->nama_pihak[$value],
-                        'id_pj' => $storePJ->id,
-                        'id_pejabat' => $storePejabat->id,
-                        'fakultas_pihak' => $this->fakultas_pihak[$value] ?? null,
-                        'prodi' => '',
-                    ]
-                );
-
-                $storePenggiatKerjasama = DataMouPenggiat::create([
-                    'id_lapkerma' => $store->id,
-                    'pihak' => $value + 1,
-                    'status_pihak' => $this->status[$key],
-                    'nama_pihak' => $this->arrayNamaPenggiat[$key],
-                    'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
-                    'alamat_pihak' => $this->alamat_pihak[$key],
-                    'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
-                    'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
-                    'pj_pihak' => $this->pj_pihak[$key],
-                    'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
-                    'email_pj_pihak' => $this->email_pj_pihak[$key] ?? '',
-                    'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? '',
-                    'ptqs' => $this->ptqs[$key] ?? null,
-                    'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
-                    'uploaded_by' => auth()->user()->name,
-                ]);
-                if (optional($this->badanKemitraan)[$key] == 99) {
-                    $storePenggiatKerjasama->update([
-                        'badan_kemitraan' => $this->lainnya[$key]
+                        'pihak' => $key + 1,
+                        'status_pihak' => $this->status[$key],
+                        'nama_pihak' => $this->arrayNamaPenggiat[$key],
+                        'fakultas_pihak' => $this->fakultas_pihak[$key] ?? '',
+                        'alamat_pihak' => $this->alamat_pihak[$key],
+                        'nama_pejabat_pihak' => $this->nama_pejabat_pihak[$key],
+                        'jabatan_pejabat_pihak' => $this->jabatan_pejabat_pihak[$key] ?? '',
+                        'pj_pihak' => $this->pj_pihak[$key],
+                        'jabatan_pj_pihak' => $this->jabatan_pj_pihak[$key] ?? '',
+                        'email_pj_pihak' => $this->email_pj_pihak[$key] ?? '',
+                        'hp_pj_pihak' => $this->hp_pj_pihak[$key] ?? '',
+                        'ptqs' => $this->ptqs[$key] ?? null,
+                        'badan_kemitraan' => $this->badanKemitraan[$key] ?? '',
+                        'uploaded_by' => auth()->user()->name,
                     ]);
+                    if (optional($this->badanKemitraan)[$key] == 99) {
+                        $storePenggiatKerjasama->update([
+                            'badan_kemitraan' => $this->lainnya[$key]
+                        ]);
+                    }
                 }
             }
             $code = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
