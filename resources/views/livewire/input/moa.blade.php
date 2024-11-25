@@ -79,6 +79,9 @@
                             <option value="2">Provensi/Regional</option>
                             <option value="3">Lokal/Kabupaten</option>
                         </select>
+                        @error('tingkat')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="{{ $jenisKerjasamaField == 1 ? 'd-none' : '' }}">
                         <label class="form-label">Negara <i class="small text-danger">*</i> </label>
@@ -124,6 +127,9 @@
                     <input class="form-control form-control-sm @error('files') is-invalid @enderror" type="file"
                         wire:model="files" id="uploadFiles" multiple accept=".pdf"
                         onchange="checkFileUploadExt(this);" />
+                    @error('files')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                     @if ($idEdit)
                         <ul>
                             @foreach ($findDokumen as $item)
@@ -446,9 +452,6 @@
 
                                     <div class="col-sm-12 col-lg-5 my-2">
                                         <label class="mr-sm-2">Status</label>
-                                        @error('status.{{ $value }}')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
                                         <select wire:model="status.{{ $value }}"
                                             class="form-select form-select-sm mr-sm-2 @error('status.' . $value) is-invalid @enderror">
                                             <option></option>
@@ -457,6 +460,9 @@
                                             <option value="4">Perguruan Tinggi Luar Negeri</option>
                                             <option value="3">Mitra</option>
                                         </select>
+                                        @error('status.{{ $value }}')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-sm-12 col-lg-5 my-2 {{ optional($status)[$value] == 1 ? 'd-block' : (optional($status)[$value] == 4 ? 'd-block' : '') }}"
                                         style="display: none">
@@ -513,8 +519,8 @@
                                 <select wire:model="fakultas_pihak.{{ $value }}"
                                     class="form-select form-select-sm mr-sm-2 @error('fakultas_pihak.{{ $value }}')
                                         is-invalid
-                                    @enderror"
-                                    {{ auth()->user()->role_id != 1 ? 'disabled' : '' }}>
+                                    @enderror
+                                    {{ auth()->user()->role_id != 1 ? 'disabled' : '' }}">
                                     <option></option>
                                     @foreach ($fakultas as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama_fakultas }}</option>
@@ -814,7 +820,6 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-lg-6">
-
                                         <label class="mr-sm-2">Jabatan</label>
                                         <input wire:model.defer="jabatan_pejabat_pihak.{{ $value }}"
                                             type="text"
@@ -911,7 +916,8 @@
                                     class="small text-danger">*</i></label>
                         </div>
                         <div class="col-sm-12">
-                            <select class="form-select form-select-sm" aria-hidden="true" wire:model="sdgs">
+                            <select class="form-select form-select-sm @error('sdgs') is-invalid @enderror"
+                                aria-hidden="true" wire:model="sdgs">
                                 <option></option>
                                 @foreach ($getSdgs as $itemz)
                                     {{-- <option value="{{ $itemz->uuid }}">{{ $itemz->id }} | {{ rtrim(Str::words($itemz->nama, 9)) . '...' }}</option> --}}
@@ -919,6 +925,10 @@
                                     </option>
                                 @endforeach
                             </select>
+
+                            @error('sdgs')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     @if ($arraySdgs)
