@@ -501,7 +501,7 @@ class GuestMouInput extends Component
                     'kerjasama_id' => $store->id
                 ]);
 
-                Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
+                Mail::to('intl.partnership@unhas.ac.id')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
             }
 
             DB::commit();
