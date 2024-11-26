@@ -43,10 +43,19 @@
         <div class="col-12">
             @if (auth()->user()->role_id == 4 || auth()->user()->role_id == 1)
                 <button class="btn btn-primary my-3 form-control" wire:loading.attr="disabled"
-                    wire:click="{{ $jenis_dokumen_kerjasama == 2 ? 'saveMoAPimpinan' : 'saveIaPimpinan' }}">Simpan</button>
+                    wire:click="{{ $jenis_dokumen_kerjasama == 2 ? 'saveMoAPimpinan' : 'saveIaPimpinan' }}">
+                    <span wire:loading
+                        wire:target="{{ $jenis_dokumen_kerjasama == 2 ? 'saveMoAPimpinan' : 'saveIaPimpinan' }}"
+                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span wire:loading.remove
+                        wire:target="{{ $jenis_dokumen_kerjasama == 2 ? 'saveMoAPimpinan' : 'saveIaPimpinan' }}">Simpan</span></button>
             @else
                 <button class="btn btn-primary my-3 form-control" wire:loading.attr="disabled"
-                    wire:click="{{ $jenis_dokumen_kerjasama == 2 ? 'saveMoA' : 'saveIa' }}">Simpan</button>
+                    wire:click="{{ $jenis_dokumen_kerjasama == 2 ? 'saveMoA' : 'saveIa' }}">
+                    <span wire:loading wire:target="{{ $jenis_dokumen_kerjasama == 2 ? 'saveMoA' : 'saveIa' }}"
+                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span wire:loading.remove
+                        wire:target="{{ $jenis_dokumen_kerjasama == 2 ? 'saveMoA' : 'saveIa' }}">Simpan</span></button>
             @endif
         </div>
         <div class="col-md-4">

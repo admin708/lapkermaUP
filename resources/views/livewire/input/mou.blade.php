@@ -3,11 +3,18 @@
         <div class="row">
             <!-- Basic -->
             <div class="col-12 {{ $idEdit == false ? 'd-none' : '' }} ">
-                <button class="btn btn-primary my-3 form-control" wire:click="saveEdit('{{ $idEdit }}')">Simpan
-                    Perubahan</button>
+                <button class="btn btn-primary my-3 form-control" wire:click="saveEdit('{{ $idEdit }}')">
+                    <span wire:loading wire:target="saveEdit" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                    <span wire:loading.remove wire:target="saveEdit">Simpan Perubahan</span>
+                </button>
             </div>
             <div class="col-12 {{ $idEdit == true ? 'd-none' : '' }} ">
-                <button class="btn btn-primary my-3 form-control" wire:click="save">Simpan</button>
+                <button class="btn btn-primary my-3 form-control" wire:click="save">
+                    <span wire:loading wire:target="saveEdit" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                    <span wire:loading.remove wire:target="save">Simpan</span>
+                </button>
             </div>
 
             <div class="col-md-4">
