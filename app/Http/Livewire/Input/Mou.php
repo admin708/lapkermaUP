@@ -99,21 +99,11 @@ class Mou extends Component
         $findMeTo = MouPenggiat::where('id_lapkerma', $id)->get();
         $this->arrayJawaban = $findMeTo->count('id');
         $this->inputs = [];
-
         foreach ($findMeTo as $key => $value) {
             array_push($this->inputs, $key);
             $this->setInstansi($findMeTo, $key);
             $this->setPejabat($findMeTo, $key);
             $this->setPJ($findMeTo, $key);
-
-            if ($value->status_pihak == 3) {
-                if (is_int($value->badan_kemitraan)) {
-                    $this->badanKemitraan[$key] = $value->badan_kemitraan;
-                } else {
-                    $this->badanKemitraan[$key] = 99;
-                    $this->lainnya[$key] = $value->badan_kemitraan;
-                }
-            }
         }
         $this->findDokumen = DataMouDokumen::where('kerjasama_id', $id)->get();
 
@@ -161,7 +151,16 @@ class Mou extends Component
             $this->koordinat_pihak[$key] = $instansi->coordinates ?? null;
             $this->fakultas_pihak[$key] = $findMeTo[$key]['fakultas_pihak'] ?? 1000;
             $this->ptqs[$key] = $instansi->ptqs ?? 0;
-            $this->badanKemitraan[$key] = $instansi->badan_kemitraan ?? 1;
+            if (isset($instansi->badan_kemitraan) && is_numeric($instansi->badan_kemitraan)) {
+                // If $instansi->badan_kemitraan is a number
+                $this->badanKemitraan[$key] = $instansi->badan_kemitraan ?? 1;
+            } else {
+                // If $instansi->badan_kemitraan is not a number
+                $this->badanKemitraan[$key] = 99;
+                $this->lainnya[$key] = $instansi->badan_kemitraan;
+            }
+
+
             $this->negara_pihak[$key] = $instansi->negara_id ?? 103;
         }
     }

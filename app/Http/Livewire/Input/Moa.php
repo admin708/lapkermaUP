@@ -65,6 +65,7 @@ class Moa extends Component
     public $stat1, $stat2, $stat3, $stat4, $stat5, $stat6, $stat7, $stat8, $searchProdiMitra, $fakultas, $prodiMitra = [], $prodiAll, $dasarDokKerjasama, $sumberDana;
 
     public $searchInstansiList = [], $searchPejabatList = [], $searchPenanggungJawab = [], $searchBadanKemitraan;
+    public $badanKemitraanOptions;
     public $idInstansi = [], $idPejabat = [], $idPJ = [];
 
     public $getBentukKegiatan, $getIndikatorKinerja, $getSasaranKegiatan, $jenisDokKerjasama, $getProdiMitras, $getSdgs, $sdgs;
@@ -89,12 +90,17 @@ class Moa extends Component
         };
     }
 
+
     public function setJenis()
     {
 
         $this->jenis_dokumen_kerjasama = $this->changeJenis;
     }
 
+    // public function updatedBadanKemitraan($value, $key)
+    // {
+    //     dd($this->badanKemitraan);
+    // }
 
     public function updatedJenisDokumenKerjasama()
     {
@@ -268,6 +274,7 @@ class Moa extends Component
         $this->getSasaranKegiatan = LapkermaRefSasaranKegiatan::get();
         $this->sumberDana = ReferensiSumberDanaLapkerma::get();
         $this->searchBadanKemitraan = ReferensiBadanKemitraan::get();
+        $this->badanKemitraanOptions = ReferensiBadanKemitraan::whereNotIn('id', [10, 11])->get();
         $this->jenisKerjasama = JenisKerjasama::get();
         $this->regionKerjasama = Region::get();
         $this->negaraKerjasama = Negara::get();

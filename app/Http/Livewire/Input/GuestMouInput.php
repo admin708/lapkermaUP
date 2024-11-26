@@ -501,7 +501,21 @@ class GuestMouInput extends Component
                     'kerjasama_id' => $store->id
                 ]);
 
-                Mail::to('intl.partnership@unhas.ac.id')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
+                Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
+            } else {
+                $code = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                foreach ($this->files as $file) {
+                    $random = substr(str_shuffle($code), 0, 3);
+                    $namaDokumen = 'MoU' . $uuid . $random . '.' . $file->extension();
+                    $file->storeAs('public/DokumenMoU', $namaDokumen);
+                    $store->dokumenMoU()->firstOrCreate([
+                        'url' => $namaDokumen,
+                        'kerjasama_id' => $store->id
+                    ]);
+                }
+                $outputFile = storage_path('app/public/DokumenMoU/' . $namaDokumen);
+
+                Mail::to('kaizerd23@gmail.com')->send(new DocumentMail($outputFile, $this->nama_pihak[0]));
             }
 
             DB::commit();

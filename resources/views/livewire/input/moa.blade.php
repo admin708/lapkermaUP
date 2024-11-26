@@ -493,8 +493,8 @@
                                         <select wire:model="badanKemitraan.{{ $value }}"
                                             class="form-select form-select-sm mr-sm-2 @error('badanKemitraan.' . $value) is-invalid @enderror">
                                             <option value=""></option>
-                                            @foreach ($searchBadanKemitraan as $badanKemitraan)
-                                                <option value="{{ $badanKemitraan->id }}">{{ $badanKemitraan->nama }}
+                                            @foreach ($badanKemitraanOptions as $option)
+                                                <option value="{{ $option->id }}">{{ $option->nama }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -502,8 +502,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-
-                                    <div class="col-12 my-2 {{ optional($status)[$value] == 3 ? (optional($badanKemitraan)[$value] == 99 ? 'd-block' : '') : '' }}"
+                                    <div class="col-12 my-2 {{ optional($badanKemitraan)[$value] == 99 ? 'd-block' : '' }}"
                                         style="display: none">
                                         <input wire:model="lainnya.{{ $value }}" type="text"
                                             placeholder="sebutkan"
